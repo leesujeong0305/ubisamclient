@@ -1,0 +1,47 @@
+/*Global*/
+.section-content {
+    padding: 4rem 0;
+  }
+  
+  /*Top Section*/
+  #top {
+    background-image: url("../images/bg-top.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 80vh;
+    position: relative;
+  }
+    
+  #top .overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+  }
+  
+  
+  #top .divider {
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border-top: 2px solid #fff;
+  }
+  
+  #top .welcome {
+    padding-right: 8rem;
+    color: #ffffff;
+  }
+  
+
+  /*미디어쿼리 이용하여 모바일 화면에서도 줄 맞춤*/
+  
+  @media screen and (max-width: 767px) {
+    #top .welcome {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+  

@@ -1,8 +1,22 @@
 .navbar {
     z-index: 1;
   }
-  
-  @media screen and (max-width: 767px) {
+
+.iconubi {
+  font-size: 27px;
+  font-weight: bold;
+  vertical-align: middle;
+  color: white;
+}
+
+.iconsam {
+  font-size: 25px;
+  font-weight: bold;
+  color: white;
+  vertical-align: middle;
+}
+
+@media screen and (max-width: 767px) {
       #top .welcome {
         padding-left: 1rem;
         padding-right: 1rem;

@@ -4,12 +4,14 @@ const Footer = () => {
     return (
         <footer>
             <div style={{
-                minHeight: "75vh",
+                minHeight: "13.5vh",
                 display: 'flex',
                 flexDirection: 'column', alignItems: 'center',
-                justifyContent: 'center', fontSize:'1rem'
+                justifyContent: 'center', fontSize:'1.4rem',
+                backgroundColor: '#ADB5BD',
+                color: 'white'
             }}>
-                &copy; 2022 Ubisam. All Rights Reserved.    
+                &copy; 2024 Ubisam. All Rights Reserved.    
             </div>
         </footer>
     );
