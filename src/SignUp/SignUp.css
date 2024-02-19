@@ -1,0 +1,5 @@
+.body-container { /* 또는 페이지를 감싸는 최상위 div */
+    display: grid;
+    grid-template-rows: 1fr auto; /* 내용은 1fr로 채우고 Footer는 auto로 크기를 조정합니다. */
+    min-height: 100vh;
+}

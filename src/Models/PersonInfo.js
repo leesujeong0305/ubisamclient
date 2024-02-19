@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Button, Container, Form, Modal } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../Hooks/useFetch';
+import axios from 'axios';
 
 const Continents = [
     { key: 1, value: "대표" },
@@ -79,20 +80,17 @@ const Personnelinfo = ({ show, onHide }) => {
             //   }
             // }
 
-            fetch(`http://localhost:8080/ContactUs`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                // 문자열 JSON
-                body: JSON.stringify({
+            axios.post(`http://localhost:8080/ContactUs`, {
                     //writer: props.user.userData._id,
                     name: Name,
                     position: Position,
                     phone: Phone,
                     email: Email
-                }),
-            })
+                }, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                })
                 .then(res => {
                     const data = res.json();
                     if (res.ok) {

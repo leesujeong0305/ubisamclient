@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import Personnelinfo from '../Models/PersonInfo'
-
+import './SignUp.css'
 
 function SignUp() {
   const [showModal, setShowModal] = useState(false);

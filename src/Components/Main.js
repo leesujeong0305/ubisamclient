@@ -41,7 +41,7 @@ export default function MainUI() {
                         <input type="tel" className="form-control" placeholder='Your email'></input>
                       </div>
                       <Link to={'/Signup'} style={{ display: 'flex', justifyContent: 'right', textDecoration: 'none', marginRight: '20px' }}>회원가입</Link>
-                      <Personnelinfo show={personInfo} onHide={() => setPersonInfo} />
+                      <button type='button' onClick={handleShow} show={personInfo} onHide={() => setPersonInfo}>회원가입</button>
                       <p />
                       <p className="mb-3">
                         <button className='btn btn-primary w-100' type='buttn'>로그인</button>
