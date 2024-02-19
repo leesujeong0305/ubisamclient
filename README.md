@@ -22,4 +22,8 @@ bootstrap.min.css 파일 src 밑에 추가 (어디서 다운받은지 모름)
 import './bootstrap.min.css'; //index.js에 추가
 
 
+
+
+
+//////////////////////////////////
 단축 rfce //js 기본 작성해줌
