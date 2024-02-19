@@ -1,17 +1,8 @@
 import React, { useState } from 'react'
 import './Main.css'
 import { Link } from 'react-router-dom'
-import Personnelinfo from '../Models/PersonInfo';
-
-
-
-
 
 export default function MainUI() {
-  const [personInfo, setPersonInfo] = useState(false);
-
-  const handleClose = () => setPersonInfo(false);
-  const handleShow = () => setPersonInfo(true);
   return (
     <>
       <section id="top">
@@ -19,7 +10,7 @@ export default function MainUI() {
           <div className="container-xxl">
             <div className="row align-items-center">
               <div className="col-md-9 welcome" style={{ marginLeft: '00px' }}>
-                <h1 className="welcome-title fw-light"><span className="text-warning fw-bold">오늘도 수고 많으셨습니다</span>.</h1>
+                <h1 className="welcome-title fw-light"><span className="text-warning fw-bold">오늘도 수고 많으셨습니다.</span></h1>
                 <div className="row welcome-desc">
                   <p className="col-sm-10 col-md-12 lead"> 여기에 하루 일과를 정리 하시길 바랍니다.</p>
                 </div>
@@ -41,7 +32,7 @@ export default function MainUI() {
                         <input type="tel" className="form-control" placeholder='Your email'></input>
                       </div>
                       <Link to={'/Signup'} style={{ display: 'flex', justifyContent: 'right', textDecoration: 'none', marginRight: '20px' }}>회원가입</Link>
-                      <button type='button' onClick={handleShow} show={personInfo} onHide={() => setPersonInfo}>회원가입</button>
+                      <Link to={'/Board'}>내용추가(임시)</Link>
                       <p />
                       <p className="mb-3">
                         <button className='btn btn-primary w-100' type='buttn'>로그인</button>

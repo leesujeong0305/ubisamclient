@@ -1,0 +1,36 @@
+.btn-primary {
+    background-color: #6c63ff;
+}
+
+.modal-content {
+    border-radius: 20px;
+}
+
+.form-control {
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.modal-footer .btn-secondary {
+    background-color: white;
+    color: #6c63ff;
+    border-color: #6c63ff;
+}
+
+.modal-footer .btn-primary {
+    background-color: #6c63ff;
+    border: none;
+}
+
+.custom-modal-size .modal-dialog {
+    max-width: 90%;
+    /* 뷰포트 너비의 90%까지 허용 (또는 원하는 크기로 조정) */
+}
+
+/* 반응형 디자인을 위해 미디어 쿼리를 사용할 수도 있습니다. */
+@media (min-width: 992px) {
+    .custom-modal-size .modal-dialog {
+        max-width: 800px;
+        /* 큰 화면에서는 800px로 설정 */
+    }
+}

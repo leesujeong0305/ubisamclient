@@ -1,6 +1,12 @@
 import React from 'react'
+import { useFooterVisibility } from '../Layouts/FooterVisibilityContext';
 
 const Footer = () => {
+    const isVisible = useFooterVisibility();
+
+  if (!isVisible) {
+    return null;
+  }
     return (
         <footer>
             <div style={{

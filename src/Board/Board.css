@@ -1,0 +1,10 @@
+.custom-modal-size {
+    width: 100vw; /* Full viewport width */
+    max-width: none; /* Override Bootstrap's max-width */
+  }
+  
+  @media (min-width: 576px) { /* Adjust this breakpoint as needed */
+    .custom-modal-size {
+      width: 90vw; /* Adjust the width to what is considered double size in your application */
+    }
+  }

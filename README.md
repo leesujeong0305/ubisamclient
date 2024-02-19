@@ -21,9 +21,11 @@ npm install react-icons --save
 bootstrap.min.css 파일 src 밑에 추가 (어디서 다운받은지 모름)
 import './bootstrap.min.css'; //index.js에 추가
 
+//24.02.19 캘린더 추가
+npm install react-calendar moment
 
-
-
+//24.02.19 Chart 추가
+npm i react-minimal-pie-chart
 
 //////////////////////////////////
 단축 rfce //js 기본 작성해줌
