@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Container } from 'react-bootstrap';
+import React, { useState, useEffect, useRef } from 'react'
+import { Container, Form, Button, Dropdown } from 'react-bootstrap';
 import contactUs from "..//db/data.json";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import { useFooterVisibilityUpdate } from '../Layouts/FooterVisibilityContext';
@@ -19,7 +19,13 @@ import Chart from './Chart';
 function Board() {
     // console.log(contactUs);
     const [personnelinfo, setpersonnelinfo] = useState(false);
-    const columns = ["#", "이 름", "직 급", "Phone", "내용", "Actions"];
+    const columns = [
+        { name: "#", width: "5%" },
+        { name: "날짜", width: "10%" },
+        { name: "이 름", width: "10%" },
+        { name: "Title", width: "20%" },
+        { name: "To Do List", width: "40%" },
+        { name: "상태", width: "10%" },];
     const [IsDataChange, setIsDataChange] = useState(true);
     const toggleFooterVisibility = useFooterVisibilityUpdate();
 
@@ -28,6 +34,16 @@ function Board() {
     const handleShow = () => setShow(true);
 
     const { value, onchange } = useState(new Date());
+
+
+    const items = [ /* 상태 색상 표기 */
+        { id: '대기', color: '#FFC0CB' },
+        { id: '진행중', color: '#FFD700' },
+        { id: '완료', color: '#90EE90' },
+        { id: '미진행', color: '#ADD8E6' },
+    ];
+    const [color, setColor] = useState("white");
+
 
     let today = new Date();
     let year = today.getFullYear();
@@ -38,6 +54,12 @@ function Board() {
     // const [NowDay, setNowDay] = useState(dateString);
 
 
+    // 상태에 따른 색상을 찾는 함수
+    const findColorById = (id) => {
+    const item = items.find(item => item.id === id);
+    return item ? item.color : 'white'; // 해당 상태가 없으면 투명색 반환
+    };
+
     useEffect(() => {
         // 페이지가 마운트될 때 Footer를 숨김
         toggleFooterVisibility(false);
@@ -46,6 +68,7 @@ function Board() {
             toggleFooterVisibility(true);
         };
     });
+
 
     function userPhone(phone) {
         let userPhone = phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7, 11);
@@ -148,55 +171,33 @@ function Board() {
                 </div>
 
 
-
-
-
                 {/* <table className="table table-. "> */}
-                <table className="table table-striped table-hover border-primary">
+                <table className="table table-striped table-hover border-primary table-fixed">
                     <caption className='me-5' style={{ textAlign: 'right' }}>{dateString}</caption>
                     <thead className="text-dark table-info">
                         <tr>
-                            {columns.map((col) => (
-                                <th key={col}>{col}</th>
+                            {columns.map((col, index) => (
+                                <th key={index} style={{ width: col.width }}>{col.name}</th>
                                 //<th align="center" key={col}>{col}</th>
                             ))}
                         </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                         {contactUs.ContactUs.map((user, index) => (
                             <tr key={index + 1}>
                                 <td input type="checkbox">
                                     {" "}
                                     {index + 1}
                                 </td>
+                                <td>{user.date}</td>
                                 <td>{user.name}</td>
-                                <td>{user.position}</td>
-                                <td>{userPhone(user.phone)}</td>
-                                <td>{user.email}</td>
-                                {/* {IsDataChange &&  <td  className="d-flex gap-2">} */}
-                                <td className="gap-2">
-                                    {/* <button
-                    type="button"
-                    className="btn btn-outline-info col-5 btn-sm"
-                    disabled={IsDataChange}
-                    >
-                    <BsPencil />
-                  </button> */}
-                                    <button onClick={() => edit(user)}
-                                        type='button'
-                                        className='btn btn-outline-success row-8'
-                                        disabled={IsDataChange}
-                                    >
-                                        <BsPencil />
-                                    </button>
-                                    <button onClick={() => del(user)}
-                                        type="button"
-                                        className="btn btn-outline-danger row-8 ms-1"
-                                        disabled={IsDataChange}
-                                    >
-                                        <BsTrash />
-                                    </button>
+                                <td>{user.title}</td>
+                                <td>{user.content}</td>
+                                <td>
+                                    <div style={{backgroundColor : findColorById(user.status)}}>{user.status}</div>
                                 </td>
+
+
                             </tr>
                         ))}
                     </tbody>

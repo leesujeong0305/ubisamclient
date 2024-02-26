@@ -34,13 +34,13 @@ function Today() {
                     <Modal.Body>
                         <Form>
                             <Form.Group controlId="formBasicTask">
-                                <Form.Label>TASK</Form.Label>
-                                <Form.Control type="text" placeholder="Enter a task" value={task} onChange={handleTaskChange} />
+                                <Form.Label>제목</Form.Label>
+                                <Form.Control type="text" placeholder="제목을 적어주세요" value={task} onChange={handleTaskChange} />
                             </Form.Group>
 
-                            <Form.Group controlId="formBasicMemo">
-                                <Form.Label>MEMO</Form.Label>
-                                <Form.Control as="textarea" rows={3} placeholder="Enter a memo" value={memo} onChange={handleMemoChange} />
+                            <Form.Group controlId="formBasicMemo" className='mt-2'>
+                                <Form.Label>내용</Form.Label>
+                                <Form.Control as="textarea" rows={10} placeholder="내용을 적어주세요" value={memo} onChange={handleMemoChange} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>

@@ -1,25 +1,28 @@
 {
     "ContactUs": [
         {
+            "date": "2024-02-23",
             "name": "최이근",
-            "position": "대리",
-            "phone": "010101010",
-            "email": "1111111@111.com",
-            "id": "ouX4FGK"
+            "title": "222",
+            "id": "ouX4FGK",
+            "content": "여기에는 내용을 미리 볼 수 있게 만들었습니다.",
+            "status" : "대기"
         },
         {
+            "date": "2024-02-23",
             "name": "원기태",
-            "position": "대리",
-            "phone": "0101111111",
-            "email": "111@111.com",
-            "id": "j-Is9vd"
+            "title": "11",
+            "id": "j-Is9vd",
+            "content": "내용11",
+            "status" : "완료"
         },
         {
+            "date": "2024-02-23",
             "name": "씨야",
-            "position": "상무",
-            "phone": "12123123",
-            "email": "111111111@111.com",
-            "id": "5vgyZaG"
+            "title": "12",
+            "id": "5vgyZaG",
+            "content": "내용222",
+            "status" : "진행중"
         }
     ]
 }
