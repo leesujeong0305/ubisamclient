@@ -1,8 +1,22 @@
 import React, { useState } from 'react'
 import './Main.css'
 import { Link } from 'react-router-dom'
+import Login from './Login/Login'
 
 export default function MainUI() {
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
+
+
+  const loginSumit = (event) => {
+    event.preventDefault(); // 폼 제출 기본 동작 방지
+    console.log("진입");
+    setUserId(userId);
+    setPassword(password);
+    console.log(`${userId}, ${password}`);
+    Login(userId, password);
+  }
+  
   return (
     <>
       <section id="top">
@@ -25,17 +39,20 @@ export default function MainUI() {
                     <form>
                       <div className="mb-4">
                         <div className='mb-2' style={{ color: 'black' }}>아이디</div>
-                        <input type="text" className="form-control" placeholder='Your name'></input>
+                        <input type="text" className="form-control" placeholder='Your name'
+                        value={userId} onChange={(e) => setUserId(e.target.value)}></input>
                       </div>
                       <div className="mb-4">
-                        <div className='mb-2' style={{ color: 'black' }}>이메일</div>
-                        <input type="tel" className="form-control" placeholder='Your email'></input>
+                        <div className='mb-2' style={{ color: 'black' }}>비밀번호</div>
+                        <input type="tel" className="form-control" placeholder='폰마지막4자리'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}></input>
                       </div>
                       <Link to={'/Signup'} style={{ display: 'flex', justifyContent: 'right', textDecoration: 'none', marginRight: '20px' }}>회원가입</Link>
                       <Link to={'/Board'}>내용추가(임시)</Link>
                       <p />
                       <p className="mb-3">
-                        <button className='btn btn-primary w-100' type='buttn'>로그인</button>
+                        <button className='btn btn-primary w-100' type='buttn' onClick={loginSumit}>로그인</button>
                       </p>
                     </form>
                   </div>
