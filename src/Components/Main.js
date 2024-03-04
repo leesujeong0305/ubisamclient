@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
 import './Main.css'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate} from 'react-router-dom'
 import Login from './Login/Login'
+import axios from 'axios';
 
 export default function MainUI() {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
+
+  //const state = useLocation();
+  const navigate = useNavigate();
 
 
   const loginSumit = (event) => {
@@ -14,8 +18,21 @@ export default function MainUI() {
     setUserId(userId);
     setPassword(password);
     console.log(`${userId}, ${password}`);
-    Login(userId, password);
+  
+    Login(userId, password).then(result => {
+      if (result === "success") {
+          console.log("Login successful");
+          navigate('/MainPlus');
+          // 성공 시의 로직 처리
+      } else {
+          console.log("Login failed");
+          // 실패 시의 로직 처리
+          navigate('/');
+      }
+    });
   }
+
+
   
   return (
     <>

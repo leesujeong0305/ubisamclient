@@ -9,6 +9,7 @@ import Board from '../Board/Board'
 
 import './Layout.css'; // 스타일 시트 임포트
 import Today from '../Board/Today';
+import MainPlus from '../Components/MainView/MainPlus';
 
 function Layout() {
   return <>
@@ -21,6 +22,7 @@ function Layout() {
           <Route path='/Signup' element={<SignUp />} />
           <Route path='/Board' element={<Board />} />
           <Route path='/Today' element={<Today />} />
+          <Route path='/MainPlus' element={<MainPlus />} />
         </Routes>
         <Footer />
       </BrowserRouter>
