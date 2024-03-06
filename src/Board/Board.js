@@ -56,19 +56,112 @@ function Board() {
 
     // 상태에 따른 색상을 찾는 함수
     const findColorById = (id) => {
-    const item = items.find(item => item.id === id);
-    return item ? item.color : 'white'; // 해당 상태가 없으면 투명색 반환
+        const item = items.find(item => item.id === id);
+        return item ? item.color : 'white'; // 해당 상태가 없으면 투명색 반환
     };
 
+    const [project, SetProject] = useState([
+        {
+            Index: 0,
+            ProjectName: "Project",
+            Period:"",
+            Name:""
+        }
+    ])
+
+    const [dataRow, setDataRow] = useState([
+        {
+            Index: 0,
+            ProjectName: "Project",
+            Date: dateString,
+            Name: "",
+            Title: "",
+            Content: "",
+            Status: ""
+        },
+    ])
+
+    const getProject = () => {
+        return axios.post(`http://localhost:8080/BoardProject`, {
+            Name: "홍길동", // 나중에 Name으로 변경
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+                const newDataRow = response.data.data.map((item, index) => ({
+                    Index:index,
+                    ProjectName: item.ProjectName,
+                    Data:item.Period,
+                    Name:item.Users
+                }));
+                SetProject(newDataRow); // 상태 업데이트
+
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+
+            }
+        }).catch(error => {
+            //console.log({error});
+            if (error.response.status === 403) {
+            alert(`${error.response.data.message}`);
+            }
+        });
+    }
+
+
+    const getBoardData = () => {
+        return axios.post(`http://localhost:8080/Board`, {
+            projectName: "First", // 나중에 변경
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+                const newDataRow = response.data.data.map((item, index) => ({
+                    Index: index, // 예시로 index 사용, 실제 구현에서는 서버로부터의 데이터에 따라 조정
+                    ProjectName: item.ProjectName, // 서버로부터 받은 데이터 구조에 따라 접근
+                    Date: item.Date, // 예시 날짜, 실제로는 동적으로 설정
+                    Name: item.Name, // 서버로부터 받은 데이터 구조에 따라 접근
+                    Title: item.Title, // 서버로부터 받은 데이터 구조에 따라 접근
+                    Content: item.Content, // 서버로부터 받은 데이터 구조에 따라 접근
+                    Status: item.Status // 서버로부터 받은 데이터 구조에 따라 접근
+                }));
+                setDataRow(newDataRow); // 상태 업데이트
+
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+
+            }
+        }).catch(error => {
+            //console.log({error});
+            if (error.response.status === 403) {
+            alert(`${error.response.data.message}`);
+            }
+        });
+    }
+
     useEffect(() => {
+        getProject();
+        getBoardData();
+
         // 페이지가 마운트될 때 Footer를 숨김
         toggleFooterVisibility(false);
         return () => {
             // 페이지가 언마운트될 때 Footer를 다시 표시
             toggleFooterVisibility(true);
         };
-    });
+    }, []);
 
+   // 다이얼로그가 닫혔을 때 실행할 로직
+   const handleDialogClose = () => {
+    // 다이얼로그 닫힘 후 필요한 작업 수행, 예를 들어, 데이터를 새로 고침
+    getBoardData();
+  };
 
     function userPhone(phone) {
         let userPhone = phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7, 11);
@@ -183,18 +276,18 @@ function Board() {
                         </tr>
                     </thead>
                     <tbody>
-                        {contactUs.ContactUs.map((user, index) => (
+                        {dataRow.map((row, index) => (
                             <tr key={index + 1}>
-                                <td input type="checkbox">
+                                <td type="checkbox">
                                     {" "}
                                     {index + 1}
                                 </td>
-                                <td>{user.date}</td>
-                                <td>{user.name}</td>
-                                <td>{user.title}</td>
-                                <td>{user.content}</td>
+                                <td>{row.Date}</td>
+                                <td>{row.Name}</td>
+                                <td>{row.Title}</td>
+                                <td>{row.Content}</td>
                                 <td>
-                                    <div style={{backgroundColor : findColorById(user.status)}}>{user.status}</div>
+                                    <div style={{backgroundColor : findColorById(`${row.Status}`)}}>{row.Status}</div>
                                 </td>
 
 
@@ -205,7 +298,7 @@ function Board() {
                 {/* <button type="button" class="btn btn-outline-info">Info</button> */}
                 {/* <div className="d-grid gap-2 col-6 mx-auto" role="group"> */}
                 <div className="d-flex justify-content-center gap-2">
-                    <Today show={show} onHide={() => setShow(false)} dialogClassName="custom-modal-size" />
+                    <Today show={show} onHide={() => setShow(false)} onClose={handleDialogClose} dialogClassName="custom-modal-size" />
                     <button
                         type="button"
                         className="btn btn-outline-danger"

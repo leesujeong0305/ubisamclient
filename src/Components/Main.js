@@ -26,7 +26,7 @@ export default function MainUI() {
     Login(userId, password).then(result => {
       if (result === "success") {
           console.log("Login successful");
-          dispatch({type:'ADMIN_LOGIN'});
+          dispatch({type:'LOGIN'});
           // 성공 시의 로직 처리
       } else {
            console.log("Login failed");
@@ -42,7 +42,7 @@ export default function MainUI() {
         navigate('/MainPlus'); // 관리자 로그인 시 리다이렉트
         console.log("admin");
       } else {
-        navigate('/MainPlus'); // 일반 사용자 로그인 시 리다이렉트
+        navigate('/Board'); // 일반 사용자 로그인 시 리다이렉트
         console.log("user");
       }
     } else {

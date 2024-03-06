@@ -43,23 +43,23 @@ function Layout() {
   }
 
   useEffect(() => {
-    const accessToken = accessTokenCheck();
-    if (accessToken === "success") {
-      // 여기에서 accessToken의 유효성을 검증하는 로직을 추가할 수 있습니다.
-      // 예: 서버에 요청을 보내 토큰 검증
-      // 유효한 토큰이라면 인증 상태를 true로 변경
-      dispatch({type:'LOGING', accessToken}); // isAuthenticated를 true로 설정하는 액션
-    }
+    // const accessToken = accessTokenCheck();
+    // if (accessToken === "success") {
+    //   // 여기에서 accessToken의 유효성을 검증하는 로직을 추가할 수 있습니다.
+    //   // 예: 서버에 요청을 보내 토큰 검증
+    //   // 유효한 토큰이라면 인증 상태를 true로 변경
+    //   dispatch({type:'LOGING', accessToken}); // isAuthenticated를 true로 설정하는 액션
+    // }
   }, [dispatch]);
 
 
-
+ //{isAuthenticated ? <MainPlus/> : <Main />}
   return <>
     <div id="layout-container">
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/*" element={isAuthenticated ? <MainPlus/> : <Main />} />
+          <Route path="/*" element={<Main />} />
           <Route path='/UserList' element={<UserList />} />
           <Route path='/Signup' element={<SignUp />} />
           <Route path='/Board' element={<Board />} />
