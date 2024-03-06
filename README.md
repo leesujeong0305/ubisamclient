@@ -27,5 +27,10 @@ npm install react-calendar moment
 //24.02.19 Chart 추가
 npm i react-minimal-pie-chart
 
+//24.03.05 redux 추가
+redux 최신은 toolkit 시용함
+npm install react-redux redux
+npm i redux @reduxjs/toolkit react-redux
+
 //////////////////////////////////
 단축 rfce //js 기본 작성해줌

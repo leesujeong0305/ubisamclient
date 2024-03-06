@@ -13,8 +13,9 @@ const Login = (email, password) => {
         }
     }).then(response => {
         console.log({ response });
-        if (response.code === 200) {
+        if (response.status === 200) {
             console.log(response.data); // 서버로부터의 응답 처리
+            localStorage.setItem('accessToken', response.data.accessToken);
             return "success";
         } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
             console.log("403");
