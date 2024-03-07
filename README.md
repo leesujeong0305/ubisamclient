@@ -32,5 +32,8 @@ redux 최신은 toolkit 시용함
 npm install react-redux redux
 npm i redux @reduxjs/toolkit react-redux
 
+//24.03.07 calendar 추가
+npm install --save @fullcalendar/react @fullcalendar/daygrid
+
 //////////////////////////////////
 단축 rfce //js 기본 작성해줌

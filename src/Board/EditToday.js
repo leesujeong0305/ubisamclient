@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button, Form } from 'react-bootstrap';
+import DeleteToday from './DeleteToday';
 
 function Today({ onClose, post }) {
     const [show, setShow] = useState(false);
     const [task, setTask] = useState('');
     const [memo, setMemo] = useState('');
     const [selectValue, setSelectValue] = useState('');
+    const [index, setIndex] = useState('');
 
     const Continents = [ /* 상태 색상 표기 */
         { key: 1, value: '대기', color: '#ADD8E6' },
@@ -24,10 +26,10 @@ function Today({ onClose, post }) {
     const content = [{
         ProjectName: "First",
         Date: dateString,
-            Name: "홍길동",
-            Title: task,
-            Content: memo,
-            Status: "",
+        Name: "홍길동",
+        Title: task,
+        Content: memo,
+        Status: "",
     }]
 
     const handleClose = () => {
@@ -52,11 +54,11 @@ function Today({ onClose, post }) {
     };
 
     const setTodoList = () => {
-        return axios.post(`http://localhost:8080/ToDoList`, {
-
+        return axios.post(`http://localhost:8080/UpdateToDoList`, {
+            Index: index,
             ProjectName: "First",
-            Date: dateString,
-            Name: "홍길동",
+            //Date: dateString,
+            //Name: "홍길동",
             Title: task,
             Content: memo,
             Status: selectValue,
@@ -85,21 +87,22 @@ function Today({ onClose, post }) {
     }
 
     useEffect(() => {
-        console.log("aaa",post);
+        console.log("aaa", post);
         setTask(post?.Title);
         setMemo(post?.Content);
-        //setSelectValue(post.value.Status);
+        setSelectValue(post?.Status);
+        setIndex(post?.Index);
     }, [post]);
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Show To Do List
+            <Button variant="secondary" onClick={handleShow}>
+                수정
             </Button>
             <div>
                 <Modal show={show} onHide={handleClose} centered size='lg'>
                     <Modal.Header closeButton >
-                        <Modal.Title style={{ color: '#7952B3', fontWeight: 'bold' }}>To Do List</Modal.Title>
+                        <Modal.Title style={{ color: '#7952B3', fontWeight: 'bold' }}>To Do Edit</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form>
@@ -132,11 +135,14 @@ function Today({ onClose, post }) {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
+                        {/*<DeleteToday show={show} type="button" className="btn btn-outline-danger" post={post}>
+                            삭제
+                        </DeleteToday> */}
                         <Button variant="secondary" onClick={handleClose}>
                             Cancel
                         </Button>
                         <Button variant="primary" onClick={handleAdd}>
-                            Add
+                            Edit
                         </Button>
                     </Modal.Footer>
                 </Modal>

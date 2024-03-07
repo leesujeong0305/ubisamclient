@@ -14,10 +14,13 @@ import './Layout.css'; // 스타일 시트 임포트
 import Today from '../Board/Today';
 import MainPlus from '../Components/MainView/MainPlus';
 import AdminPage from '../Components/MainView/AdminPage';
+import FullCalendarComponent from '../Components/Calendar/FullCalendarComponent';
+import { useFooterVisibilityUpdate } from './FooterVisibilityContext'
 
 function Layout() {
   const { isAuthenticated, isAdmin } = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const toggleFooterVisibility = useFooterVisibilityUpdate();
   //const location = useLocation();
   const accessTokenCheck = () => {
     return axios.get(`http://localhost:8080/`, {
@@ -50,6 +53,13 @@ function Layout() {
     //   // 유효한 토큰이라면 인증 상태를 true로 변경
     //   dispatch({type:'LOGING', accessToken}); // isAuthenticated를 true로 설정하는 액션
     // }
+    // 페이지가 마운트될 때 Footer를 숨김
+    toggleFooterVisibility(false);
+    return () => {
+        // 페이지가 언마운트될 때 Footer를 다시 표시
+        toggleFooterVisibility(true);
+    };
+    
   }, [dispatch]);
 
 
@@ -59,7 +69,7 @@ function Layout() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/*" element={<Main />} />
+          <Route path="/*" element={<FullCalendarComponent />} />
           <Route path='/UserList' element={<UserList />} />
           <Route path='/Signup' element={<SignUp />} />
           <Route path='/Board' element={<Board />} />

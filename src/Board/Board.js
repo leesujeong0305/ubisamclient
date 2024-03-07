@@ -8,6 +8,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 import axios from 'axios';
 import Today from './Today';
+import EditToday from './EditToday';
+//import DeleteToday from './DeleteToday'
 import './Board.css'
 
 import Calendar from 'react-calendar';
@@ -37,12 +39,11 @@ function Board() {
 
 
     const items = [ /* 상태 색상 표기 */
-        { id: '대기', color: '#FFC0CB' },
+        { id: '대기', color: '#CACACA' }, //#ADD8E6
         { id: '진행중', color: '#FFD700' },
         { id: '완료', color: '#90EE90' },
-        { id: '미진행', color: '#ADD8E6' },
+        { id: '이슈', color: '#FFC0CB' },
     ];
-    const [color, setColor] = useState("white");
 
 
     let today = new Date();
@@ -64,8 +65,8 @@ function Board() {
         {
             Index: 0,
             ProjectName: "Project",
-            Period:"",
-            Name:""
+            Period: "",
+            Name: ""
         }
     ])
 
@@ -81,6 +82,10 @@ function Board() {
         },
     ])
 
+    const selectedPostRef = useRef(null); // 선택된 게시글 데이터를 저장할 ref
+    const [selectvalue, setSelectvalue] = useState(null);
+
+
     const getProject = () => {
         return axios.post(`http://localhost:8080/BoardProject`, {
             Name: "홍길동", // 나중에 Name으로 변경
@@ -92,10 +97,10 @@ function Board() {
             console.log({ response });
             if (response.status === 200) {
                 const newDataRow = response.data.data.map((item, index) => ({
-                    Index:index,
+                    Index: index,
                     ProjectName: item.ProjectName,
-                    Data:item.Period,
-                    Name:item.Users
+                    Data: item.Period,
+                    Name: item.Users
                 }));
                 SetProject(newDataRow); // 상태 업데이트
 
@@ -106,7 +111,7 @@ function Board() {
         }).catch(error => {
             //console.log({error});
             if (error.response.status === 403) {
-            alert(`${error.response.data.message}`);
+                alert(`${error.response.data.message}`);
             }
         });
     }
@@ -123,7 +128,7 @@ function Board() {
             console.log({ response });
             if (response.status === 200) {
                 const newDataRow = response.data.data.map((item, index) => ({
-                    Index: index, // 예시로 index 사용, 실제 구현에서는 서버로부터의 데이터에 따라 조정
+                    Index: item.Index, // 예시로 index 사용, 실제 구현에서는 서버로부터의 데이터에 따라 조정
                     ProjectName: item.ProjectName, // 서버로부터 받은 데이터 구조에 따라 접근
                     Date: item.Date, // 예시 날짜, 실제로는 동적으로 설정
                     Name: item.Name, // 서버로부터 받은 데이터 구조에 따라 접근
@@ -140,7 +145,7 @@ function Board() {
         }).catch(error => {
             //console.log({error});
             if (error.response.status === 403) {
-            alert(`${error.response.data.message}`);
+                alert(`${error.response.data.message}`);
             }
         });
     }
@@ -157,51 +162,25 @@ function Board() {
         };
     }, []);
 
-   // 다이얼로그가 닫혔을 때 실행할 로직
-   const handleDialogClose = () => {
-    // 다이얼로그 닫힘 후 필요한 작업 수행, 예를 들어, 데이터를 새로 고침
-    getBoardData();
-  };
+    // 다이얼로그가 닫혔을 때 실행할 로직
+    const handleDialogClose = () => {
+        // 다이얼로그 닫힘 후 필요한 작업 수행, 예를 들어, 데이터를 새로 고침
+        getBoardData();
+    };
 
-    function userPhone(phone) {
-        let userPhone = phone.substring(0, 3) + "-" + phone.substring(3, 7) + "-" + phone.substring(7, 11);
-        return userPhone;
+    const handleRowClick = (row) => {
+        console.log('클릭된 행의 데이터:', row);
+        setSelectvalue(row);
+        selectedPostRef.current = row; // 선택된 게시글 데이터를 ref에 저장
     }
 
-    function del(data) {
+    const del = (data) => {
         if (window.confirm('삭제 하시겠습니까?')) {
             // console.log(data.id);
             axios.delete(`http://localhost:3001/ContactUs/${data.id}`
             ).then(res => {
                 if (res.status >= 200 && res.status < 300) {
                     console.log("삭제 성공", res.data);
-                }
-                else {
-                    throw new Error('400 아니면 500 에러남');
-                }
-            })
-                .catch((error) => {
-                    console.log("error 발생", error.message);
-                });
-        }
-    }
-
-    function edit(data) {
-        if (window.confirm('수정 하시겠습니까?')) {
-            axios.post(`http://localhost:3001/ContactUs`, {
-                //writer: props.user.userData._id,
-                name: data.Name,
-                position: data.Position,
-                phone: data.Phone,
-                email: data.Email
-            }, {
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            }
-            ).then(res => {
-                if (res.status >= 200 && res.status < 300) {
-                    console.log("수정 성공", res.data);
                 }
                 else {
                     throw new Error('400 아니면 500 에러남');
@@ -224,7 +203,7 @@ function Board() {
                 }}
             >
                 <div className='row mb-4'>
-                    <div className="col-sm-4 ms-5">
+                    <div className="col-sm-4 me-5">
                         <div className="mb-2">
                             <Card>
                                 <Card.Header className='card bg-info'>프로젝트 명</Card.Header>
@@ -253,14 +232,14 @@ function Board() {
                             </Card>
                         </div>
                     </div>
-
                     <div className="col-sm-3 ms-5" style={{ textAlign: 'center' }}>
                         <Chart />
                     </div>
 
-                    <div className="col-sm-3 ms-5" style={{ display: 'flex', justifyContent: 'right' }}>
+                    <div className="col-sm-4 ms-2" style={{ display: 'flex', justifyContent: 'right' }} >
                         <Calendar value={value} onchange={onchange} formatDay={(locale, date) => moment(date).format("DD")} />
                     </div>
+
                 </div>
 
 
@@ -277,7 +256,7 @@ function Board() {
                     </thead>
                     <tbody>
                         {dataRow.map((row, index) => (
-                            <tr key={index + 1}>
+                            <tr key={index + 1} onClick={() => handleRowClick(row)}>
                                 <td type="checkbox">
                                     {" "}
                                     {index + 1}
@@ -287,10 +266,8 @@ function Board() {
                                 <td>{row.Title}</td>
                                 <td>{row.Content}</td>
                                 <td>
-                                    <div style={{backgroundColor : findColorById(`${row.Status}`)}}>{row.Status}</div>
+                                    <div style={{ backgroundColor: findColorById(`${row.Status}`) }}>{row.Status}</div>
                                 </td>
-
-
                             </tr>
                         ))}
                     </tbody>
@@ -298,14 +275,8 @@ function Board() {
                 {/* <button type="button" class="btn btn-outline-info">Info</button> */}
                 {/* <div className="d-grid gap-2 col-6 mx-auto" role="group"> */}
                 <div className="d-flex justify-content-center gap-2">
-                    <Today show={show} onHide={() => setShow(false)} onClose={handleDialogClose} dialogClassName="custom-modal-size" />
-                    <button
-                        type="button"
-                        className="btn btn-outline-danger"
-                        onClick={() => setIsDataChange(!IsDataChange)}
-                    >
-                        {IsDataChange ? "수정/삭제" : "진행중 ..."}
-                    </button>
+                    <Today show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={null} dialogClassName="custom-modal-size" />
+                    <EditToday show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={selectvalue} dialogClassName="custom-modal-size" />
                 </div>
             </Container>
         </>

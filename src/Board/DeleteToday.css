@@ -1,0 +1,10 @@
+  .modal-center {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* 모달 다이얼로그 내부 정렬 */
+.modal-center .modal-dialog {
+    margin: 0 !important;
+}
