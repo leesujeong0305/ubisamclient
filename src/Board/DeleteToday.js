@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import Axios from '../API/AxiosApi';
 import { Modal, Button, Form } from 'react-bootstrap';
 import './DeleteToday.css'
 
@@ -24,7 +24,7 @@ useEffect(() => {
 const handleDelete = async () => {
     setShow(false);
   //const res = await axios.delete(`/DeleteToDoList?id=${post.Index}`);
-  return axios.delete(`http://localhost:8080/DeleteToDoList`, {
+  return Axios.delete(`http://localhost:8080/DeleteToDoList`, {
             data: {
                 Index: post.Index
             

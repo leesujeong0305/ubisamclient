@@ -35,5 +35,8 @@ npm i redux @reduxjs/toolkit react-redux
 //24.03.07 calendar 추가
 npm install --save @fullcalendar/react @fullcalendar/daygrid
 
+//24.03.11 cookie 추가
+npm install js-cookie
+
 //////////////////////////////////
 단축 rfce //js 기본 작성해줌

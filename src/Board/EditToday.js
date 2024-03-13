@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import Axios from '../API/AxiosApi';
 import { Modal, Button, Form } from 'react-bootstrap';
 import DeleteToday from './DeleteToday';
 
 function Today({ onClose, post }) {
     const [show, setShow] = useState(false);
-    const [task, setTask] = useState('');
+    const [task, setTask] = useState("");
     const [memo, setMemo] = useState('');
     const [selectValue, setSelectValue] = useState('');
     const [index, setIndex] = useState('');
@@ -34,7 +34,6 @@ function Today({ onClose, post }) {
 
     const handleClose = () => {
         setShow(false);
-        console.log("today close");
         onClose();
     }
 
@@ -45,7 +44,6 @@ function Today({ onClose, post }) {
 
     const handleAdd = () => {
         // Logic to handle adding the task
-        console.log('Task:', task, 'Memo:', memo);
         setTodoList();
         // Reset form and close modal
         setTask('');
@@ -54,7 +52,7 @@ function Today({ onClose, post }) {
     };
 
     const setTodoList = () => {
-        return axios.post(`http://localhost:8080/UpdateToDoList`, {
+        return Axios.post(`http://localhost:8080/UpdateToDoList`, {
             Index: index,
             ProjectName: "First",
             //Date: dateString,
@@ -69,7 +67,6 @@ function Today({ onClose, post }) {
         }).then(response => {
             console.log({ response });
             if (response.status === 200) {
-                console.log(response.data);
             } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
                 console.log("403");
 
@@ -87,7 +84,6 @@ function Today({ onClose, post }) {
     }
 
     useEffect(() => {
-        console.log("aaa", post);
         setTask(post?.Title);
         setMemo(post?.Content);
         setSelectValue(post?.Status);
@@ -96,7 +92,7 @@ function Today({ onClose, post }) {
 
     return (
         <>
-            <Button variant="secondary" onClick={handleShow}>
+            <Button style={{backgroundColor: '#7952B3'}} onClick={handleShow}>
                 수정
             </Button>
             <div>

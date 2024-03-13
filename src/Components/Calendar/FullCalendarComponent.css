@@ -4,6 +4,7 @@ body{
 .calendar-parent{
     display: flex;
     justify-content: right;
+    margin: 10px 10px 0px 0px;
 }
 
 /* 캘린더 전체 사이즈 조정 */

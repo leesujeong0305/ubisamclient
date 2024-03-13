@@ -2,6 +2,7 @@ import React from 'react'
 import './Header.css'
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 import { BsRss } from "react-icons/bs";
+import Logout from '../Components/Login/Logout';
 
 
 const Header = () => {
@@ -18,7 +19,7 @@ const Header = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               {/* 여기서 왼쪽 정렬 */}
-              
+              <div style={{color: 'white'}}><Logout/></div>
             </Navbar.Collapse>
           </Container>
         </Navbar>

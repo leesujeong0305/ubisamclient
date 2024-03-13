@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import Axios from '../API/AxiosApi';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 function Today({ onClose, post }) {
@@ -32,7 +32,6 @@ function Today({ onClose, post }) {
 
     const handleClose = () => {
         setShow(false);
-        console.log("today close");
         onClose();
     }
 
@@ -43,7 +42,6 @@ function Today({ onClose, post }) {
 
     const handleAdd = () => {
         // Logic to handle adding the task
-        console.log('Task:', task, 'Memo:', memo);
         setTodoList();
         // Reset form and close modal
         setTask('');
@@ -52,7 +50,7 @@ function Today({ onClose, post }) {
     };
 
     const setTodoList = () => {
-        return axios.post(`http://localhost:8080/ToDoList`, {
+        return Axios.post(`http://localhost:8080/ToDoList`, {
 
             ProjectName: "First",
             Date: dateString,
@@ -67,7 +65,6 @@ function Today({ onClose, post }) {
         }).then(response => {
             console.log({ response });
             if (response.status === 200) {
-                console.log(response.data);
             } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
                 console.log("403");
 
@@ -85,16 +82,15 @@ function Today({ onClose, post }) {
     }
 
     useEffect(() => {
-        console.log("aaa",post);
         setTask(post?.Title);
         setMemo(post?.Content);
-        //setSelectValue(post.value.Status);
+        setSelectValue(post?.value.Status);
     }, [post]);
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Show To Do List
+            <Button style={{backgroundColor: '#5090CC', fontWeight:'bold'}} onClick={handleShow}>
+                +
             </Button>
             <div>
                 <Modal show={show} onHide={handleClose} centered size='lg'>
@@ -107,7 +103,7 @@ function Today({ onClose, post }) {
                                 <div className='col-sm-8'>
                                     <Form.Group controlId="formBasicTask">
                                         <Form.Label>제목</Form.Label>
-                                        <Form.Control type="text" placeholder="제목을 적어주세요" value={task} onChange={handleTaskChange} />
+                                        <Form.Control type="text" placeholder="제목을 적어주세요" onChange={handleTaskChange} />
                                     </Form.Group>
                                 </div>
                                 <div className='col-sm-4'>
