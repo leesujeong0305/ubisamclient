@@ -92,8 +92,8 @@ function Today({ onClose, post }) {
 
     return (
         <>
-            <Button style={{backgroundColor: '#7952B3'}} onClick={handleShow}>
-                수정
+            <Button style={{backgroundColor: '#7952B3', borderColor: '#734EAA', fontSize:'16px'}} onClick={handleShow}>
+                <i className="bi bi-pencil-square" aria-hidden="true"></i>
             </Button>
             <div>
                 <Modal show={show} onHide={handleClose} centered size='lg'>

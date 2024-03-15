@@ -46,6 +46,7 @@ function Today({ onClose, post }) {
         // Reset form and close modal
         setTask('');
         setMemo('');
+        setSelectValue('');
         handleClose();
     };
 
@@ -89,7 +90,7 @@ function Today({ onClose, post }) {
 
     return (
         <>
-            <Button style={{backgroundColor: '#5090CC', fontWeight:'bold'}} onClick={handleShow}>
+            <Button style={{backgroundColor: '#5090CC', fontWeight:'bold', borderColor: '#3F72A2' }} onClick={handleShow}>
                 +
             </Button>
             <div>

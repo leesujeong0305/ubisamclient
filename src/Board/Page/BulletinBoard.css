@@ -1,0 +1,40 @@
+.nav-container {
+    background-color: #E0EFFF;
+    border-radius: 20px;
+    border: 1px solid #E0E6FF;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: -40px;
+  }
+  
+  .nav-tab {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #333;
+    
+  }
+
+  .tab-button {
+    display: flex;
+    background: #bda0f3;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin: auto;
+    box-Shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .nav-tab:hover {
+    background-color: #CCE0FF;
+    border-radius: 20px;
+  }
+
+  .nav-context {
+    justify-content: space-between; 
+  }
+  .list-Title {
+    background-Color: #5090CC;
+  }

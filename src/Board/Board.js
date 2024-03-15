@@ -7,49 +7,36 @@ import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import Axios from '../API/AxiosApi';
-//import DeleteToday from './DeleteToday'
 import './Board.css'
 
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import moment from 'moment/moment';
-import Chart from './Chart';
 import BulletinBoard from './Page/BulletinBoard';
 import ProjectStatus from './Status/ProjectStatus';
+import KanBanBoardBody from './KanbanBoard/KanBanBoardBody';
 
 
 function Board() {
     const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
     const dispatch = useDispatch();
-    
+
     const toggleFooterVisibility = useFooterVisibilityUpdate();
-    const { value, onchange } = useState(new Date());
-    const [project, SetProject] = useState([
-        {
-            Index: 0,
-            ProjectName: "Project",
-            Period: "",
-            Name: ""
-        }
-    ]);
+    const [project, SetProject] = useState([]);
 
     const getProject = () => {
-        return Axios.post(`http://localhost:8080/BoardProject`, {
-            Name: "홍길동", // 나중에 Name으로 변경
-        }, {
+        const token = localStorage.getItem('userToken');
+        return Axios.get(`http://localhost:8080/BoardProject?Name=${encodeURIComponent(token)}`, { //get은 body없음
             headers: {
                 "Content-Type": "application/json",
             }
         }).then(response => {
             console.log({ response });
             if (response.status === 200) {
-                const newDataRow = response.data.data.map((item, index) => ({
-                    Index: index,
-                    ProjectName: item.ProjectName,
-                    Data: item.Period,
-                    Name: item.Users
-                }));
-                SetProject(newDataRow); // 상태 업데이트
+                // const newDataRow = response.data.data.map((item, index) => ({
+                //     Index: index,
+                //     ProjectName: item.ProjectName,
+                //     Data: item.Period,
+                //     Name: item.Users
+                // }));
+                // SetProject(newDataRow); // 상태 업데이트
 
             } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
                 console.log("403");
@@ -63,9 +50,8 @@ function Board() {
         });
     }
 
-
     useEffect(() => {
-        //getProject();
+        
 
         // 페이지가 마운트될 때 Footer를 숨김
         toggleFooterVisibility(false);
@@ -75,51 +61,49 @@ function Board() {
         };
     }, []);
 
+    const handleTest = () => {
+        getProject();
+    };
 
     return (
         <>
-            <Container
-                className="my-4"
-            >
-                <div className='row mb-4'>
-                    <div className="col-sm-4">
-                        <div className="mb-2">
-                            <Card>
-                                <Card.Header className='card bg-info'>프로젝트 명</Card.Header>
-                                <ListGroup variant="flush">
-                                    <ListGroup.Item>프로젝트 ...</ListGroup.Item>
-                                </ListGroup>
-                            </Card>
+            <div className="my-4 ms-3 me-3">
+                <div className='row mb-1'>
+                    <div className='col-md-4'>
+                        <div className="row">
+                            <div className='col-md-6'>
+                                <Card>
+                                    <Card.Header className='card bg-info'>프로젝트 명</Card.Header>
+                                    <ListGroup variant="flush">
+                                        <ListGroup.Item>프로젝트 ...</ListGroup.Item>
+                                    </ListGroup>
+                                </Card>
+                            </div>
+                            <div className='col-md-6'>
+                                <Card>
+                                    <Card.Header className='card bg-success'>프로젝트 기간</Card.Header>
+                                    <ListGroup variant="flush">
+                                        <ListGroup.Item>2024.01.01 ~ ...</ListGroup.Item>
+                                    </ListGroup>
+                                </Card>
+                            </div>
                         </div>
-
-
-                        <div className="mb-2">
-                            <Card>
-                                <Card.Header className='card bg-success'>프로젝트 기간</Card.Header>
-                                <ListGroup variant="flush">
-                                    <ListGroup.Item>2024.01.01 ~ ...</ListGroup.Item>
-                                </ListGroup>
-                            </Card>
-                        </div>
-
                         <div>
-                            <Card>
-                                <Card.Header className='card bg-warning'>프로젝트 인원</Card.Header>
-                                <ListGroup variant="flush">
-                                    <ListGroup.Item>최이근(pm),</ListGroup.Item>
-                                </ListGroup>
-                            </Card>
+                            <ProjectStatus />
                         </div>
                     </div>
-                    <div className="col-lg-5" style={{ textAlign: 'center' }}>
-                        <ProjectStatus />
+                    <div className='col-md-8'>
+                        <div className="col">
+                            <div className=" issue">
+                                <KanBanBoardBody />
+                            </div>
+                        </div>
                     </div>
-                    
-
                 </div>
-                {/* <Link to={'/FullCalendar'}>FullCalendar</Link> */}
-                <BulletinBoard />
-            </Container>
+                <div>
+                    <BulletinBoard />
+                </div>
+            </div>
         </>
     );
 }

@@ -10,9 +10,9 @@ const Header = () => {
   return (
     <>
       <header>
-        <Navbar expand="lg" className='navbackgroud' style={{backgroundColor: '#375A7F', height: '60px', letterSpacing: '0.5px'}}>
-          <Container>
-            <Navbar.Brand href="/">
+        <Navbar expand="lg" className='navbackgroud' style={{backgroundColor: '#5090CC', height: '60px', letterSpacing: '0.5px'}}>
+          <div className='d-flex ms-4'>
+            <Navbar.Brand href="/" >
               <span className='iconubi'>Ubi</span>
               <span className='iconsam'>Sam</span>
               < BsRss style ={{ backgroundColor: "skyblue", marginBottom: '20px' }} /></Navbar.Brand>
@@ -21,7 +21,7 @@ const Header = () => {
               {/* 여기서 왼쪽 정렬 */}
               <div style={{color: 'white'}}><Logout/></div>
             </Navbar.Collapse>
-          </Container>
+          </div>
         </Navbar>
       </header>
     </>

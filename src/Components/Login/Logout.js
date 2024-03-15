@@ -26,6 +26,7 @@ function Logout() {
                 dispatch(logout());
                 dispatch(deleteUserInfo());
                 navigate('/');
+                localStorage.removeItem('userToken');
             } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
                 console.log("403");
                 //alert("ID, Password가 비어있습니다.");

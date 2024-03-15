@@ -41,6 +41,7 @@ function Layout() {
           "Content-Type": "application/json",
         }
       });
+      console.log(response);
       if (response.status === 204 || response.status === 200) {
         return "success";
       } else {
@@ -48,6 +49,7 @@ function Layout() {
         //refreshToken이 만료된것으로 판단 Token제거
         Cookies.remove('accessToken'); //혹시 cookie 삭제되지 않은게 있을까봐 넣어줌(없어도 잘됨)
         Cookies.remove('refreshToken');
+        localStorage.removeItem('userToken');
         alert(`로그인 시간 만료. 다시 로그인 해주세요`);
         return null;
       }
@@ -82,6 +84,8 @@ function Layout() {
     };
     initializeAuthState();
   }, [dispatch]);
+
+  
 
 
   //{isAuthenticated ? <MainPlus/> : <Main />} FullCalendarComponent

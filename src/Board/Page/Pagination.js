@@ -29,7 +29,6 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage }) => {
         <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
           <button
             onClick={() => paginate(1)}
-            className="page-link"
             disabled={currentPage === 1}
           >
             &laquo;
@@ -39,7 +38,6 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage }) => {
         <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
           <button
             onClick={() => paginate(currentPage - 1)}
-            className="page-link"
             disabled={currentPage === 1}
           >
             &lt;
@@ -51,7 +49,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage }) => {
             key={number}
             className={`page-item ${currentPage === number ? "active" : ""}`}
           >
-            <button onClick={() => paginate(number)} className="page-link">
+            <button onClick={() => paginate(number)}>
               {number}
             </button>
           </li>
@@ -64,7 +62,6 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage }) => {
         >
           <button
             onClick={() => paginate(currentPage + 1)}
-            className="page-link"
             disabled={currentPage === totalPages}
           >
             &gt;
@@ -78,7 +75,6 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage }) => {
         >
           <button
             onClick={() => paginate(totalPages)}
-            className="page-link"
             disabled={currentPage === totalPages}
           >
             &raquo;

@@ -22,13 +22,13 @@
   }
   
   .page-item button:hover {
-    background-color: #92CCC0;
+    background-color: #5090CC;
     color: white;
   }
   
   .page-item button:disabled {
-    color: #cccccc;
-    cursor: not-allowed;
+    color: #a1a1a1;
+    cursor: auto;
     background-color: white;
   }
   

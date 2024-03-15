@@ -38,5 +38,11 @@ npm install --save @fullcalendar/react @fullcalendar/daygrid
 //24.03.11 cookie 추가
 npm install js-cookie
 
+//24.03.14 bootstrap 추가
+npm install bootstrap@5.3.3
+
+//24.03.15 엑셀
+npm install xlsx file-saver 
+
 //////////////////////////////////
 단축 rfce //js 기본 작성해줌

@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Login from './Login/Login'
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout, updateUserInfo } from '../Redux/Action';
+import Cookies from 'js-cookie';
 
 export default function MainUI() {
   const [userId, setUserId] = useState('');
@@ -25,6 +26,7 @@ export default function MainUI() {
         // 성공 시의 로직 처리  
         //console.log(`Login successful ${result}`);
         dispatch(login());
+        parseName(Cookies.get('accessToken'));
         //const userInfo = {mail:result.user.user_mail, name:result.user.name, rank:result.user.rank}
         //dispatch(updateUserInfo(userInfo));
       } else {
@@ -32,6 +34,17 @@ export default function MainUI() {
         dispatch(logout());
       }
     });
+  }
+
+  const parseName = (token) => {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    const name = JSON.parse(jsonPayload);
+    console.log('이거임?',name);
+    localStorage.setItem('userToken', name.name);
   }
 
   // useEffect(() => {

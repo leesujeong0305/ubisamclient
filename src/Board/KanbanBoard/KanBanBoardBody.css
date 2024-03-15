@@ -1,0 +1,139 @@
+.kanban-board {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background-color: #f4f4f4; /* This sets the background color of the whole board */
+  }
+  
+  .task-input-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    padding: 15px;
+    background-color: #e8cfee; /* This sets the background color of the whole board */
+    border-radius: 8px;
+  }
+
+  .new-task-input {
+    width: 100%; /* Full width of the .input-wrapper */
+    padding: 8px 15px 150px 15px; /* Less padding on the top, more on the bottom */
+    border: 2px solid #00B2FF; /* Blue border for the input */
+    border-radius: 20px; /* Rounded borders for the input */
+    font-size: 1.1em; /* Text size inside the input */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+    text-align: left; /* Aligns text to the left */
+    font-family: Arial, sans-serif;
+  }
+  
+  .add-task-btn {
+    width: 80%; /* Full width of the .input-wrapper */
+    padding: 5px; /* Padding inside the button */
+    background-color: #00B2FF; /* Blue background for the button */
+    color: white; /* Text color for the button */
+    border: none; /* No border for the button */
+    border-radius: 15px; /* Rounded borders for the button */
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 0 auto; /* Center the title in the column */
+    margin-top: 5px;
+    /* Additional styles for the button */
+  }
+  
+  .column-title-input {
+    width: 50%; 
+    margin: 0 auto; /* Center the title in the column */
+    font-size: 1em;
+    border-radius: 20px;
+    color: #333; 
+    padding: 5px 0; /* Increase the top and bottom padding */
+    text-align: center; /* Keep the text centered */
+    background-color: #FBFA00; /* Example background color */
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-bottom: 16px; /* Optional: Adds some space between the title and the first task item */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow for depth */
+  }
+  
+  
+  .task-column {
+    flex: 2;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Adds shadow to the columns */
+    min-width: 250px;
+    max-height: 350px;
+    overflow-y: auto;
+  }
+  
+  
+  .task-column.issue {
+    background-color: #f8d7da; /* Light red for 'issue' column */
+    
+  }
+  
+  .task-column.complete {
+    background-color: #d4edda; /* Light green for 'complete' column */
+    
+  }
+  
+  .column-title {
+    width: 50%; 
+    margin: 0 auto; /* Center the title in the column */
+    display: block; /* Ensures the width and margin are applied correctly */
+    font-size: 1em;
+    border-radius: 20px;
+    color: #333; 
+    padding: 10px 0; /* Increase the top and bottom padding */
+    text-align: center; /* Keep the text centered */
+    background-color: #FBFA00; /* Example background color */
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    margin-bottom: 16px; /* Optional: Adds some space between the title and the first task item */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow for depth */
+  }
+  
+  .task-item {
+    /* This will make the item take up 80% of the width of `.task-column.issue` */
+    width: 95%;
+    /* The rest of your styles... */
+    margin: 8px auto; /* This will center the task item in the column */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    background-color: white;
+    box-sizing: border-box;
+    word-break: break-word;
+    min-height: 50px;
+    /* It's important to note that if you want to center the task items, you'd also need to set the margin accordingly */
+  }
+  
+  .delete-task-btn {
+    margin-left: auto; /* This pushes the button to the right */
+    cursor: pointer;
+    padding: 3px 9px;
+    border: none;
+    background-color: #ff4d4f;
+    border-radius: 15px;
+    color: white;
+    opacity: 0.5; /* Example of setting the button to be semi-transparent */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity change */
+    
+  }
+  
+  /* Change opacity to make it fully opaque (darker) on hover */
+  .delete-task-btn:hover {
+    opacity: 1; /* Fully opaque on hover */
+  }
+  
+  .task-item {
+    /* Your existing styles */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+  }
+  
+  .task-item:hover {
+    background-color: #f5e88b; /* Lighter grey background on hover */
+  }
