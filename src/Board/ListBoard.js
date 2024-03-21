@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Today from './Today';
 import EditToday from './EditToday';
 import ExcelExport from '../db/Excel/ExcelExport';
 import './ListBoard.css';
 
-function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab }) {
+function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData, selectedProjectName }) {
 
     const items = [ /* 상태 색상 표기 */
         { id: '대기', color: '#CACACA' }, //#ADD8E6
@@ -38,6 +38,9 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab }) {
     const handleDialogClose = () => {
         // 다이얼로그 닫힘 후 필요한 작업 수행, 예를 들어, 데이터를 새로 고침
         //getBoardData();
+        handleData(true);
+        //console.log('setState true');
+
     };
 
     return (
@@ -47,10 +50,10 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab }) {
                 <div className='d-flex gap-2 mb-2'>
                     <ExcelExport data={allposts} name={tab} />
                     <div>
-                        <EditToday show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={selectvalue} dialogClassName="custom-modal-size" />
+                        <EditToday show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={selectvalue} selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" />
                     </div>
                     <div>
-                        <Today show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={null} dialogClassName="custom-modal-size" />
+                        <Today show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={null} selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" />
                     </div>
                 </div>
             </div>

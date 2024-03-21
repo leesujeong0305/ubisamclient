@@ -1,6 +1,12 @@
 html, body {
     height: 100%;
     margin: 0;
+    
+  }
+
+  /* GPT 추천 바탕색 #a3d8f4 #a2e1db #cfbaf0 #fbdce2 #d2b48c #d3d3d3 #a8a8a8 #ffffcc #e0a899 #c2b280 #b8ad8a #b5b35c #7fdbda #b1b493 #f9aa8f #f2d680*/
+  #layout-container{
+    background-color: #FAFAFA;
   }
   
   #layout-container {

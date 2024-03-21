@@ -4,6 +4,9 @@ import { useDispatch } from 'react-redux';
 import Axios from '../../API/AxiosApi';
 import Cookies from 'js-cookie';
 import { logout, deleteUserInfo } from '../../Redux/Action';
+import { MdLogout } from "react-icons/md";
+
+import './Logout.css'
 
 function Logout() {
     const navigate = useNavigate();
@@ -27,6 +30,10 @@ function Logout() {
                 dispatch(deleteUserInfo());
                 navigate('/');
                 localStorage.removeItem('userToken');
+                localStorage.removeItem('userEmailToken');
+                localStorage.removeItem('userTeamToken');
+                localStorage.removeItem('userRankToken');
+                localStorage.removeItem('userImpProjectToken');
             } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
                 console.log("403");
                 //alert("ID, Password가 비어있습니다.");
@@ -42,7 +49,7 @@ function Logout() {
 
     return (
         <div >
-            <button type='button' onClick={handleLogout}>로그아웃</button>
+            <button className='logout-button' type='button' onClick={handleLogout}>로그아웃</button>
         </div>
     )
 }

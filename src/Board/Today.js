@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Axios from '../API/AxiosApi';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function Today({ onClose, post }) {
+function Today({ onClose, post, selectedProjectName }) {
     const [show, setShow] = useState(false);
     const [task, setTask] = useState('');
     const [memo, setMemo] = useState('');
@@ -20,15 +20,6 @@ function Today({ onClose, post }) {
     let month = ('0' + (today.getMonth() + 1)).slice(-2);
     let day = ('0' + today.getDate()).slice(-2);
     let dateString = year + '-' + month + '-' + day;
-
-    const content = [{
-        ProjectName: "First",
-        Date: dateString,
-            Name: "홍길동",
-            Title: task,
-            Content: memo,
-            Status: "",
-    }]
 
     const handleClose = () => {
         setShow(false);
@@ -51,11 +42,12 @@ function Today({ onClose, post }) {
     };
 
     const setTodoList = () => {
+        const name = localStorage.getItem('userToken');
         return Axios.post(`http://localhost:8080/ToDoList`, {
 
-            ProjectName: "First",
+            ProjectName: selectedProjectName,
             Date: dateString,
-            Name: "홍길동",
+            Name: name,
             Title: task,
             Content: memo,
             Status: selectValue,
@@ -85,7 +77,7 @@ function Today({ onClose, post }) {
     useEffect(() => {
         setTask(post?.Title);
         setMemo(post?.Content);
-        setSelectValue(post?.value.Status);
+        setSelectValue(post?.value.Status ? post?.value.Status : '대기');
     }, [post]);
 
     return (

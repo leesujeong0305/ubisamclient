@@ -5,6 +5,7 @@ import Login from './Login/Login'
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout, updateUserInfo } from '../Redux/Action';
 import Cookies from 'js-cookie';
+import UserInfo from '../Models/UserInfo';
 
 export default function MainUI() {
   const [userId, setUserId] = useState('');
@@ -24,17 +25,35 @@ export default function MainUI() {
     Login(userId, password).then(result => {
       if (result === "success") {
         // 성공 시의 로직 처리  
-        //console.log(`Login successful ${result}`);
+        console.log(`Login successful ${result}`);
         dispatch(login());
         parseName(Cookies.get('accessToken'));
         //const userInfo = {mail:result.user.user_mail, name:result.user.name, rank:result.user.rank}
         //dispatch(updateUserInfo(userInfo));
+        
+        //user Info 가져오기
+        fetchData();
       } else {
         // 실패 시의 로직 처리
         dispatch(logout());
       }
     });
   }
+
+  const fetchData = async () => {
+    try {
+      const data = await UserInfo();
+        if (data) {
+          localStorage.setItem('userTeamToken', data.team);
+          localStorage.setItem('userRankToken', data.rank);
+          localStorage.setItem('userImpProjectToken', data.impProject);
+        }
+        console.log('진행완료', data);
+
+    } catch (error) {
+        console.error("Fetching project data failed:", error);
+    }
+}
 
   const parseName = (token) => {
     const base64Url = token.split('.')[1];
@@ -45,6 +64,7 @@ export default function MainUI() {
     const name = JSON.parse(jsonPayload);
     console.log('이거임?',name);
     localStorage.setItem('userToken', name.name);
+    localStorage.setItem('userEmailToken', name.id);
   }
 
   // useEffect(() => {

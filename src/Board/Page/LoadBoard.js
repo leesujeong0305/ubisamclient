@@ -1,14 +1,15 @@
 import Axios from '../../API/AxiosApi';
 
-function LoadBoard() {
+function LoadBoard(name) {
     return Axios.post(`http://localhost:8080/Board`, {
-        projectName: "First", // 나중에 변경
+        projectName: name, // 나중에 변경
     }, {
         headers: {
             "Content-Type": "application/json",
         }
     }).then(response => {
         if (response.status === 200) {
+            
             const newDataRow = response.data.data.map((item, index) => ({
 
                 Index: item.Index, // 예시로 index 사용, 실제 구현에서는 서버로부터의 데이터에 따라 조정

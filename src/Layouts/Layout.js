@@ -22,6 +22,7 @@ import './Layout.css'; // 스타일 시트 임포트
 function Layout() {
   const { isAuthenticated, isAdmin } = useSelector(state => state.auth);
   const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
+  //const { updataBoard } = useSelector(state => state.)
   const dispatch = useDispatch();
   const toggleFooterVisibility = useFooterVisibilityUpdate();
   

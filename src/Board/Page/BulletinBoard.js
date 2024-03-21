@@ -6,11 +6,11 @@ import './BulletinBoard.css'
 
 // 가정: postData는 제공된 포스트 객체 배열입니다.
 
-const BulletinBoard = () => {
-
+const BulletinBoard = ({boardData, handleData, selectedProjectName}) => {
   const [posts, setPosts] = useState([]) // 포스트 데이터 상태 관리
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
   const [postsPerPage] = useState(10); // 페이지 당 포스트 수
+
 
   //탭 추가 필요
   const [selectedTab, setSelectedTab] = useState('전체');
@@ -25,18 +25,11 @@ const BulletinBoard = () => {
   // 페이지 변경 함수
   const paginate = (pageNumber) => setCurrentPage(pageNumber); // 페이지 번호를 받아 현재 페이지 상태를 업데이트
 
-  const getBoardData = () => {
-    LoadBoard().then(result => {
-      if (result === '403') {
-      } else {
-        setPosts(result); // 상태 업데이트
-      }
-    });
-  }
-
   useEffect(() => {
-    getBoardData();
-  }, [], [selectedTab])
+    
+    if (boardData)
+      setPosts(boardData);
+  }, [boardData], )
 
   useEffect(() => {
     setCurrentPage(1);
@@ -56,7 +49,7 @@ const BulletinBoard = () => {
       <div>
         <ListBoard posts={currentPosts} allposts={posts} pageNumber={currentPage - 1}
           postsPerPage={postsPerPage} // 페이지 당 포스트 수
-          tab={selectedTab}
+          tab={selectedTab} handleData={handleData} selectedProjectName={selectedProjectName}
         />
       </div>
       <br></br>

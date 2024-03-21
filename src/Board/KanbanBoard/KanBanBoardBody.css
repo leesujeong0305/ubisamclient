@@ -75,6 +75,15 @@
     background-color: #d4edda; /* Light green for 'complete' column */
     
   }
+
+textarea {
+  background-color: #FFFCD2;
+}
+
+  textarea:focus {
+    border: 2px solid rgb(213, 194, 194);
+    outline-color : #FE6B8B;
+  }
   
   .column-title {
     width: 50%; 

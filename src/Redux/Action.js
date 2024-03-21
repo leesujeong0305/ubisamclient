@@ -5,6 +5,7 @@ export const LOGOUT = 'LOGOUT';
 export const UPDATE_USER_INFO = 'UPDATE_USER_INFO';
 export const ADMIN_LOGIN = 'ADMIN_LOGIN';
 export const DELETE_USER_INFO = 'DELETE_USER_INFO';
+export const UPDATE_BOARD ='UPDATE_BOARD';
 
 // 인증 관련 액션 생성자
 export const loginSuccess = (userData) => {
@@ -36,5 +37,12 @@ export const updateUserInfo = (newUserInfo) => {
 export const deleteUserInfo = () => {
   return {
     type: DELETE_USER_INFO,
+  }
+}
+
+export const updateBoard = (updata) => {
+  return {
+    type: UPDATE_BOARD,
+    payload: updata,
   }
 }

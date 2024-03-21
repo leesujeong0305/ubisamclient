@@ -1,3 +1,8 @@
+.navbackgroud {
+  background-color: #333;
+  letter-spacing: 0.5px;
+  height: 60px;
+}
 .navbar {
     z-index: 1;
   }
@@ -6,14 +11,76 @@
   font-size: 27px;
   font-weight: bold;
   vertical-align: middle;
-  color: white;
+  color: #f2f2f2;
 }
 
 .iconsam {
   font-size: 25px;
   font-weight: bold;
-  color: white;
+  color: #2F97F8;
   vertical-align: middle;
+}
+
+.navbar-logo-icon {
+  background-color: #2F97F8;
+  color:white;
+  margin-bottom: 20px;
+}
+
+.nav .navbar-collapse {
+ text-align: center;   
+}
+.nav-items {
+  margin-right: 6rem;
+}
+
+.nav-link {
+  display: inline-flex;
+  color: white !important; /*!important 규칙을 사용하여 기본 Bootstrap 스타일보다 우선 순위를 높여줍니다.*/
+  font-size: 1.2rem;
+  border-radius: 10px;
+}
+
+ .nav-link:hover {
+  background-color: #c2c2c2 !important;
+}
+
+.vr-style {
+  background-color: black;
+}
+
+.divider {
+  display: flex;
+  margin: 14px 10px; /* 양쪽의 네비게이션 링크 사이의 공간 */
+  width: 1px; /* 구분자의 너비 */
+  background-color: white; /* 구분자 색상을 검정색으로 설정 */
+}
+
+.header-profile {
+  color: #fff2f2;
+  align-self: center;
+  margin-right: 3rem;
+}
+
+.header-profile-team {
+  font-size: 0.8rem;
+}
+
+.header-profile-user {
+  color: #fff2f2;
+  align-self: center;
+  margin-right: 2rem;
+  padding: 0.3rem 0.5rem;
+  font-weight: bold;
+  background-color: #2F97F8;
+  border-radius: 10px;
+}
+
+.header-profile-rank {
+  font-size: 0.6rem;
+  padding: 0.2rem 0rem;
+  margin-left: 0.3rem;
+  font-weight: normal;
 }
 
 @media screen and (max-width: 767px) {
