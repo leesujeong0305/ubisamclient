@@ -15,6 +15,7 @@ import KanBanBoardBody from './KanbanBoard/KanBanBoardBody';
 import MainKanBanBoard from './KanbanBoard/MainKanBanBoard';
 import LoadBoard from './Page/LoadBoard';
 import UserInfo from '../Models/UserInfo';
+import FileExplorer from './ProjectFile/FileExplorer';
 
 
 function Board() {
@@ -196,11 +197,14 @@ function Board() {
                     <div className="col-md-3">
                         <ProjectStatus boardData={loadBoard} />
                     </div>
-                    <div className="col-md">
+                    <div className="col-md-3">
                         <MainKanBanBoard projectName={selectedProjectName} kanban={kanban} />
                     </div>
+                    <div className="col-md">
+                        <FileExplorer selectedProjectName={selectedProjectName} />
+                    </div>
                 </div>
-                <div>
+                <div className='mt-5'>
                     <BulletinBoard boardData={loadBoard} handleData={handleData} selectedProjectName={selectedProjectName} />
                 </div>
             </div>

@@ -1,0 +1,108 @@
+.file-explorer {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-height: 303px;
+    overflow-y: auto;
+}
+
+.file-explorer-title {
+
+    color: #333;
+    font-size: 1em;
+    padding: 10px 20px;
+    margin: 0;
+    border-bottom: 1px solid rgb(12, 6, 6);
+}
+
+.file-explorer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+    background-color: #89f7c3;
+}
+
+.file-explorer-title {
+    color: #333;
+    font-size: 1.3em;
+    margin: 0;
+}
+
+.add-button {
+    padding: 5px 10px;
+    font-size: 1em;
+    color: #333;
+    background-color: #dff0d8;
+    /* A light green background */
+    border: 1px solid #ccc;
+    /* A subtle border */
+    border-radius: 4px;
+    /* Rounded corners for the button */
+    cursor: pointer;
+    /* Change the cursor to indicate it's clickable */
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.file-item:last-child {
+    border-bottom: none;
+}
+
+
+.file-created{
+    text-align: left;
+    margin-right: 10px;
+    /* Ensure some spacing between columns */
+    font-size: 0.7rem;
+}
+.file-name,
+.file-size {
+    text-align: left;
+    margin-right: 10px;
+    /* Ensure some spacing between columns */
+    font-size: 0.9rem;
+}
+
+.file-name {
+    flex: 5;
+    /* Allocate more space for the file name */
+}
+
+.file-created {
+    flex: 3;
+    /* Allocate space for the created date, allowing it to display fully */
+}
+
+.file-size {
+    flex: 1;
+    /* Less space for the size as it's typically a shorter column */
+}
+
+.file-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+    min-width: 130px;
+    /* Ensure enough space for all action buttons */
+}
+
+.file-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.file-item:hover {
+    background-color: #f9f9f9;
+}

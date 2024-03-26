@@ -189,7 +189,7 @@ function MainKanBanBoard({ projectName, kanban }) {
     // 컴포넌트 렌더링 부분입니다.
     return (
         <div className="kanban-board">
-            {["issue", "complete"].map((status) => (
+            {["issue"].map((status) => (
                 <div
                     key={status}
                     className={`task-column ${status}`}
