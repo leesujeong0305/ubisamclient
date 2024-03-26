@@ -44,5 +44,9 @@ npm install bootstrap@5.3.3
 //24.03.15 엑셀
 npm install xlsx file-saver 
 
+//24.03.25
+npm install react-datepicker
+npm install date-fns // 한글 폰트
+
 //////////////////////////////////
 단축 rfce //js 기본 작성해줌

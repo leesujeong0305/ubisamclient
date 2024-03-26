@@ -1,0 +1,44 @@
+
+.select-container {
+    background-color: #E1E4E8;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin: 10px 0px 10px 10px;
+
+  }
+  
+  .select-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    grid-gap: 10px;
+  }
+  
+  .select-item {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333; /* Text color for better contrast */
+    transition: border-color 0.3s; /* Smooth transition for hover effect */
+  }
+  
+  .select-item:hover {
+    border-color: #a7e0e0;
+  }
+  
+  .select-item.selected {
+    font-weight: bold; /* Makes selected item text bold */
+    border-color: #32a852; /* Changes border color for selected items */
+  }
+  
+  .checkmark {
+    color: #32a852;
+  }
+  
+  h2 {
+    text-align: center;
+  }

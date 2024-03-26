@@ -5,9 +5,8 @@ import { saveAs } from 'file-saver';
 import { Button } from 'react-bootstrap';
 
 function ExcelExport( { data, name } ) {
-
+    
     const handleExport = () => {
-
          // 새 워크북을 생성하고 워크시트를 추가합니다
         const wb = XLSX.utils.book_new();
         let newData = [];
@@ -56,7 +55,7 @@ function ExcelExport( { data, name } ) {
         const dateString = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}_${date.getHours().toString().padStart(2, '0')}${date.getMinutes().toString().padStart(2, '0')}`;
 
         // 파일명에 날짜와 시간을 포함하여 저장합니다
-        const filename = `프로젝트_${dateString}.xlsx`;
+        const filename = `${name}_${dateString}.xlsx`;
        
         // 파일로 저장합니다
         const blob = new Blob([buf], { type: 'application/octet-stream' });
@@ -64,11 +63,14 @@ function ExcelExport( { data, name } ) {
     };
     
     return (
+        <>
         <div className="container">
             <Button className="export-to-excel" onClick={handleExport}>
-                Export to Excel
+                <i className="bi bi-filetype-exe d-flex fs-5 justify-content-center"></i>
             </Button>
         </div>
+        </>
+        
     );
 };
     

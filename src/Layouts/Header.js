@@ -4,7 +4,6 @@ import { Navbar, Nav, Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { BsRss } from "react-icons/bs";
 import Logout from '../Components/Login/Logout';
-import Form from 'react-bootstrap/Form';
 
 
 const Header = () => {
@@ -38,8 +37,10 @@ const Header = () => {
       <header>
         <Navbar expand="lg" className='navbackgroud'>
           <Navbar.Brand href="/" className='ms-4'>
-            <span className='iconubi'>Ubi</span>
-            <span className='iconsam'>Sam</span>
+            <span className='iconub'>U</span>
+            <span className='iconubi'>bi</span>
+            <span className='icons'>S</span>
+            <span className='iconsam'>am</span>
             <BsRss className='navbar-logo-icon' />
           </Navbar.Brand>
           <Navbar.Collapse className="">
@@ -49,7 +50,7 @@ const Header = () => {
               </Nav.Item>
               <div className="divider"></div>
               <Nav.Item>
-                {isAuthenticated ? <Nav.Link className='nav-items  sm-8' eventKey="link-1" href="/AdminPage">마이페이지</Nav.Link> : <div className='disabled me-5'></div>}
+                {isAuthenticated ? <Nav.Link className='nav-items  sm-8' eventKey="link-1" href="/FullCalendar">마이페이지</Nav.Link> : <div className='disabled me-5'></div>}
               </Nav.Item>
             </Nav>
           </Navbar.Collapse>

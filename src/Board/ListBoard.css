@@ -1,4 +1,18 @@
-  .nav-context {
+.nav-context {
     display: flex;
 
+  }
+
+  .body-input {
+    color: black !important;
+  }
+
+  .table * {
+    color: black !important;
+  }
+
+  .truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }

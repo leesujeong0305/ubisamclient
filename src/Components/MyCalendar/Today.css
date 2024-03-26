@@ -1,0 +1,56 @@
+.todo-app {
+    background-color: #e0f2fe;
+    margin: 5px 2px 10px 10px ;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+  
+  .todo-header {
+    background-color: #0299e2;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+  }
+  
+  .todo-list {
+    background-color: #FFF67E;
+    list-style-type: none;
+    margin: 10px;
+    padding: 20px;
+    min-height: 300px;
+    max-height: 500px;
+    border-radius: 8px;
+    overflow-y: auto;
+  }
+  
+  .todo-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+  }
+  
+  .add-btn, .delete-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .add-btn:hover, .delete-btn:hover {
+    opacity: 0.7;
+  }
+
+  .project-name {
+    font-size: 0.8rem;
+  }
+  .project {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-left: 4rem;
+    margin-top: -0.5rem;
+  }
+  .project-hr {
+    color: red;
+  }

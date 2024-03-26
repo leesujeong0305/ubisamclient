@@ -1,0 +1,32 @@
+.custom-date-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
+.date-range-selector {
+  margin-right: 8px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-button {
+  background-color: purple;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+/* 검색 결과 스타일링 */
+.search-results {
+  margin-top: 4px; /* 상단 여백을 줄입니다 */
+  /* 다른 필요한 스타일링이 있다면 여기에 추가하세요 */
+}

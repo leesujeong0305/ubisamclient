@@ -7,9 +7,9 @@ import './ListBoard.css';
 function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData, selectedProjectName }) {
 
     const items = [ /* 상태 색상 표기 */
-        { id: '대기', color: '#CACACA' }, //#ADD8E6
-        { id: '진행중', color: '#FFD700' },
-        { id: '완료', color: '#90EE90' },
+        { id: '대기', color: '#CCCCFF' },
+        { id: '진행중', color: '#ADD8E6' },
+        { id: '완료', color: '#FFD700' },
         { id: '이슈', color: '#FFC0CB' },
     ];
 
@@ -48,13 +48,11 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData,
             <div className='nav-context'>
                 <div></div>
                 <div className='d-flex gap-2 mb-2'>
-                    <ExcelExport data={allposts} name={tab} />
-                    <div>
-                        <EditToday show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={selectvalue} selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" />
-                    </div>
-                    <div>
-                        <Today show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={null} selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" />
-                    </div>
+                    <Today show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={null} 
+                        selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" />
+                    <EditToday show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={selectvalue} 
+                        selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" />
+                    <ExcelExport data={allposts} name={tab}/>
                 </div>
             </div>
 
@@ -66,7 +64,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData,
                         ))}
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className=''>
                     {posts.map((row, index) => (
                         <tr key={index + 1} onClick={() => handleRowClick(row)}>
                             <td type="checkbox">
@@ -75,8 +73,8 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData,
                             </td>
                             <td>{row.Date}</td>
                             <td>{row.Name}</td>
-                            <td>{row.Title}</td>
-                            <td>{row.Content}</td>
+                            <td className='truncate'>{row.Title}</td>
+                            <td className='truncate'>{row.Content}</td>
                             <td>
                                 <div style={{ backgroundColor: findColorById(`${row.Status}`) }}>{row.Status}</div>
                             </td>

@@ -9,8 +9,9 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 80vh;
+    height: calc(100vh - 60px);
     position: relative;
+    justify-content: space-between;
   }
     
   #top .overlay {

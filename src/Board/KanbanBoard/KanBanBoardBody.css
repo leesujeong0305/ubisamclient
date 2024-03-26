@@ -1,8 +1,5 @@
 .kanban-board {
     display: flex;
-    gap: 10px;
-    padding: 10px;
-    background-color: #f4f4f4; /* This sets the background color of the whole board */
   }
   
   .task-input-area {
@@ -58,10 +55,10 @@
   .task-column {
     flex: 2;
     border-radius: 8px;
-    padding: 20px;
+    padding: 7px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Adds shadow to the columns */
-    min-width: 250px;
-    max-height: 350px;
+    min-width: 200px;
+    max-height: 250px;
     overflow-y: auto;
   }
   
@@ -86,18 +83,18 @@ textarea {
   }
   
   .column-title {
-    width: 50%; 
+    width: 25%; 
     margin: 0 auto; /* Center the title in the column */
     display: block; /* Ensures the width and margin are applied correctly */
     font-size: 1em;
     border-radius: 20px;
     color: #333; 
-    padding: 10px 0; /* Increase the top and bottom padding */
+    padding: 7px 0; /* Increase the top and bottom padding */
     text-align: center; /* Keep the text centered */
     background-color: #FBFA00; /* Example background color */
     font-family: Arial, sans-serif;
     font-weight: bold;
-    margin-bottom: 16px; /* Optional: Adds some space between the title and the first task item */
+    margin-bottom: 7px; /* Optional: Adds some space between the title and the first task item */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow for depth */
   }
   
@@ -116,7 +113,7 @@ textarea {
     background-color: white;
     box-sizing: border-box;
     word-break: break-word;
-    min-height: 50px;
+    font-size: 0.8rem;
     /* It's important to note that if you want to center the task items, you'd also need to set the margin accordingly */
   }
   
@@ -130,7 +127,6 @@ textarea {
     color: white;
     opacity: 0.5; /* Example of setting the button to be semi-transparent */
     transition: opacity 0.3s ease; /* Smooth transition for opacity change */
-    
   }
   
   /* Change opacity to make it fully opaque (darker) on hover */

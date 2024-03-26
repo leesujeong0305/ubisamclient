@@ -1,0 +1,71 @@
+.my-calender {
+  
+  display: flex;
+}
+
+
+.left-column, .right-column {
+  flex-direction: column;
+}
+
+.left-column {
+  flex: 1;
+  margin-top: 15px;
+}
+
+.right-column {
+  flex: 3;
+  margin-left: 4px;
+  
+}
+
+.top-row, .middle-row {
+  display: flex;
+}
+
+.item {
+  padding: 10px;
+}
+
+.item-gray {
+  background-color: gray; /* Gray background for specified items */
+}
+
+.item-White {
+  background-color: white; /* Gray background for specified items */
+}
+
+.item-blue {
+  border-radius: 8px 8px 0px 0px;
+  background-color: #6CC3D5; /* Gray background for specified items */
+}
+
+.item-green{
+  border-radius: 8px 8px 0px 0px;
+  background-color: #92CCC0;
+}
+
+.item-normal {
+  background-color: peachpuff; /* Normal background for other items */
+  height: 30%;
+}
+
+.item-large {
+  flex-grow: 1;
+  background-color: gray; /* Assuming item 6 is also gray */
+}
+
+.item-extra-large {
+  height: 100%;
+  background-color: peachpuff;
+}
+
+.top-row .item, .middle-row .item {
+  flex-basis: 0;
+  flex-grow: 5;
+  margin-left: 10px;
+  
+}
+
+.calendar-grid {
+}

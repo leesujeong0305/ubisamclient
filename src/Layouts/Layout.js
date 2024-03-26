@@ -3,7 +3,7 @@ import Axios from '../API/AxiosApi';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout, updateUserInfo } from '../Redux/Action';
-import { useFooterVisibilityUpdate } from './FooterVisibilityContext'
+//import { useFooterVisibilityUpdate } from './FooterVisibilityContext'
 import Cookies from 'js-cookie';
 
 import Header from './Header'
@@ -15,16 +15,16 @@ import Board from '../Board/Board'
 import Today from '../Board/Today';
 import MainPlus from '../Components/MainView/MainPlus';
 import AdminPage from '../Components/MainView/AdminPage';
-import FullCalendarComponent from '../Components/Calendar/FullCalendarComponent';
 
 import './Layout.css'; // 스타일 시트 임포트
+import MyCalenderApp from '../Components/MyCalendar/MyCalenderApp';
 
 function Layout() {
-  const { isAuthenticated, isAdmin } = useSelector(state => state.auth);
+  const { isAuthenticated } = useSelector(state => state.auth);
   const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
   //const { updataBoard } = useSelector(state => state.)
   const dispatch = useDispatch();
-  const toggleFooterVisibility = useFooterVisibilityUpdate();
+  //const toggleFooterVisibility = useFooterVisibilityUpdate();
   
   const CheckAuthToken = async () => {
     const access = Cookies.get('accessToken');
@@ -87,13 +87,12 @@ function Layout() {
   }, [dispatch]);
 
   
-
-
-  //{isAuthenticated ? <MainPlus/> : <Main />} FullCalendarComponent
+  //<Footer />
   return <>
     <div id="layout-container">
       <BrowserRouter>
         <Header />
+        
         <Routes>
           <Route path="/" element={isAuthenticated ? <Board /> : <Main /> } />
           <Route path='/UserList' element={ <UserList /> } />
@@ -102,9 +101,8 @@ function Layout() {
           <Route path='/Today' element={isAuthenticated ? <Today /> : <Main /> } />
           <Route path='/MainPlus' element={isAuthenticated ? <MainPlus /> : <Main /> } />
           <Route path='/AdminPage' element={isAuthenticated ? <AdminPage /> : <Main /> } />
-          <Route path='/FullCalendar' element={isAuthenticated ? <FullCalendarComponent /> : <Main /> } />
+          <Route path='/FullCalendar' element={isAuthenticated ? <MyCalenderApp /> : <Main /> } />
         </Routes>
-        <Footer />
       </BrowserRouter>
     </div>
   </>

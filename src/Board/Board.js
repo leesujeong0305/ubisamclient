@@ -12,6 +12,7 @@ import './Board.css'
 import BulletinBoard from './Page/BulletinBoard';
 import ProjectStatus from './Status/ProjectStatus';
 import KanBanBoardBody from './KanbanBoard/KanBanBoardBody';
+import MainKanBanBoard from './KanbanBoard/MainKanBanBoard';
 import LoadBoard from './Page/LoadBoard';
 import UserInfo from '../Models/UserInfo';
 
@@ -26,22 +27,16 @@ function Board() {
     const [selectedProjectName, setSelectedProjectName] = useState("No Data");
 
     const [data, setData] = useState(false);
+    const [kanban, setKanban] = useState(false);
     const [period, setPeriod] = useState(false);
-
-    const [trigger, setTrigger] = useState(false); // 강제 업데이트를 위한 상태 dropdown안되서 사용
-
-    // 강제 업데이트 함수
-    const forceUpdate = () => {
-        setTrigger(t => !t); // 현재 값의 반대값을 설정하여 강제 업데이트
-    };
 
     const getProjectData = async (name) => {
         return await LoadBoard(name);
     }
 
-    const updatePrjStatus = (prjName) => {
+    const updatePrjStatus = async (prjName) => {
         const token = localStorage.getItem('userToken');
-        Axios.post(`http://localhost:8080/UpdateUserImpPrj`, {
+        await Axios.post(`http://localhost:8080/UpdateUserImpPrj`, {
             projectName: prjName, // 나중에 변경
             userName: token,
         }, {
@@ -100,12 +95,10 @@ function Board() {
         try {
             const data = await UserInfo();
             if (!data) throw new Error("No data returned from UserInfo");
-
             const [periodData, projectData] = await Promise.all([
                 updatePeriod(data),
                 getProjectData(data.impProject),
             ]);
-
             // 여기서 data도 함께 반환하여 pickAllFruits에서 사용할 수 있도록 함
             return {
                 userInfo: data,
@@ -122,12 +115,11 @@ function Board() {
             const results = await fetchData();
             const user = results.userInfo;
             const selectedProject = results.periodData.find(periodData => periodData.text === user.impProject);
-
             if (selectedProject) {
-                console.log("alldata", selectedProject);
-                setSelectedProjectName(selectedProject.text);
+
                 setPeriod(selectedProject.period);
-                setLoadBoard(results.projectData);
+                await setLoadBoard(results.projectData);
+                setSelectedProjectName(selectedProject.text);
                 return selectedProject;
             }
         } catch (error) {
@@ -138,20 +130,20 @@ function Board() {
     const handleSelect = async (eventKey) => {
         const selectedProject = selectedActionText.find(project => project.text === eventKey);
         if (selectedProject) {
-            updatePrjStatus(selectedProject.text);
-            allData();
-            setSelectedProjectName(selectedProject.text);
+            await updatePrjStatus(selectedProject.text);
+            await allData();
         }
-        forceUpdate();
     };
 
     const handleData = (newData) => {
         setData(newData);
+        allData();
+        setKanban(true);
     };
 
     useLayoutEffect(() => {
         allData();
-        
+
         // 페이지가 마운트될 때 Footer를 숨김
         toggleFooterVisibility(false);
         return () => {
@@ -162,53 +154,50 @@ function Board() {
 
     return (
         <>
-            <div className="my-4 ms-3 me-3">
+            <div className="my-3 ms-3 me-3">
                 <div className='row mb-1'>
-                    <div className='col-md-4'>
-                        <div className="row">
-                            <div className='col-md-6'>
-                                <Card>
-                                    <Card.Header className='card bg-info'>프로젝트 명</Card.Header>
-                                    <div className="d-flex align-items-center">
-                                        <Dropdown onSelect={handleSelect} className="me-2" style={{ flexGrow: 1 }}>
-                                            <Dropdown.Toggle variant="light" id="dropdown-basic" className="w-100 d-flex justify-content-between align-items-center">
-                                                <span className="text-left"> {selectedProjectName}</span>
-                                            </Dropdown.Toggle>
-                                            <Dropdown.Menu className="w-100">
-                                                {selectedActionText.map((action) => (
-                                                    <Dropdown.Item key={action.id} eventKey={action.text} className="d-flex align-items-center justify-content-between">
-                                                        {action.text}
-                                                        {selectedProjectName === action.text ? (
-                                                            <span className="text-warning  ms-2 fs-3">★</span> // Star for selected item
-                                                        ) : (
-                                                            <span className=" ms-2 fs-3">☆</span> // Grey star for unselected items
-                                                        )}
-                                                    </Dropdown.Item>
-                                                ))}
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                    </div>
-                                </Card>
-                            </div>
-                            <div className='col-md-6'>
-                                <Card>
-                                    <Card.Header className='card bg-success'>프로젝트 기간</Card.Header>
-                                    <ListGroup variant="flush">
-                                        <ListGroup.Item>{period}</ListGroup.Item>
-                                    </ListGroup>
-                                </Card>
-                            </div>
+                    <div className='col-md-2'>
+                        <div className='row-md-6 mb-2'>
+                            <Card>
+                                <Card.Header className='card bg-info'>프로젝트 명</Card.Header>
+                                <div className="d-flex align-items-center">
+                                    <Dropdown onSelect={handleSelect} style={{ flexGrow: 1 }}>
+                                        <Dropdown.Toggle variant="light" id="dropdown-basic" className="w-100 d-flex justify-content-between align-items-center">
+                                            <span className="text-left"> {selectedProjectName}</span>
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu className="w-100">
+                                            {selectedActionText.map((action) => (
+                                                <Dropdown.Item key={action.id} eventKey={action.text} className="d-flex align-items-center justify-content-between">
+                                                    {action.text}
+                                                    {selectedProjectName === action.text ? (
+                                                        <span className="text-warning  ms-2 fs-3">★</span> // Star for selected item
+                                                    ) : (
+                                                        <span className=" ms-2 fs-3">☆</span> // Grey star for unselected items
+                                                    )}
+                                                </Dropdown.Item>
+                                            ))}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </div>
+                            </Card>
                         </div>
-                        <div>
-                            <ProjectStatus />
+                        <div className='row-md-6'>
+                            <Card>
+                                <Card.Header className='card bg-success'>프로젝트 기간</Card.Header>
+                                <ListGroup variant="flush">
+                                    <ListGroup.Item>{period}</ListGroup.Item>
+                                </ListGroup>
+                            </Card>
+                        </div>
+                        <div className="col">
+                            step 추가
                         </div>
                     </div>
-                    <div className='col-md-8'>
-                        <div className="col">
-                            <div className=" issue">
-                                <KanBanBoardBody />
-                            </div>
-                        </div>
+                    <div className="col-md-3">
+                        <ProjectStatus boardData={loadBoard} />
+                    </div>
+                    <div className="col-md">
+                        <MainKanBanBoard projectName={selectedProjectName} kanban={kanban} />
                     </div>
                 </div>
                 <div>

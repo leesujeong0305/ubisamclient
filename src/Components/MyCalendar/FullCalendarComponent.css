@@ -1,19 +1,20 @@
-.calendar-parent{
-    display: flex;
-    justify-content: right;
-    margin: 10px 10px 0px 0px;
+
+.calendar-parent {
+    height: 100%;    
+    margin: 10px 10px 0px 5px;
+    cursor: default;
 }
 
 /* 캘린더 전체 사이즈 조정 */
 .fc {
-    width: 60%;
+    max-width: 100%;
 }
 
 /* toolbar container */
 .fc .fc-toolbar.fc-header-toolbar {
     margin: 0;
     padding: 0 40px;
-    background-color: #356eff;
+    background-color: #91B2FF;
     height: 63px;
     font-weight: 600;
     font-size: 12px;
@@ -26,7 +27,8 @@
 .fc .fc-button-primary {
     background-color: #4a90e2;
     border: none;
-    margin: 2rem 0 0 -2rem;
+    margin: 10px;
+    
 }
 
 /* 전체 달력 폰트 크기 조정 */
@@ -37,6 +39,7 @@
 
 /* 요일 부분 */
 .fc-theme-standard th {
+    width: 70px;
     height: 32px;
     padding-top: 3.5px;
     background: #e5edff;
@@ -59,6 +62,7 @@
 .fc .fc-daygrid-day.fc-day-today {
     background-color: #FFF67E;
     color: #6895D2;
+    
 }
 
 /* 날짜별 그리드 */
@@ -79,6 +83,19 @@
     border-radius: 5px;
     font-weight: 500;
     font-size: 10px;
+    
+}
+
+.fc-daygrid-day-events {
+    overflow-y: auto; /* Enables vertical scrolling */
+    max-height: 120px; /* Sets the maximum height for the event area */
+    
+}
+
+  /* This ensures that the entire calendar row has a minimum height to accommodate events */
+.fc-daygrid-day {
+    height: 120px; /* Adjust this value based on your calendar's design needs */
+    position: relative; /* Needed for absolute positioning of children */
 }
 
 /* 주말 셀의 폰트 색상을 빨간색으로 설정 */

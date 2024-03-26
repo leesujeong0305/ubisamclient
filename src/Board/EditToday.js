@@ -11,26 +11,11 @@ function Today({ onClose, post }) {
     const [index, setIndex] = useState('');
 
     const Continents = [ /* 상태 색상 표기 */
-        { key: 1, value: '대기', color: '#ADD8E6' },
-        { key: 2, value: '진행중', color: '#FFD700' },
-        { key: 3, value: '완료', color: '#90EE90' },
+        { key: 1, value: '대기', color: '#CCCCFF' },
+        { key: 2, value: '진행중', color: '#ADD8E6' },
+        { key: 3, value: '완료', color: '#FFD700' },
         { key: 4, value: '이슈', color: '#FFC0CB' },
     ];
-
-    let today = new Date();
-    let year = today.getFullYear();
-    let month = ('0' + (today.getMonth() + 1)).slice(-2);
-    let day = ('0' + today.getDate()).slice(-2);
-    let dateString = year + '-' + month + '-' + day;
-
-    const content = [{
-        ProjectName: "First",
-        Date: dateString,
-        Name: "홍길동",
-        Title: task,
-        Content: memo,
-        Status: "",
-    }]
 
     const handleClose = () => {
         setShow(false);
@@ -93,7 +78,7 @@ function Today({ onClose, post }) {
     return (
         <>
             <Button style={{backgroundColor: '#7952B3', borderColor: '#734EAA', fontSize:'16px'}} onClick={handleShow}>
-                <i className="bi bi-pencil-square" aria-hidden="true"></i>
+                <i className="bi bi-pencil-square d-flex fs-5 justify-content-center" aria-hidden="true"></i>
             </Button>
             <div>
                 <Modal show={show} onHide={handleClose} centered size='lg'>

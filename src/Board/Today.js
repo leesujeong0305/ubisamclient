@@ -9,9 +9,9 @@ function Today({ onClose, post, selectedProjectName }) {
     const [selectValue, setSelectValue] = useState('');
 
     const Continents = [ /* 상태 색상 표기 */
-        { key: 1, value: '대기', color: '#ADD8E6' },
-        { key: 2, value: '진행중', color: '#FFD700' },
-        { key: 3, value: '완료', color: '#90EE90' },
+        { key: 1, value: '대기', color: '#CCCCFF' },
+        { key: 2, value: '진행중', color: '#ADD8E6' },
+        { key: 3, value: '완료', color: '#FFD700' },
         { key: 4, value: '이슈', color: '#FFC0CB' },
     ];
 
@@ -34,10 +34,12 @@ function Today({ onClose, post, selectedProjectName }) {
     const handleAdd = () => {
         // Logic to handle adding the task
         setTodoList();
+        if (selectValue === '이슈')
+            addKanBanList_DB();
         // Reset form and close modal
         setTask('');
         setMemo('');
-        setSelectValue('');
+        setSelectValue('대기');
         handleClose();
     };
 
@@ -70,6 +72,29 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
+    const addKanBanList_DB = () => {
+        return Axios.post(`http://localhost:8080/addKanBanList`, {
+            ProjectName: selectedProjectName,
+            Content: task,
+            Status: 'issue',
+            Order: 0,
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+            }
+        }).catch(error => {
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
+    };
+
     const handleSelectChange = (event) => {
         setSelectValue(event.target.value);
     }
@@ -83,7 +108,7 @@ function Today({ onClose, post, selectedProjectName }) {
     return (
         <>
             <Button style={{backgroundColor: '#5090CC', fontWeight:'bold', borderColor: '#3F72A2' }} onClick={handleShow}>
-                +
+                <i className="bi bi-plus-square d-flex fs-5 justify-content-center" aria-hidden="true"></i>
             </Button>
             <div>
                 <Modal show={show} onHide={handleClose} centered size='lg'>
