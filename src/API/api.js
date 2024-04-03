@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Axios 인스턴스 생성
 const api = axios.create({
-    baseURL: "http://192.168.0.202:5052"
+    baseURL: "http://192.168.0.202:8877"
 });
 
 api.interceptors.request.use(
@@ -31,7 +31,7 @@ api.interceptors.response.use(
             const refreshToken = localStorage.getItem("refreshToken");
 
             // 리프레시 토큰으로 새 액세스 토큰을 요청합니다.
-            const response = await axios.post("http://192.168.0.202:5052/refresh", {
+            const response = await axios.post("http://192.168.0.202:8877/refresh", {
                 refreshToken
             });
 

@@ -14,7 +14,7 @@ export const getNewRefreshToken = async () => {
     }
 
     try {
-        const response = await Axios.post("http://192.168.0.202:5052/refresh", {
+        const response = await Axios.post("http://192.168.0.202:8877/refresh", {
             refreshToken,
         });
     

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function MainPlus() {
     const getAccessToken = () => {
-        axios.delete(`http://192.168.0.202:5052/logouts`)
+        axios.delete(`http://192.168.0.202:8877/logouts`)
         .then(response => {
             if (response.status === 204)
                 console.log(response.data); // 서버로부터의 응답 처리

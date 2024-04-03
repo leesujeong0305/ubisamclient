@@ -45,7 +45,7 @@ function Board() {
 
     const updatePrjStatus = async (prjName) => {
         const token = localStorage.getItem('userToken');
-        await Axios.post(`http://192.168.0.202:5052/UpdateUserImpPrj`, {
+        await Axios.post(`http://192.168.0.202:8877/UpdateUserImpPrj`, {
             projectName: prjName, // 나중에 변경
             userName: token,
         }, {
@@ -67,7 +67,7 @@ function Board() {
     }
 
     const getProject = async (data) => {
-        return await Axios.get(`http://192.168.0.202:5052/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
+        return await Axios.get(`http://192.168.0.202:8877/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
             headers: {
                 "Content-Type": "application/json",
                 withCredentials: true,

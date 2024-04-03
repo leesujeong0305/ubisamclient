@@ -58,7 +58,7 @@ function Layout() {
 
     try {
       const accessToken = localStorage.getItem("accessToken");
-      await api.get("http://192.168.0.202:5052/token", {
+      await api.get("http://192.168.0.202:8877/token", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -80,7 +80,7 @@ function Layout() {
     }
 
     try {
-        const response = await api.post("http://192.168.0.202:5052/refresh", {
+        const response = await api.post("http://192.168.0.202:8877/refresh", {
             refreshToken,
         });
         

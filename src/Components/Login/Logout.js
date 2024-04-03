@@ -25,7 +25,7 @@ function Logout() {
         }
 
         Axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-        Axios.post(`http://192.168.0.202:5052/logout`, {
+        Axios.post(`http://192.168.0.202:8877/logout`, {
             refreshToken
         }, {
             headers: {
