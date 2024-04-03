@@ -23,23 +23,47 @@ export default function MainUI() {
     setPassword(password);
 
     Login(userId, password).then(result => {
-      if (result === "success") {
+      if (result.status === "success") {
+        const {accessToken, refreshToken } = result.data;
         // 성공 시의 로직 처리  
-        console.log(`Login successful ${result}`);
-        dispatch(login());
-        parseName(Cookies.get('accessToken'));
-        //const userInfo = {mail:result.user.user_mail, name:result.user.name, rank:result.user.rank}
-        //dispatch(updateUserInfo(userInfo));
-        
-        //user Info 가져오기
-        fetchData();
+        console.log(`Login successful: ${result}`);
+        try {
+          
+          //console.log("Access data:", result.data.accessToken);
+          
+          //const accessToken = Cookies.get('accessToken');
+          //const accessToken = result.data.accessToken;
+          //console.log("Access Token:", accessToken);
+    
+          if (!accessToken || (accessToken.match(/\./g) || []).length !== 2) {
+            throw new Error("유효하지 않은 토큰입니다. 다시 로그인해 주세요.");
+          }
+
+          //Cookies.set('accessToken', accessToken, { path: '/' });
+          //Cookies.set('refreshToken', refreshToken, { path: '/' });
+          localStorage.setItem('accessToken', accessToken, { path: '/' });
+          localStorage.setItem('refreshToken', refreshToken, { path: '/' });
+
+          dispatch(login());
+    
+          parseName(accessToken);
+          // User info related logic
+          fetchData();
+        } catch (error) {
+          alert(error.message);
+          dispatch(logout());
+        }
       } else {
         // 실패 시의 로직 처리
         dispatch(logout());
       }
+    }).catch(error => {
+      // 추가적인 네트워크 에러 처리
+      console.error("Login process error:", error);
+      alert("로그인 프로세스 중 오류가 발생했습니다.");
+      dispatch(logout());
     });
   }
-
   const fetchData = async () => {
     try {
       const data = await UserInfo();
@@ -55,17 +79,24 @@ export default function MainUI() {
     }
 }
 
-  const parseName = (token) => {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+const parseName = (token) => {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  try {
     const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
+    
     const name = JSON.parse(jsonPayload);
-    console.log('이거임?',name);
+
     localStorage.setItem('userToken', name.name);
     localStorage.setItem('userEmailToken', name.id);
+  } catch (error) {
+    // JWT 디코딩 중에 에러가 발생한 경우
+    alert("토큰 분석 중 에러가 발생했습니다.");
+    console.error("Error parsing token:", error);
   }
+}
 
   // useEffect(() => {
   //   if (isAuthenticated) {

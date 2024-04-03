@@ -1,11 +1,12 @@
 import React from 'react'
 import Axios from '../API/AxiosApi'
+import api from '../API/api';
 
 function UserInfo(){
 
     const token = localStorage.getItem('userToken');
     const emailToken = localStorage.getItem('userEmailToken');
-    return Axios.get(`http://localhost:8080/getUserInfo?userEmail=${encodeURIComponent(emailToken)}&name=${encodeURIComponent(token)}`, { //get은 body없음
+    return api.get(`http://192.168.0.202:5052/getUserInfo?userEmail=${encodeURIComponent(emailToken)}&name=${encodeURIComponent(token)}`, { //get은 body없음
         headers: {
             "Content-Type": "application/json",
         }

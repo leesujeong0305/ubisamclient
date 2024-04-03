@@ -16,6 +16,11 @@ import MainKanBanBoard from './KanbanBoard/MainKanBanBoard';
 import LoadBoard from './Page/LoadBoard';
 import UserInfo from '../Models/UserInfo';
 import FileExplorer from './ProjectFile/FileExplorer';
+import StepStepMain from './Stepbar/StepStepMain';
+import StepIndicator from './Stepbar/StepIndicator';
+
+import Cookies from 'js-cookie';
+import api from '../API/api';
 
 
 function Board() {
@@ -30,6 +35,9 @@ function Board() {
     const [data, setData] = useState(false);
     const [kanban, setKanban] = useState(false);
     const [period, setPeriod] = useState(false);
+    const [status, setStatus] = useState(0);
+
+    const [loading, setLoading] = useState(true);
 
     const getProjectData = async (name) => {
         return await LoadBoard(name);
@@ -37,12 +45,13 @@ function Board() {
 
     const updatePrjStatus = async (prjName) => {
         const token = localStorage.getItem('userToken');
-        await Axios.post(`http://localhost:8080/UpdateUserImpPrj`, {
+        await Axios.post(`http://192.168.0.202:5052/UpdateUserImpPrj`, {
             projectName: prjName, // 나중에 변경
             userName: token,
         }, {
             headers: {
                 "Content-Type": "application/json",
+                withCredentials: true,
             }
         }).then(response => {
             if (response.status === 200) {
@@ -58,9 +67,10 @@ function Board() {
     }
 
     const getProject = async (data) => {
-        return await Axios.get(`http://localhost:8080/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
+        return await Axios.get(`http://192.168.0.202:5052/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
             headers: {
                 "Content-Type": "application/json",
+                withCredentials: true,
             }
         }).then((res) => {
             //console.log('getProject', { res });
@@ -95,6 +105,7 @@ function Board() {
     const fetchData = async () => {
         try {
             const data = await UserInfo();
+            if (data === undefined) return;
             if (!data) throw new Error("No data returned from UserInfo");
             const [periodData, projectData] = await Promise.all([
                 updatePeriod(data),
@@ -114,6 +125,7 @@ function Board() {
     const allData = async () => {
         try {
             const results = await fetchData();
+            if (results === undefined) return 'No Data';
             const user = results.userInfo;
             const selectedProject = results.periodData.find(periodData => periodData.text === user.impProject);
             if (selectedProject) {
@@ -121,6 +133,7 @@ function Board() {
                 setPeriod(selectedProject.period);
                 await setLoadBoard(results.projectData);
                 setSelectedProjectName(selectedProject.text);
+                setStatus(selectedProject.status);
                 return selectedProject;
             }
         } catch (error) {
@@ -144,7 +157,7 @@ function Board() {
 
     useLayoutEffect(() => {
         allData();
-
+        setLoading(false);
         // 페이지가 마운트될 때 Footer를 숨김
         toggleFooterVisibility(false);
         return () => {
@@ -153,6 +166,7 @@ function Board() {
         };
     }, []);
 
+    if (loading) return <div>로딩중</div>;
     return (
         <>
             <div className="my-3 ms-3 me-3">
@@ -190,8 +204,9 @@ function Board() {
                                 </ListGroup>
                             </Card>
                         </div>
-                        <div className="col">
-                            step 추가
+                        <div className="col mt-2">
+                            {/* <StepStepMain /> */}
+                            <StepIndicator status={status} />
                         </div>
                     </div>
                     <div className="col-md-3">
@@ -200,7 +215,7 @@ function Board() {
                     <div className="col-md-3">
                         <MainKanBanBoard projectName={selectedProjectName} kanban={kanban} />
                     </div>
-                    <div className="col-md">
+                    <div className="col-md-3">
                         <FileExplorer selectedProjectName={selectedProjectName} />
                     </div>
                 </div>

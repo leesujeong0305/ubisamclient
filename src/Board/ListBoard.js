@@ -16,17 +16,24 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData,
     const columns = [
         { name: "#", width: "5%" },
         { name: "날짜", width: "10%" },
-        { name: "이 름", width: "10%" },
-        { name: "Title", width: "20%" },
-        { name: "To Do List", width: "40%" },
-        { name: "상태", width: "10%" },];
+        { name: "이 름", width: "5%" },
+        { name: "Title", width: "25%" },
+        { name: "To Do List", width: "" },
+        { name: "상태", width: "7%" },];
 
     const [selectvalue, setSelectvalue] = useState(null);
     const [show, setShow] = useState(false);
+    const [selectRowIndex, setSelectRowIndex] = useState(false);
+
     const handleRowClick = (row) => {
-        console.log('클릭된 행의 데이터:', row);
+        console.log('클릭된 행의 데이터:', row, row.Index);
         setSelectvalue(row);
+        setSelectRowIndex(row.Index);
     }
+
+    const getRowStyle = (index) => {
+        return index === selectRowIndex ? { backgroundColor: '#fff3cd' } : {}; // 클릭된 행의 배경색을 lightblue로 설정, 아니면 기본색
+      };
 
     // 상태에 따른 색상을 찾는 함수
     const findColorById = (id) => {
@@ -57,7 +64,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData,
             </div>
 
             <table className="table table-striped table-hover border-primary table-fixed">
-                <thead className="text-dark list-Title" >
+                <thead className="list-Title">
                     <tr>
                         {columns.map((col, index) => (
                             <th key={index} style={{ width: col.width }}>{col.name}</th>
@@ -66,7 +73,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData,
                 </thead>
                 <tbody className=''>
                     {posts.map((row, index) => (
-                        <tr key={index + 1} onClick={() => handleRowClick(row)}>
+                        <tr key={index + 1} onClick={() => { handleRowClick(row); }} style={ getRowStyle(row.Index) }>
                             <td type="checkbox">
                                 {" "}
                                 {(index + 1) + (postsPerPage * pageNumber)}

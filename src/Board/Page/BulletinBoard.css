@@ -1,11 +1,11 @@
 .nav-container {
-    background-color: #E0EFFF;
+    background-color: #375A7F;
     border-radius: 20px;
     border: 1px solid #E0E6FF;
     display: flex;
     overflow: hidden;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: -40px;
+    
   }
   
   .nav-tab {
@@ -13,27 +13,26 @@
     border: none;
     padding: 10px 20px;
     cursor: pointer;
-    color: #333;
-    
+    color: #F8F9FA;
   }
 
   .tab-button {
     display: flex;
-    background: #bda0f3;
+    background: #3498DB;
     border: none;
     border-radius: 20px;
     padding: 10px 20px;
     margin: auto;
-    box-Shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #F8F9FA;
   }
   
   .nav-tab:hover {
-    background-color: #CCE0FF;
+    background-color: #2C81BA;
     border-radius: 20px;
   }
 
   .nav-context {
-    justify-content: space-between; 
+    justify-content: space-between;
   }
   .list-Title {
     background-Color: #5090CC;

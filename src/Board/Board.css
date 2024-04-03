@@ -1,5 +1,7 @@
 body {
   color: black !important;
+  width: 100%;
+  min-width: 1600px;
 }
 .row {
   margin-bottom: 20px;
@@ -9,20 +11,8 @@ body {
     max-width: none; /* Override Bootstrap's max-width */
   }
   
-  .table-fixed {
-    width: 100%;
-    table-layout: fixed;
-  }
 
-  .table-fixed th,
-.table-fixed td {
-  text-align: center;
-  vertical-align: middle;
-}
 
-.table-fixed td:nth-child(5) {
-  text-align: left;
-}
 
   .stats-card {
     background-color: #FFBB64;

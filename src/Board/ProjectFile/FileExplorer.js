@@ -8,7 +8,7 @@ function FileItem({ name, created, size, selectedProjectName, succ, setSucc }) {
     
 
     const handleDownloadFile = (filename) => {
-        const url = `http://localhost:8080/download/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`;
+        const url = `http://192.168.0.202:5052/download/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`;
     
         // Axios를 사용하여 파일을 다운로드하는 GET 요청을 보냅니다.
         // `responseType: 'blob'`을 설정하여 파일 데이터를 Blob 형태로 받습니다.
@@ -30,7 +30,7 @@ function FileItem({ name, created, size, selectedProjectName, succ, setSucc }) {
     }
 
     const handleDeleteFile = (filename) => {
-        Axios.delete(`http://localhost:8080/deleteFile/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`)
+        Axios.delete(`http://192.168.0.202:5052/deleteFile/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`)
         .then((response) => {
             console.log(response.data.message);
             // 여기에서 UI 업데이트 로직을 추가할 수 있습니다. 예를 들어, 삭제된 파일을 목록에서 제거할 수 있습니다.
@@ -93,8 +93,13 @@ function FileExplorer({ selectedProjectName }) {
 
     const Load = async () => {
         const res = await LoadFiles();
-        console.log('Load', res);
+        //console.log('Load', res);
 
+        if (res === undefined) {
+            alert(`프로젝트 데이터가 없습니다.`);
+            return;
+        } 
+        ////왜 accessToken을 가져오지?
         const newItems = res.map((item, index) => ({
             key: index,
             name: item.filename,
@@ -103,15 +108,15 @@ function FileExplorer({ selectedProjectName }) {
         }));
 
         console.log(newItems);
-        // 새 항목으로 아이템 상태를 업데이트합니다.
+        //새 항목으로 아이템 상태를 업데이트합니다.
         setItems(newItems);
     };
 
     const LoadFiles = async () => {
         try {
-            const response = await Axios.get(`http://localhost:8080/getFile?Project=${encodeURIComponent(selectedProjectName)}`);
+            const response = await Axios.get(`http://192.168.0.202:5052/getFile?Project=${encodeURIComponent(selectedProjectName)}`);
             return response.data;
-            //setItems(response.data); // 가져온 데이터로 상태 업데이트
+            setItems(response.data); // 가져온 데이터로 상태 업데이트
 
 
         } catch (error) {
@@ -142,7 +147,7 @@ function FileExplorer({ selectedProjectName }) {
         console.log('file', dateTime);
         try {
             // fetch API를 사용하여 서버로 파일을 보냅니다.
-            const response = await Axios.post(`http://localhost:8080/uploadFile?Project=${encodeURIComponent(projectName)}&dateTime=${encodeURIComponent(dateTime)}`, formData, {
+            const response = await Axios.post(`http://192.168.0.202:5052/uploadFile?Project=${encodeURIComponent(projectName)}&dateTime=${encodeURIComponent(dateTime)}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data', // 이 행을 제거하거나 자동으로 설정되게 둡니다.
                 }
@@ -173,7 +178,7 @@ function FileExplorer({ selectedProjectName }) {
         <div className="file-explorer">
             <div className="file-explorer-header">
                 <h2 className="file-explorer-title">프로젝트 파일 공유</h2>
-                <button className="add-button" onClick={handleAddItem}>파일 추가</button>
+                <button className="add-button" onClick={handleAddItem}>➕</button>
                 <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }}
                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
            application/vnd.ms-excel,

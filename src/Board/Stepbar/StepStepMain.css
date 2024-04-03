@@ -1,0 +1,100 @@
+.main-step {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .step-progress-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .step {
+    text-align: center;
+    padding: 10px;
+    flex-basis: 22%;
+    position: relative;
+    background-color: #cccccc; /* Default color for steps */
+  }
+  
+  .step-title {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .step-description {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .completed {
+    background-color: #2ecc71;
+    color: white;
+  }
+  
+  .current {
+    background-color: #f1c40f;
+    color: black;
+    border-top: 3px solid #00f;
+  }
+  
+  .arrow-down {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #f1c40f;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .step-button {
+    padding: 10px 20px;
+    font-size: 10px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #2980b9;
+  }
+  
+  button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    .main-step {
+      padding: 10px;
+    }
+  
+    .step-title,
+    .step-description {
+      font-size: 14px;
+    }
+  
+    .buttons button {
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+  }
+

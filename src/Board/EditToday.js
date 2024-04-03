@@ -3,7 +3,7 @@ import Axios from '../API/AxiosApi';
 import { Modal, Button, Form } from 'react-bootstrap';
 import DeleteToday from './DeleteToday';
 
-function Today({ onClose, post }) {
+function Today({ onClose, post, selectedProjectName }) {
     const [show, setShow] = useState(false);
     const [task, setTask] = useState("");
     const [memo, setMemo] = useState('');
@@ -37,11 +37,11 @@ function Today({ onClose, post }) {
     };
 
     const setTodoList = () => {
-        return Axios.post(`http://localhost:8080/UpdateToDoList`, {
+        const name = localStorage.getItem('userToken');
+        return Axios.post(`http://192.168.0.202:5052/UpdateToDoList`, {
             Index: index,
-            ProjectName: "First",
-            //Date: dateString,
-            //Name: "홍길동",
+            ProjectName: selectedProjectName,
+            Name: name,
             Title: task,
             Content: memo,
             Status: selectValue,

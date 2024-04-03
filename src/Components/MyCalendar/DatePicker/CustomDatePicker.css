@@ -16,13 +16,15 @@
 }
 
 .search-button {
-  background-color: purple;
+  display: flex;
+  background-color: #67A67F;
   border: none;
   color: white;
-  padding: 8px 16px;
+  padding: 5px 16px;
+  margin: 0px 10px 0px 10px;
   border-radius: 4px;
-  margin-left: 8px;
   cursor: pointer;
+  font-size: 1rem;
 }
 
 /* 검색 결과 스타일링 */

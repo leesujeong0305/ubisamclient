@@ -1,0 +1,101 @@
+.step-indicator-container {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+  }
+
+  .title-bar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #e0a899;
+    padding: 5px;
+    text-align: center;
+    justify-content: center;
+    border: 1px solid none;
+    border-radius: 10px;
+    
+  }
+  
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 8px;
+    margin: 0 auto;
+  }
+
+  .steps {
+    display: flex;
+    position: relative;
+  }
+  
+  
+  .step-icon {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #0f62fe;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    background-color: #fff;
+    color: #0f62fe;
+    font-size: 0.9em;
+  }
+  
+  
+
+  .step-icon.completed {
+    background-color: #72B04C; /* Green background for completed steps */
+    color: #0F18FF;
+  }
+
+  
+  .step.current .step-icon {
+    background-color: #6ca6f3;
+    color: #fff;
+  }
+  
+  .step-line {
+    height: 2px;
+    background-color: #0f62fe;
+    flex-grow: 1;
+    position: absolute;
+    top: 15px;
+    z-index: -1;
+  }
+  
+  .step + .step .step-line {
+    width: calc(100% - 30px);
+    left: calc(50% - 15px);
+  }
+  
+  .step-label {
+    text-align: center;
+    color: black;
+  }
+  
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    width: 100%;
+
+  }
+  
+  .buttons-container button {
+    padding: 5px 15px;
+    font-size: 1.3rem;
+    border: none;
+    background-color: transparent;
+    color: black;
+    cursor: pointer;
+  }
+  
+  .buttons-container button:disabled {
+    background-color: transparent;
+    color: lightgray;
+    cursor: default;
+  }

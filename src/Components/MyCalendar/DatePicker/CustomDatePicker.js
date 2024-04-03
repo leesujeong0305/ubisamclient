@@ -75,6 +75,7 @@ const CustomDatePicker = ( {name, boardData} ) => {
     const handleDateChangeRaw = (e) => {
         e.preventDefault();
         console.log('handleDateChangeRaw',e.target.value);
+        setIsReadyForExport(false);
       };
 
          // 검색 버튼 클릭 이벤트 핸들러
@@ -169,7 +170,7 @@ const CustomDatePicker = ( {name, boardData} ) => {
             <DatePicker
                 locale="ko" // locale 속성을 'ko'로 설정합니다.
                 selected={startDate}
-                onChange={date => setStartDate(date)}
+                onChange={date => {setStartDate(date); setIsReadyForExport(false); }}
                 selectsStart
                 startDate={startDate}
                 endDate={endDate}
@@ -180,7 +181,6 @@ const CustomDatePicker = ( {name, boardData} ) => {
                 locale="ko" // locale 속성을 'ko'로 설정합니다.
                 selected={endDate}
                 onChange={date => setEndDate(date)}
-                onChangeRaw={handleDateChangeRaw}
                 selectsEnd
                 startDate={startDate}
                 endDate={endDate}
@@ -189,7 +189,7 @@ const CustomDatePicker = ( {name, boardData} ) => {
             />
             <div>
             
-            {isReadyForExport ? <ExcelExport data={serchData} name={name} /> : <button onClick={handleExportClick}>Serch</button>}
+            {isReadyForExport ? <ExcelExport data={serchData} name={name} /> : <button className='search-button' onClick={handleExportClick}>📄</button>}
         </div>
             {/* 검색 결과를 보여주는 부분 */}
             <br></br>

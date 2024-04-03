@@ -48,5 +48,26 @@ npm install xlsx file-saver
 npm install react-datepicker
 npm install date-fns // 한글 폰트
 
+//24.04.03 프로젝트 배포
+npm run build
+- 진행하게 되면 bulid 폴더 생성됨
+- bulid 폴더를 서버로 이동
+
+
+서버쪽에서는 이 부분을 app.listen... 위에 추가
+
+// 정적 파일 제공을 위한 경로 설정
+app.use(express.static(path.join(__dirname, 'build')));
+
+// 모든 요청을 index.html로 리다이렉트
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+app.get('/', function(req, res) {
+  res.send('hello world');
+});
+
+
 //////////////////////////////////
 단축 rfce //js 기본 작성해줌

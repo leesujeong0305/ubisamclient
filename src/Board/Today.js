@@ -45,7 +45,7 @@ function Today({ onClose, post, selectedProjectName }) {
 
     const setTodoList = () => {
         const name = localStorage.getItem('userToken');
-        return Axios.post(`http://localhost:8080/ToDoList`, {
+        return Axios.post(`http://192.168.0.202:5052/ToDoList`, {
 
             ProjectName: selectedProjectName,
             Date: dateString,
@@ -73,7 +73,7 @@ function Today({ onClose, post, selectedProjectName }) {
     }
 
     const addKanBanList_DB = () => {
-        return Axios.post(`http://localhost:8080/addKanBanList`, {
+        return Axios.post(`http://192.168.0.202:5052/addKanBanList`, {
             ProjectName: selectedProjectName,
             Content: task,
             Status: 'issue',

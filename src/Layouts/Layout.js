@@ -18,73 +18,98 @@ import AdminPage from '../Components/MainView/AdminPage';
 
 import './Layout.css'; // 스타일 시트 임포트
 import MyCalenderApp from '../Components/MyCalendar/MyCalenderApp';
+import api from '../API/api';
 
 function Layout() {
   const { isAuthenticated } = useSelector(state => state.auth);
   const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
   //const { updataBoard } = useSelector(state => state.)
   const dispatch = useDispatch();
-  //const toggleFooterVisibility = useFooterVisibilityUpdate();
   
-  const CheckAuthToken = async () => {
-    const access = Cookies.get('accessToken');
-    if (access === undefined) {
-      return
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 추적하는 상태 추가
+
+  const handleLogout = () => {
+    // 로그아웃 로직을 구현하세요.
+    console.log("로그아웃 처리");
+    setIsLoggedIn(false);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    // 사용자를 로그인 페이지로 리다이렉트할 수 있습니다.
+  };
+
+  const initializeAuthState = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken === undefined || accessToken === null) {
+      handleLogout();
+      setIsLoggedIn(false);
+      if (isAuthenticated)
+      return;
     }
-    
-    Axios.defaults.headers.common.Authorization = `Bearer ${access}`;
-    //const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    verifyToken();
+  };
+
+  const verifyToken = async () => {
+    console.log("1111.",isLoggedIn);
+    // 컴포넌트가 마운트될 때 토큰 유효성 검사를 시도합니다.
+    if (isLoggedIn === false) {
+        alert("로그인 부터 해주세요");
+        return;
+      }
+
     try {
-      const response = await Axios.get(`http://localhost:8080/token`, {
-        withCredentials: true,
+      const accessToken = localStorage.getItem("accessToken");
+      await api.get("http://192.168.0.202:5052/token", {
         headers: {
-          
-          "Content-Type": "application/json",
-        }
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
-      console.log(response);
-      if (response.status === 204 || response.status === 200) {
-        return "success";
-      } else {
-        console.log(response);
-        //refreshToken이 만료된것으로 판단 Token제거
-        Cookies.remove('accessToken'); //혹시 cookie 삭제되지 않은게 있을까봐 넣어줌(없어도 잘됨)
-        Cookies.remove('refreshToken');
-        localStorage.removeItem('userToken');
-        alert(`로그인 시간 만료. 다시 로그인 해주세요`);
-        return null;
-      }
-      
     } catch (error) {
-      console.log({error});
-      if (error.response.status === 403) {
-          alert(`${error.response.data.message}`);
-      }
-      return null;
+      console.error("토큰 검증 실패", error);
+      // 여기서 리프레시 토큰으로 새 액세스 토큰을 요청합니다.
+      refreshToken();
+    }
+  };
+
+  const refreshToken = async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    // 리프레시 토큰이 없는 경우 즉시 함수를 종료합니다.
+    if (!refreshToken) {
+        console.log("리프레시 토큰이 없습니다. 로그인이 필요합니다.");
+        // 필요한 추가 로직을 여기에 구현하세요.
+        return;
     }
 
+    try {
+        const response = await api.post("http://192.168.0.202:5052/refresh", {
+            refreshToken,
+        });
+        
+        const { accessToken } = response.data;
+        localStorage.setItem("accessToken", accessToken);
+        setIsLoggedIn(true); // 로그인 상태 업데이트
+        console.log("새 액세스 토큰이 발급되었습니다.");
+    } catch (error) {
+        console.error("액세스 토큰 재발급 실패", error);
+        handleLogout();
+    }
+};
+
+
+useEffect(() => {
+  // 로그인 상태 확인 및 초기 인증 상태 설정
+  const storedRefreshToken = localStorage.getItem("refreshToken");
+  if (storedRefreshToken) {
+    setIsLoggedIn(true);
+    dispatch(login('LOGIN'));
   }
+}, []);
 
-  // useEffect(() => {
-  //   // 페이지가 마운트될 때 Footer를 숨김
-  //   toggleFooterVisibility(false);
-  //   return () => {
-  //     // 페이지가 언마운트될 때 Footer를 다시 표시
-  //     toggleFooterVisibility(true);
-  //   };
-
-  // });
-
-  useEffect(() => {
-    const initializeAuthState = async () => {
-      const userInfo = await CheckAuthToken();
-      if (userInfo === 'success') {
-        dispatch(login('LOGIN'));
-        //dispatch(updateUserInfo());
-      }
-    };
+// 로그인 상태 변경을 추적하는 useEffect
+useEffect(() => {
+  if (isLoggedIn) {
     initializeAuthState();
-  }, [dispatch]);
+  }
+}, [isLoggedIn]);
 
   
   //<Footer />
@@ -92,7 +117,6 @@ function Layout() {
     <div id="layout-container">
       <BrowserRouter>
         <Header />
-        
         <Routes>
           <Route path="/" element={isAuthenticated ? <Board /> : <Main /> } />
           <Route path='/UserList' element={ <UserList /> } />

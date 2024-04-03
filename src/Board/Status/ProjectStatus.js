@@ -69,7 +69,7 @@ const ProjectStatus = ({ boardData }) => {
   };
 
   useEffect(() => {
-    console.log('업데이트', boardData);
+    //console.log('업데이트', boardData);
     loadStep(boardData);
     loadTap(boardData);
 
@@ -78,7 +78,7 @@ const ProjectStatus = ({ boardData }) => {
 
   return (
     <>
-      <div className="stats-container mb-3">
+      <div className="stats-container mb-2 flex-wrap">
         {tabStep.map((card, index) => (
           <div key={index} className="stats-card" style={{ backgroundColor: card.color }}>
             <div className="card-title">{card.title}</div>
@@ -87,7 +87,7 @@ const ProjectStatus = ({ boardData }) => {
           </div>
         ))}
       </div>
-      <div className="stats-container mb-3 flex-wrap">
+      <div className="stats-container mb-2 flex-wrap">
         {tabData.map((card, index) => (
           <div key={index} className="stats-card" style={{ backgroundColor: card.color }}>
             <div className="card-title">{card.title}</div>
