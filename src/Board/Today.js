@@ -26,7 +26,13 @@ function Today({ onClose, post, selectedProjectName }) {
         onClose();
     }
 
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        if (selectedProjectName === 'No Data') {
+            alert('프로젝트를 먼저 선택해주세요');
+            return;
+        }
+        setShow(true);
+    }
 
     const handleTaskChange = (e) => setTask(e.target.value);
     const handleMemoChange = (e) => setMemo(e.target.value);
@@ -45,7 +51,7 @@ function Today({ onClose, post, selectedProjectName }) {
 
     const setTodoList = () => {
         const name = localStorage.getItem('userToken');
-        return Axios.post(`http://192.168.0.202:8877/ToDoList`, {
+        return Axios.post(`http://14.58.108.70:8877/ToDoList`, {
 
             ProjectName: selectedProjectName,
             Date: dateString,
@@ -73,7 +79,7 @@ function Today({ onClose, post, selectedProjectName }) {
     }
 
     const addKanBanList_DB = () => {
-        return Axios.post(`http://192.168.0.202:8877/addKanBanList`, {
+        return Axios.post(`http://14.58.108.70:8877/addKanBanList`, {
             ProjectName: selectedProjectName,
             Content: task,
             Status: 'issue',
@@ -146,11 +152,11 @@ function Today({ onClose, post, selectedProjectName }) {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancel
-                        </Button>
                         <Button variant="primary" onClick={handleAdd}>
                             Add
+                        </Button>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Cancel
                         </Button>
                     </Modal.Footer>
                 </Modal>

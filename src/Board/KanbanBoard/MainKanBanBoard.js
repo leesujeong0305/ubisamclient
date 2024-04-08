@@ -86,7 +86,7 @@ function MainKanBanBoard({ projectName, kanban }) {
     };
 
     const loadKanBanList_DB = async () => {
-        return await Axios.get(`http://192.168.0.202:8877/loadKanBanList?Project=${encodeURIComponent(projectName)}`, { //get은 body없음
+        return await Axios.get(`http://14.58.108.70:8877/loadKanBanList?Project=${encodeURIComponent(projectName)}`, { //get은 body없음
             headers: {
                 "Content-Type": "application/json",
             }
@@ -107,7 +107,7 @@ function MainKanBanBoard({ projectName, kanban }) {
     }
 
     const addKanBanList_DB = (task) => {
-        return Axios.post(`http://192.168.0.202:8877/addKanBanList`, {
+        return Axios.post(`http://14.58.108.70:8877/addKanBanList`, {
             ProjectName: projectName,
             Content: task.text,
             Status: task.status,
@@ -131,7 +131,7 @@ function MainKanBanBoard({ projectName, kanban }) {
 
     const updataKanBanList_DB = (task, status) => {
         console.log('updataKanBanList', projectName);
-        return Axios.post(`http://192.168.0.202:8877/updataKanBanList`, {
+        return Axios.post(`http://14.58.108.70:8877/updataKanBanList`, {
             Project: projectName,
             Content: task.text,
             Status: status,

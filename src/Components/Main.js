@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './Main.css'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Login from './Login/Login'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login, logout, updateUserInfo } from '../Redux/Action';
 import Cookies from 'js-cookie';
 import UserInfo from '../Models/UserInfo';
@@ -24,17 +24,10 @@ export default function MainUI() {
 
     Login(userId, password).then(result => {
       if (result.status === "success") {
-        const {accessToken, refreshToken } = result.data;
+        const { accessToken, refreshToken } = result.data;
         // 성공 시의 로직 처리  
         console.log(`Login successful: ${result}`);
         try {
-          
-          //console.log("Access data:", result.data.accessToken);
-          
-          //const accessToken = Cookies.get('accessToken');
-          //const accessToken = result.data.accessToken;
-          //console.log("Access Token:", accessToken);
-    
           if (!accessToken || (accessToken.match(/\./g) || []).length !== 2) {
             throw new Error("유효하지 않은 토큰입니다. 다시 로그인해 주세요.");
           }
@@ -45,7 +38,6 @@ export default function MainUI() {
           localStorage.setItem('refreshToken', refreshToken, { path: '/' });
 
           dispatch(login());
-    
           parseName(accessToken);
           // User info related logic
           fetchData();
@@ -67,52 +59,36 @@ export default function MainUI() {
   const fetchData = async () => {
     try {
       const data = await UserInfo();
-        if (data) {
-          localStorage.setItem('userTeamToken', data.team);
-          localStorage.setItem('userRankToken', data.rank);
-          localStorage.setItem('userImpProjectToken', data.impProject);
-        }
-        console.log('진행완료', data);
+      if (data) {
+        localStorage.setItem('userTeamToken', data.team);
+        localStorage.setItem('userRankToken', data.rank);
+        localStorage.setItem('userImpProjectToken', data.impProject);
+      }
+      console.log('진행완료', data);
 
     } catch (error) {
-        console.error("Fetching project data failed:", error);
+      console.error("Fetching project data failed:", error);
     }
-}
-
-const parseName = (token) => {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  try {
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    
-    const name = JSON.parse(jsonPayload);
-
-    localStorage.setItem('userToken', name.name);
-    localStorage.setItem('userEmailToken', name.id);
-  } catch (error) {
-    // JWT 디코딩 중에 에러가 발생한 경우
-    alert("토큰 분석 중 에러가 발생했습니다.");
-    console.error("Error parsing token:", error);
   }
-}
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     if (isAdmin) {
-  //       navigate('/MainPlus'); // 관리자 로그인 시 리다이렉트
-  //       console.log("admin");
-  //     } else {
-  //       navigate('/Board'); // 일반 사용자 로그인 시 리다이렉트
-  //       console.log("user");
-  //     }
-  //   } else {
-  //     navigate('/'); // 비로그인 상태 시 로그인 페이지로 리다이렉트
-  //     console.log("not login");
-  //   }
-  // }, [isAuthenticated, isAdmin, navigate]);
+  const parseName = (token) => {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    try {
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
 
+      const name = JSON.parse(jsonPayload);
+
+      localStorage.setItem('userToken', name.name);
+      localStorage.setItem('userEmailToken', name.id);
+    } catch (error) {
+      // JWT 디코딩 중에 에러가 발생한 경우
+      alert("토큰 분석 중 에러가 발생했습니다.");
+      console.error("Error parsing token:", error);
+    }
+  }
 
   return (
     <>
@@ -141,12 +117,11 @@ const parseName = (token) => {
                       </div>
                       <div className="mb-4">
                         <div className='mb-2' style={{ color: 'black' }}>비밀번호</div>
-                        <input type="tel" className="form-control" placeholder='폰마지막4자리'
-                          value={password}
+                        <input type="password" className="form-control pass" placeholder='폰마지막4자리'
+                          value={password} pattern='[0-9]+' autoComplete="off"
                           onChange={(e) => setPassword(e.target.value)}></input>
                       </div>
                       <Link to={'/Signup'} style={{ display: 'flex', justifyContent: 'right', textDecoration: 'none', marginRight: '20px' }}>회원가입</Link>
-                      <Link to={'/Board'}>내용추가(임시)</Link>
                       <p />
                       <p className="mb-3">
                         <button className='btn btn-primary w-100' type='buttn' onClick={loginSumit}>로그인</button>

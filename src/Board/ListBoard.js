@@ -50,16 +50,23 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData,
 
     };
 
+    const handleClick = () => {
+        if (selectedProjectName === 'No Data') {
+            alert('프로젝트를 먼저 선택해주세요');
+            return;
+        }
+    }
+
     return (
         <div>
             <div className='nav-context'>
                 <div></div>
                 <div className='d-flex gap-2 mb-2'>
-                    <Today show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={null} 
-                        selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" />
+                    <Today show={show} onHide={() => setShow(false)} onClick={handleClick} onClose={handleDialogClose} post={null} 
+                        selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" /> 
                     <EditToday show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={selectvalue} 
                         selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" />
-                    <ExcelExport data={allposts} name={tab}/>
+                    <ExcelExport data={allposts} name={tab} selectedProjectName={selectedProjectName}/>
                 </div>
             </div>
 

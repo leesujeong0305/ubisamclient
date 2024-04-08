@@ -24,7 +24,7 @@ const Personnelinfo = ({ show, onHide }) => {
     //  연속으로 저장 버튼 클릭시
     const [isLoading, setIsLoading] = useState(false);
 
-    const Userinfo = useFetch("http://192.168.0.202:8877/ContactUs");
+    const Userinfo = useFetch("http://14.58.108.70:8877/ContactUs");
     const navigate = useNavigate();
 
     //console.log(Userinfo);
@@ -80,7 +80,7 @@ const Personnelinfo = ({ show, onHide }) => {
             //   }
             // }
 
-            axios.post(`http://192.168.0.202:8877/ContactUs`, {
+            axios.post(`http://14.58.108.70:8877/ContactUs`, {
                     //writer: props.user.userData._id,
                     name: Name,
                     position: Position,

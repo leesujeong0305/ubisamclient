@@ -35,6 +35,11 @@
     padding-right: 8rem;
     color: #ffffff;
   }
+
+  input[type='password']:focus:invalid {
+    box-shadow: 0 0 8px 0 red; /* 포커스 시 그림자 효과 */
+    opacity: 1 ;
+  }
   
 
   /*미디어쿼리 이용하여 모바일 화면에서도 줄 맞춤*/

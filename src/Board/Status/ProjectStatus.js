@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProjectStatus.css'; // Make sure to create a corresponding CSS file
 
-const ProjectStatus = ({ boardData }) => {
+const ProjectStatus = ({ boardData, pm }) => {
   const [tabStep, setTabStep] = useState([]);
   const [tabData, setTabData] = useState([]);
 
@@ -57,6 +57,7 @@ const ProjectStatus = ({ boardData }) => {
       if (!acc.find(tab => tab.title === Name)) {
         acc.push({
           title: Name,
+          pm: pm === Name ? true : false,
           value: boardData.filter(item => item.Name === Name).length,
           color: '#A7CCCB', // 모든 탭에 대해 동일한 색상 사용
         });

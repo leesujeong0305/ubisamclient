@@ -24,7 +24,7 @@ const MyCalenderApp = () => {
 
   const getPersnalBoard_DB = async () => {
     const name = localStorage.getItem('userToken');
-    return await Axios.get(`http://192.168.0.202:8877/boardPersnal?Name=${name}`, { //get은 body없음
+    return await Axios.get(`http://14.58.108.70:8877/boardPersnal?Name=${name}`, { //get은 body없음
       headers: {
         "Content-Type": "application/json",
       }

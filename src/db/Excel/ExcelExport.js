@@ -4,10 +4,22 @@ import { saveAs } from 'file-saver';
 //import './Excel-Export.css'
 import { Button } from 'react-bootstrap';
 
-function ExcelExport( { data, name } ) {
+function ExcelExport( { data, name, selectedProjectName } ) {
     
     const handleExport = () => {
          // 새 워크북을 생성하고 워크시트를 추가합니다
+        
+        if (selectedProjectName === 'No Data') {
+            alert('프로젝트를 먼저 선택해주세요');
+            return;
+        }
+
+        if (data.length <= 0) {
+            alert('데이터가 없습니다.');
+            return;
+        }
+
+
         const wb = XLSX.utils.book_new();
         let newData = [];
         if (name === '전체')
@@ -25,14 +37,6 @@ function ExcelExport( { data, name } ) {
         }
 
         const ws = XLSX.utils.json_to_sheet(newData);
-
-        // JSON 데이터의 구조를 원하는 키 이름으로 매핑합니다
-        //   const newData = data.map(item => ({
-        //     "Index": item.userId,
-        //     "날짜": item.id,
-        //     "이름": item.title,
-        //     "Content": item.body.replace(/\n/g, " ") // Replace line breaks with spaces, if necessary
-        //   }));
     
         // 워크시트를 워크북에 추가합니다
         //함수는 JSON 배열을 행과 열이 있는 워크시트로 변환합니다. JSON 개체의 키는 워크시트의 첫 번째 행에 있는 헤더가 되고, 해당 값은 해당 헤더 아래 셀에 배치됩니다.
@@ -73,6 +77,5 @@ function ExcelExport( { data, name } ) {
         
     );
 };
-    
 
 export default ExcelExport

@@ -1,7 +1,7 @@
 import Axios from '../../API/AxiosApi';
 
 function LoadBoard(name) {
-    return Axios.post(`http://192.168.0.202:8877/Board`, {
+    return Axios.post(`http://14.58.108.70:8877/Board`, {
         projectName: name, // 나중에 변경
     }, {
         headers: {

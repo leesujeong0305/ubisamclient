@@ -38,6 +38,7 @@ function Board() {
     const [status, setStatus] = useState(0);
 
     const [loading, setLoading] = useState(true);
+    const [pm, setPM] = useState('');
 
     const getProjectData = async (name) => {
         return await LoadBoard(name);
@@ -45,7 +46,7 @@ function Board() {
 
     const updatePrjStatus = async (prjName) => {
         const token = localStorage.getItem('userToken');
-        await Axios.post(`http://192.168.0.202:8877/UpdateUserImpPrj`, {
+        await Axios.post(`http://14.58.108.70:8877/UpdateUserImpPrj`, {
             projectName: prjName, // 나중에 변경
             userName: token,
         }, {
@@ -66,8 +67,9 @@ function Board() {
         });
     }
 
+    //pm 별표표시는 내 PC에 있어서 확인 위해 여기만 localhost로 변경하면됨
     const getProject = async (data) => {
-        return await Axios.get(`http://192.168.0.202:8877/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
+        return await Axios.get(`http://14.58.108.70:8877/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
             headers: {
                 "Content-Type": "application/json",
                 withCredentials: true,
@@ -80,6 +82,7 @@ function Board() {
                     text: item.ProjectName,
                     period: item.Period,
                     status: item.Status,
+                    pm : item.PM
                 }));
                 setSelectedActionText(dataRow);
                 return dataRow;
@@ -129,7 +132,7 @@ function Board() {
             const user = results.userInfo;
             const selectedProject = results.periodData.find(periodData => periodData.text === user.impProject);
             if (selectedProject) {
-
+                setPM(selectedProject.pm);
                 setPeriod(selectedProject.period);
                 await setLoadBoard(results.projectData);
                 setSelectedProjectName(selectedProject.text);
@@ -210,7 +213,7 @@ function Board() {
                         </div>
                     </div>
                     <div className="col-md-3">
-                        <ProjectStatus boardData={loadBoard} />
+                        <ProjectStatus boardData={loadBoard} pm={pm} />
                     </div>
                     <div className="col-md-3">
                         <MainKanBanBoard projectName={selectedProjectName} kanban={kanban} />

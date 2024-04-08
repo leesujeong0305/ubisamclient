@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 // login -> Login으로 변경(컴포넌트는 대문자로 시작해야 react-router-dom 사용가능)
 const Login = async (email, password) => {
     
-    return await Axios.post(`http://192.168.0.202:8877/login`, {
+    return await Axios.post(`http://14.58.108.70:8877/login`, {
         email: email,
         password: password,
     }, {

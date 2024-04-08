@@ -25,7 +25,7 @@ function Logout() {
         }
 
         Axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-        Axios.post(`http://192.168.0.202:8877/logout`, {
+        Axios.post(`http://14.58.108.70:8877/logout`, {
             refreshToken
         }, {
             headers: {
@@ -46,7 +46,7 @@ function Logout() {
 
     return (
         <div >
-            <button className='logout-button' type='button' onClick={handleLogout}>로그아웃</button>
+            <button className='logout-button'  onClick={handleLogout}>로그아웃</button>
         </div>
     )
 }

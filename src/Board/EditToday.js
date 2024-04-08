@@ -22,23 +22,34 @@ function Today({ onClose, post, selectedProjectName }) {
         onClose();
     }
 
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        if (selectedProjectName === 'No Data') {
+            alert('프로젝트를 먼저 선택해주세요');
+            return;
+        }
+        setShow(true);
+    }
 
     const handleTaskChange = (e) => setTask(e.target.value);
     const handleMemoChange = (e) => setMemo(e.target.value);
 
     const handleAdd = () => {
+        const name = localStorage.getItem('userToken');
+        if (post.Name !== name) {
+            alert('다른 사람의 내용은 수정할수 없습니다');
+            return;
+        }
+
         // Logic to handle adding the task
-        setTodoList();
+        setTodoList(name);
         // Reset form and close modal
         setTask('');
         setMemo('');
         handleClose();
     };
 
-    const setTodoList = () => {
-        const name = localStorage.getItem('userToken');
-        return Axios.post(`http://192.168.0.202:8877/UpdateToDoList`, {
+    const setTodoList = (name) => {
+        return Axios.post(`http://14.58.108.70:8877/UpdateToDoList`, {
             Index: index,
             ProjectName: selectedProjectName,
             Name: name,
@@ -119,11 +130,11 @@ function Today({ onClose, post, selectedProjectName }) {
                         {/*<DeleteToday show={show} type="button" className="btn btn-outline-danger" post={post}>
                             삭제
                         </DeleteToday> */}
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancel
-                        </Button>
                         <Button variant="primary" onClick={handleAdd}>
                             Edit
+                        </Button>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Cancel
                         </Button>
                     </Modal.Footer>
                 </Modal>
