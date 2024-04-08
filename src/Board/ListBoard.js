@@ -57,47 +57,94 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData,
         }
     }
 
-    return (
-        <div>
-            <div className='nav-context'>
-                <div></div>
-                <div className='d-flex gap-2 mb-2'>
-                    <Today show={show} onHide={() => setShow(false)} onClick={handleClick} onClose={handleDialogClose} post={null} 
-                        selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" /> 
-                    <EditToday show={show} onHide={() => setShow(false)} onClose={handleDialogClose} post={selectvalue} 
-                        selectedProjectName={selectedProjectName} dialogClassName="custom-modal-size" />
-                    <ExcelExport data={allposts} name={tab} selectedProjectName={selectedProjectName}/>
-                </div>
-            </div>
+    // 말풍선 위치 상태
+  const [previewPos, setPreviewPos] = useState({ top: 0, left: 0 });
 
-            <table className="table table-striped table-hover border-primary table-fixed">
-                <thead className="list-Title">
-                    <tr>
-                        {columns.map((col, index) => (
-                            <th key={index} style={{ width: col.width }}>{col.name}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody className=''>
-                    {posts.map((row, index) => (
-                        <tr key={index + 1} onClick={() => { handleRowClick(row); }} style={ getRowStyle(row.Index) }>
-                            <td type="checkbox">
-                                {" "}
-                                {(index + 1) + (postsPerPage * pageNumber)}
-                            </td>
-                            <td>{row.Date}</td>
-                            <td>{row.Name}</td>
-                            <td className='truncate'>{row.Title}</td>
-                            <td className='truncate'>{row.Content}</td>
-                            <td>
-                                <div style={{ backgroundColor: findColorById(`${row.Status}`) }}>{row.Status}</div>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+  // 마우스 움직임에 따라 말풍선 위치 업데이트
+  const handleMouseMove = (e) => {
+    setPreviewPos({
+      top: e.clientY - 10, // 마우스 포인터 아래로 조금 떨어진 위치
+      left: e.clientX + 50, // 마우스 포인터의 가운데 정도에 위치
+    });
+  };
+
+    return (
+      <div>
+        <div className="nav-context">
+          <div></div>
+          <div className="d-flex gap-2 mb-2">
+            <Today
+              show={show}
+              onHide={() => setShow(false)}
+              onClick={handleClick}
+              onClose={handleDialogClose}
+              post={null}
+              selectedProjectName={selectedProjectName}
+              dialogClassName="custom-modal-size"
+            />
+            <EditToday
+              show={show}
+              onHide={() => setShow(false)}
+              onClose={handleDialogClose}
+              post={selectvalue}
+              selectedProjectName={selectedProjectName}
+              dialogClassName="custom-modal-size"
+            />
+            <ExcelExport
+              data={allposts}
+              name={tab}
+              selectedProjectName={selectedProjectName}
+            />
+          </div>
         </div>
-    )
+
+        <table className="table table-striped table-hover border-primary table-fixed">
+          <thead className="list-Title">
+            <tr>
+              {columns.map((col, index) => (
+                <th key={index} style={{ width: col.width }}>
+                  {col.name}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="">
+            {posts.map((row, index) => (
+              <tr
+                key={index + 1}
+                onClick={() => {
+                  handleRowClick(row);
+                }}
+                style={getRowStyle(row.Index)}
+              >
+                <td type="checkbox">
+                  {" "}
+                  {index + 1 + postsPerPage * pageNumber}
+                </td>
+                <td>{row.Date}</td>
+                <td>{row.Name}</td>
+                <td className="truncate">{row.Title}</td>
+                <td className="truncate">
+                  <div className="preview-container" onMouseMove={handleMouseMove}>
+                    {row.Content}
+                    <div className="preview" style={{ top: `${previewPos.top}px`, left: `${previewPos.left}px` }}>
+                        {row.Content}
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div
+                    style={{ backgroundColor: findColorById(`${row.Status}`) }}
+                  >
+                    {row.Status}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
 }
 
 export default ListBoard
