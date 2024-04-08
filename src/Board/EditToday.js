@@ -19,6 +19,12 @@ function Today({ onClose, post, selectedProjectName }) {
         { key: 4, value: '이슈', color: '#FFC0CB' },
     ];
 
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = ('0' + (today.getMonth() + 1)).slice(-2);
+    let day = ('0' + today.getDate()).slice(-2);
+    let dateString = year + '-' + month + '-' + day;
+
     const handleClose = () => {
         setShow(false);
         onClose();
@@ -59,8 +65,9 @@ function Today({ onClose, post, selectedProjectName }) {
 
     const setTodoList = (name) => {
         return Axios.post(`http://14.58.108.70:8877/UpdateToDoList`, {
-            Index: index,
+            Index: post.Key,
             ProjectName: selectedProjectName,
+            ChangeDate: dateString,
             Name: name,
             Title: task,
             Content: memo,

@@ -3,6 +3,7 @@ import Today from './Today';
 import EditToday from './EditToday';
 import ExcelExport from '../db/Excel/ExcelExport';
 import './ListBoard.css';
+import { Form } from 'react-bootstrap';
 
 function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, handleData, selectedProjectName }) {
 
@@ -14,13 +15,13 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
     ];
 
     const columns = [
-        { name: "#", width: "5%" },
+        { name: "#", width: "2%" },
         { name: "등록 날짜", width: "7%" },
         { name: "변경 날짜", width: "7%" },
         { name: "이 름", width: "5%" },
         { name: "Title", width: "25%" },
         { name: "To Do List", width: "" },
-        { name: "상태", width: "6%" },];
+        { name: "상태", width: "5%" },];
 
     const [selectvalue, setSelectvalue] = useState(null);
     const [show, setShow] = useState(false);
@@ -34,7 +35,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
 
     const getRowStyle = (index) => {
         return index === selectRowIndex ? { backgroundColor: '#fff3cd' } : {}; // 클릭된 행의 배경색을 lightblue로 설정, 아니면 기본색
-      };
+    };
 
     // 상태에 따른 색상을 찾는 함수
     const findColorById = (id) => {
@@ -59,92 +60,94 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
     }
 
     // 말풍선 위치 상태
-  const [previewPos, setPreviewPos] = useState({ top: 0, left: 0 });
+    const [previewPos, setPreviewPos] = useState({ top: 0, left: 0 });
 
-  // 마우스 움직임에 따라 말풍선 위치 업데이트
-  const handleMouseMove = (e) => {
-    setPreviewPos({
-      top: e.clientY - 10, // 마우스 포인터 아래로 조금 떨어진 위치
-      left: e.clientX + 50, // 마우스 포인터의 가운데 정도에 위치
-    });
-  };
+    // 마우스 움직임에 따라 말풍선 위치 업데이트
+    const handleMouseMove = (e) => {
+        setPreviewPos({
+            top: e.clientY - 10, // 마우스 포인터 아래로 조금 떨어진 위치
+            left: e.clientX + 50, // 마우스 포인터의 가운데 정도에 위치
+        });
+    };
 
     return (
-      <div>
-        <div className="nav-context">
-          <div></div>
-          <div className="d-flex gap-2 mb-2">
-            <Today
-              show={show}
-              onHide={() => setShow(false)}
-              onClick={handleClick}
-              onClose={handleDialogClose}
-              post={null}
-              selectedProjectName={selectedProjectName}
-              dialogClassName="custom-modal-size"
-            />
-            <EditToday
-              show={show}
-              onHide={() => setShow(false)}
-              onClose={handleDialogClose}
-              post={selectvalue}
-              selectedProjectName={selectedProjectName}
-              dialogClassName="custom-modal-size"
-            />
-            <ExcelExport
-              data={allposts}
-              name={tab}
-              selectedProjectName={selectedProjectName}
-            />
-          </div>
-        </div>
+        <div>
+            <div className="nav-context">
+                <div></div>
+                <div className="d-flex gap-2 mb-2">
+                    <ExcelExport
+                        data={allposts}
+                        name={tab}
+                        selectedProjectName={selectedProjectName}
+                    />
+                    <EditToday
+                        show={show}
+                        onHide={() => setShow(false)}
+                        onClose={handleDialogClose}
+                        post={selectvalue}
+                        selectedProjectName={selectedProjectName}
+                        dialogClassName="custom-modal-size"
+                    />
+                    <Today
+                        show={show}
+                        onHide={() => setShow(false)}
+                        onClick={handleClick}
+                        onClose={handleDialogClose}
+                        post={null}
+                        selectedProjectName={selectedProjectName}
+                        dialogClassName="custom-modal-size"
+                    />
+                </div>
+            </div>
 
-        <table className="table table-striped table-hover border-primary table-fixed">
-          <thead className="list-Title">
-            <tr>
-              {columns.map((col, index) => (
-                <th key={index} style={{ width: col.width }}>
-                  {col.name}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="">
-            {posts.map((row, index) => (
-              <tr
-                key={index + 1}
-                onClick={() => {
-                  handleRowClick(row);
-                }}
-                style={getRowStyle(row.Index)}
-              >
-                <td type="checkbox">
-                  {" "}
-                  {index + 1 + postsPerPage * pageNumber}
-                </td>
-                <td>{row.Date}</td>
-                <td>{row.Name}</td>
-                <td className="truncate">{row.Title}</td>
-                <td className="truncate">
-                  <div className="preview-container" onMouseMove={handleMouseMove}>
-                    {row.Content}
-                    <div className="preview" style={{ top: `${previewPos.top}px`, left: `${previewPos.left}px` }}>
-                        {row.Content}
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div
-                    style={{ backgroundColor: findColorById(`${row.Status}`) }}
-                  >
-                    {row.Status}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            <table className="table table-striped table-hover border-primary table-fixed">
+                <thead className="list-Title">
+                    <tr>
+                        {columns.map((col, index) => (
+                            <th key={index} style={{ width: col.width }}>
+                                {col.name}
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody className="">
+                    {posts.map((row, index) => (
+                        <tr
+                            key={index + 1}
+                            onClick={() => {
+                                handleRowClick(row);
+                            }}
+                            style={getRowStyle(row.Index)}
+                        >
+                            <td type="checkbox">
+                                {" "}
+                                {row.Index}
+                            </td>
+                            <td>{row.Date}</td>
+                            <td>{row.ChangeDate}</td>
+                            <td>{row.Name}</td>
+                            <td className="truncate">{row.Title}</td>
+                            <td className="truncate">
+                                <div className="preview-container" onMouseMove={handleMouseMove}>
+                                    {row.Content}
+                                    <div className="preview" style={{ top: `${previewPos.top}px`, left: `${previewPos.left}px`, flex:'10' }}>
+                                        <div className='preview-hover'>
+                                        {row.Content}
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style={{ backgroundColor: findColorById(`${row.Status}`) }}>
+                                    {row.Status}
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 }
 

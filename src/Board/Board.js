@@ -39,6 +39,7 @@ function Board() {
 
     const [loading, setLoading] = useState(true);
     const [pm, setPM] = useState('');
+    const [handleUpdate, setHandleUpdate] = useState(false);
 
     const getProjectData = async (name) => {
         return await LoadBoard(name);
@@ -216,7 +217,7 @@ function Board() {
                         <ProjectStatus boardData={loadBoard} pm={pm} />
                     </div>
                     <div className="col-md-3">
-                        <MainKanBanBoard projectName={selectedProjectName} kanban={kanban} />
+                        <MainKanBanBoard projectName={selectedProjectName} kanban={kanban} setKanban={setKanban} />
                     </div>
                     <div className="col-md-3">
                         <FileExplorer selectedProjectName={selectedProjectName} />

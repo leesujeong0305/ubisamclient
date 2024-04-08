@@ -27,7 +27,7 @@
   vertical-align: middle;
 }
 
-.table-fixed td:nth-child(6) {
+.table-fixed td:nth-child(5), td:nth-child(6) {
   text-align: left;
 }
 .table-fixed td:nth-child(7) {
@@ -55,13 +55,21 @@
     padding: 10px; /* 내부 여백 */
     white-space: normal; /* 텍스트 줄바꿈 허용 */
     text-align: left; /* 텍스트 왼쪽 정렬 */
-    max-width: 400px; /* 최대 너비 설정 */
+    min-width: 400px;
+    max-height: 600px;
+    
     word-wrap: break-word; /* 긴 단어 줄바꿈 처리 */
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* 그림자 효과 */
     border-radius: 8px; /* 모서리 둥글게 처리 */
     /* transition: opacity 0.5s linear; */ /* 투명도 전환 효과 제거 */
+    z-index: 1;
   }
-  
+
+  .preview-hover {
+    
+    white-space:pre-wrap;
+  }
+
   .preview-container:hover .preview {
     display: block;
     /* opacity: 1; */ /* 항상 불투명하게 설정 */

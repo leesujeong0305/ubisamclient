@@ -91,7 +91,7 @@ const ProjectStatus = ({ boardData, pm }) => {
       <div className="stats-container mb-2 flex-wrap">
         {tabData.map((card, index) => (
           <div key={index} className="stats-card" style={{ backgroundColor: card.color }}>
-            <div className="card-title">{card.title}</div>
+            <div className="card-title"><span style={{color: 'yellow'}}>{card.pm === true ? '★' : ''}</span>{card.title}</div>
             <hr style={{ height: '3px', color: 'black' }}></hr>
             <div className="card-value" >{card.value}</div>
           </div>

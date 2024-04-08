@@ -46,11 +46,11 @@ const Header = () => {
           <Navbar.Collapse className="">
             <Nav defaultActiveKey='/' className=''>
               <Nav.Item>
-                {isAuthenticated ? <Nav.Item><Nav.Link className='ms-5' href="/">Home</Nav.Link></Nav.Item> : <div className='disabled me-5'></div>}
+                {isAuthenticated ? <Nav.Item><Nav.Link className='ms-5' href="/">대시보드</Nav.Link></Nav.Item> : <div className='disabled me-5'></div>}
               </Nav.Item>
               <div className="divider"></div>
               <Nav.Item>
-                {isAuthenticated ? <Nav.Link className='nav-items  sm-8' eventKey="link-1" href="/FullCalendar">마이페이지</Nav.Link> : <div className='disabled me-5'></div>}
+                {isAuthenticated ? <Nav.Link className='nav-items  sm-8' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
               </Nav.Item>
             </Nav>
           </Navbar.Collapse>

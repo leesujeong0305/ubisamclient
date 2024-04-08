@@ -3,10 +3,10 @@ import Axios from '../../API/AxiosApi';
 
 import './KanBanBoardBody.css';
 
-function MainKanBanBoard({ projectName, kanban }) {
+function MainKanBanBoard({ projectName, kanban, setKanban }) {
     // 할 일 목록 상태를 관리합니다.
     const [tasks, setTasks] = useState([]);
-    const [data, setData] = useState(false);
+    const [data, setData] = useState(kanban);
 
     // 새 할 일 텍스트 상태를 관리합니다.
     const [newTaskText, setNewTaskText] = useState('');
@@ -16,6 +16,7 @@ function MainKanBanBoard({ projectName, kanban }) {
 
     const [issueOrder, setIssueOrder] = useState(0);
     const [compOrder, setCompOrder] = useState(0);
+    const [update, setUpdate] = useState();
 
     // 드래그 시작 시 호출됩니다.
     const handleDragStart = (e, item) => {
@@ -172,11 +173,24 @@ function MainKanBanBoard({ projectName, kanban }) {
 
     }
 
+    const handleData = () => {
+        setKanban(false);
+    }
+
     useEffect(() => {
         deleteAllTasks();
         setIssueOrder(0);
-        if (projectName !== "No Data")
-            loadKanBanList();
+        setData(kanban);
+        handleData();
+        const timer = setTimeout(() => { //이슈업로드 후 KanBanList불러오기위해 사용
+            if (projectName !== "No Data") {
+                loadKanBanList();
+            }
+        }, 10); // 10초 대기 (10000밀리초)
+    
+        // useEffect의 clean-up 함수에서 타이머를 정리합니다.
+        return () => clearTimeout(timer);
+        
     }, [kanban])
 
     useEffect(() => {
