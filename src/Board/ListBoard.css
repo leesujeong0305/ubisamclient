@@ -27,10 +27,10 @@
   vertical-align: middle;
 }
 
-.table-fixed td:nth-child(5) {
+.table-fixed td:nth-child(6) {
   text-align: left;
 }
-.table-fixed td:nth-child(6) {
+.table-fixed td:nth-child(7) {
   
   margin: 0 auto;
 }

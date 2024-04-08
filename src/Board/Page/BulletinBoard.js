@@ -10,6 +10,7 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName}) => {
   const [posts, setPosts] = useState([]) // 포스트 데이터 상태 관리
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
   const [postsPerPage] = useState(10); // 페이지 당 포스트 수
+  const [totalPage, setTotalPage] = useState(0); //전체 Page 수
 
 
   //탭 추가 필요
@@ -29,7 +30,9 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName}) => {
     
     if (boardData)
       setPosts(boardData);
-  }, [boardData], )
+    const total = boardData.length / postsPerPage;
+    setTotalPage(total);
+  }, [boardData])
 
   useEffect(() => {
     setCurrentPage(1);
@@ -37,7 +40,7 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName}) => {
 
   useEffect(() => {
     setSelectedTab('전체');
-  }, [])
+  }, [selectedProjectName])
 
   return (
     <div>
@@ -52,7 +55,7 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName}) => {
         </div>
       <div>
         <ListBoard posts={currentPosts} allposts={posts} pageNumber={currentPage - 1}
-          postsPerPage={postsPerPage} // 페이지 당 포스트 수
+          postsPerPage={postsPerPage} totalPage={totalPage}// 페이지 당 포스트 수
           tab={selectedTab} handleData={handleData} selectedProjectName={selectedProjectName}
         />
       </div>

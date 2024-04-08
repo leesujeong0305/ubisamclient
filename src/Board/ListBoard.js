@@ -4,7 +4,7 @@ import EditToday from './EditToday';
 import ExcelExport from '../db/Excel/ExcelExport';
 import './ListBoard.css';
 
-function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData, selectedProjectName }) {
+function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, handleData, selectedProjectName }) {
 
     const items = [ /* 상태 색상 표기 */
         { id: '대기', color: '#CCCCFF' },
@@ -15,11 +15,12 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, tab, handleData,
 
     const columns = [
         { name: "#", width: "5%" },
-        { name: "날짜", width: "10%" },
+        { name: "등록 날짜", width: "7%" },
+        { name: "변경 날짜", width: "7%" },
         { name: "이 름", width: "5%" },
         { name: "Title", width: "25%" },
         { name: "To Do List", width: "" },
-        { name: "상태", width: "7%" },];
+        { name: "상태", width: "6%" },];
 
     const [selectvalue, setSelectvalue] = useState(null);
     const [show, setShow] = useState(false);
