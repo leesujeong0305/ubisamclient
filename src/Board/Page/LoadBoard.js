@@ -11,10 +11,11 @@ function LoadBoard(name) {
         if (response.status === 200) {
             
             const newDataRow = response.data.data.map((item, index) => ({
-
-                Index: item.Index, // 예시로 index 사용, 실제 구현에서는 서버로부터의 데이터에 따라 조정
+                Key: item.Index,
+                Index: index + 1, // 예시로 index 사용, 실제 구현에서는 서버로부터의 데이터에 따라 조정
                 ProjectName: item.ProjectName, // 서버로부터 받은 데이터 구조에 따라 접근
                 Date: item.Date, // 예시 날짜, 실제로는 동적으로 설정
+                ChangeDate: item.ChangeDate,
                 Name: item.Name, // 서버로부터 받은 데이터 구조에 따라 접근
                 Title: item.Title, // 서버로부터 받은 데이터 구조에 따라 접근
                 Content: item.Content, // 서버로부터 받은 데이터 구조에 따라 접근
