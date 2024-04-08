@@ -35,6 +35,10 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName}) => {
     setCurrentPage(1);
   }, [selectedTab])
 
+  useEffect(() => {
+    setSelectedTab('전체');
+  }, [])
+
   return (
     <div>
       <div className='d-flex nav-context'>

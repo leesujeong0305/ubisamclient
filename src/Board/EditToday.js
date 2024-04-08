@@ -10,6 +10,8 @@ function Today({ onClose, post, selectedProjectName }) {
     const [selectValue, setSelectValue] = useState('');
     const [index, setIndex] = useState('');
 
+    const [oldSelectValue, setOldSelectValue] = useState('');
+
     const Continents = [ /* 상태 색상 표기 */
         { key: 1, value: '대기', color: '#CCCCFF' },
         { key: 2, value: '진행중', color: '#ADD8E6' },
@@ -33,7 +35,7 @@ function Today({ onClose, post, selectedProjectName }) {
     const handleTaskChange = (e) => setTask(e.target.value);
     const handleMemoChange = (e) => setMemo(e.target.value);
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
         const name = localStorage.getItem('userToken');
         if (post.Name !== name) {
             alert('다른 사람의 내용은 수정할수 없습니다');
@@ -42,7 +44,14 @@ function Today({ onClose, post, selectedProjectName }) {
 
         // Logic to handle adding the task
         setTodoList(name);
+        if (selectValue === '이슈')
+            await addKanBanList_DB();
         // Reset form and close modal
+
+        if (oldSelectValue === '이슈' && oldSelectValue !== selectValue) {
+            await deleteKanBanList_DB();
+        }
+
         setTask('');
         setMemo('');
         handleClose();
@@ -75,6 +84,50 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
+    const addKanBanList_DB = () => {
+        return Axios.post(`http://14.58.108.70:8877/addKanBanList`, {
+            ProjectName: selectedProjectName,
+            Content: task,
+            Status: 'issue',
+            Order: 0,
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+            }
+        }).catch(error => {
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
+    };
+
+    const deleteKanBanList_DB = async () => {
+        return await Axios.delete(`http://14.58.108.70:8877/deleteKanBanList`, {
+            ProjectName: selectedProjectName,
+            Content: task,
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+            }
+        }).catch(error => {
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
+    }
+
     const handleSelectChange = (event) => {
         setSelectValue(event.target.value);
     }
@@ -83,6 +136,7 @@ function Today({ onClose, post, selectedProjectName }) {
         setTask(post?.Title);
         setMemo(post?.Content);
         setSelectValue(post?.Status);
+        setOldSelectValue(post?.Status);
         setIndex(post?.Index);
     }, [post]);
 

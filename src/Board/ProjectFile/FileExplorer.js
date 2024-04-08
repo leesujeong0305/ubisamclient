@@ -177,7 +177,7 @@ function FileExplorer({ selectedProjectName }) {
     return (
         <div className="file-explorer">
             <div className="file-explorer-header">
-                <h2 className="file-explorer-title">프로젝트 파일 공유</h2>
+                <h2 className="file-explorer-title">프로젝트 문서 파일 공유</h2>
                 <button className="add-button" onClick={handleAddItem}>➕</button>
                 <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }}
                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
