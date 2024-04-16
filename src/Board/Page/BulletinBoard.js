@@ -6,7 +6,7 @@ import './BulletinBoard.css'
 
 // 가정: postData는 제공된 포스트 객체 배열입니다.
 
-const BulletinBoard = ({boardData, handleData, selectedProjectName}) => {
+const BulletinBoard = ({boardData, handleData, selectedProjectName, selectedTitle}) => {
   const [posts, setPosts] = useState([]) // 포스트 데이터 상태 관리
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
   const [postsPerPage] = useState(10); // 페이지 당 포스트 수
@@ -41,6 +41,20 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName}) => {
   useEffect(() => {
     setSelectedTab('전체');
   }, [selectedProjectName])
+
+  useEffect(() => {
+    let filteredItems = [];
+    setSelectedTab('전체');
+    if (boardData) {
+      if (selectedTitle === "전체")
+        setPosts(boardData);
+      else {
+        filteredItems = boardData.filter(item => item.Status === selectedTitle);
+        setPosts(filteredItems);
+      }
+    }
+
+  }, [selectedTitle])
 
   return (
     <div>

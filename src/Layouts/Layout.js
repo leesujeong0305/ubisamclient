@@ -34,6 +34,12 @@ function Layout() {
     setIsLoggedIn(false);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem('userTeamToken');
+    localStorage.removeItem('userRankToken');
+    localStorage.removeItem('userEmailToken');
+    localStorage.removeItem('userImpProjectToken');
+    localStorage.removeItem('userToken');
+    dispatch(logout('LOGOUT'));
     // 사용자를 로그인 페이지로 리다이렉트할 수 있습니다.
   };
 
@@ -57,8 +63,10 @@ function Layout() {
       }
 
     try {
+      const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+      console.log('ip set : ', ip, 'DEV : ',process.env.REACT_APP_API_DEV);
       const accessToken = localStorage.getItem("accessToken");
-      await api.get("http://14.58.108.70:8877/token", {
+      await api.get(`${ip}/token`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -80,7 +88,9 @@ function Layout() {
     }
 
     try {
-        const response = await api.post("http://14.58.108.70:8877/refresh", {
+      const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+      console.log('ip set : ', ip);
+        const response = await api.post(`${ip}/refresh`, {
             refreshToken,
         });
         

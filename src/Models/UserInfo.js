@@ -6,7 +6,8 @@ function UserInfo(){
 
     const token = localStorage.getItem('userToken');
     const emailToken = localStorage.getItem('userEmailToken');
-    return api.get(`http://14.58.108.70:8877/getUserInfo?userEmail=${encodeURIComponent(emailToken)}&name=${encodeURIComponent(token)}`, { //get은 body없음
+    const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    return api.get(`${ip}/getUserInfo?userEmail=${encodeURIComponent(emailToken)}&name=${encodeURIComponent(token)}`, { //get은 body없음
         headers: {
             "Content-Type": "application/json",
         }

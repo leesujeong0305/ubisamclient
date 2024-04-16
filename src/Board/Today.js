@@ -20,6 +20,7 @@ function Today({ onClose, post, selectedProjectName }) {
     let month = ('0' + (today.getMonth() + 1)).slice(-2);
     let day = ('0' + today.getDate()).slice(-2);
     let dateString = year + '-' + month + '-' + day;
+    let setDateString = year + '/' + month + '/' + day;
 
     const handleClose = () => {
         setShow(false);
@@ -44,14 +45,15 @@ function Today({ onClose, post, selectedProjectName }) {
             addKanBanList_DB();
         // Reset form and close modal
         setTask('');
-        setMemo('');
+        setMemo(setDateString + ' - ');
         setSelectValue('대기');
         handleClose();
     };
 
     const setTodoList = () => {
         const name = localStorage.getItem('userToken');
-        return Axios.post(`http://14.58.108.70:8877/ToDoList`, {
+        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return Axios.post(`${ip}/ToDoList`, {
 
             ProjectName: selectedProjectName,
             Date: dateString,
@@ -59,6 +61,7 @@ function Today({ onClose, post, selectedProjectName }) {
             Title: task,
             Content: memo,
             Status: selectValue,
+            FieldIndex: 0
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -79,7 +82,8 @@ function Today({ onClose, post, selectedProjectName }) {
     }
 
     const addKanBanList_DB = () => {
-        return Axios.post(`http://14.58.108.70:8877/addKanBanList`, {
+        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return Axios.post(`${ip}/addKanBanList`, {
             ProjectName: selectedProjectName,
             Content: task,
             Status: 'issue',
@@ -107,7 +111,7 @@ function Today({ onClose, post, selectedProjectName }) {
 
     useEffect(() => {
         setTask(post?.Title);
-        setMemo(post?.Content);
+        setMemo(setDateString + ' - ');
         setSelectValue(post?.value.Status ? post?.value.Status : '대기');
     }, [post]);
 
@@ -127,7 +131,7 @@ function Today({ onClose, post, selectedProjectName }) {
                                 <div className='col-sm-8'>
                                     <Form.Group controlId="formBasicTask">
                                         <Form.Label>제목</Form.Label>
-                                        <Form.Control type="text" placeholder="제목을 적어주세요" onChange={handleTaskChange} />
+                                        <Form.Control type="text" placeholder="제목을 적어주세요" value={task || ''} onChange={handleTaskChange} />
                                     </Form.Group>
                                 </div>
                                 <div className='col-sm-4'>
@@ -147,7 +151,7 @@ function Today({ onClose, post, selectedProjectName }) {
 
                             <Form.Group controlId="formBasicMemo" className='mt-2'>
                                 <Form.Label>내용</Form.Label>
-                                <Form.Control as="textarea" rows={10} placeholder="내용을 적어주세요" value={memo} onChange={handleMemoChange} />
+                                <Form.Control as="textarea" rows={10} placeholder="내용을 적어주세요" value={memo || ''} onChange={handleMemoChange} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>

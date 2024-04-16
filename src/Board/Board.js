@@ -39,7 +39,7 @@ function Board() {
 
     const [loading, setLoading] = useState(true);
     const [pm, setPM] = useState('');
-    const [handleUpdate, setHandleUpdate] = useState(false);
+    const [selectedTitle, setSelectedTitle] = useState(null);
 
     const getProjectData = async (name) => {
         return await LoadBoard(name);
@@ -47,7 +47,8 @@ function Board() {
 
     const updatePrjStatus = async (prjName) => {
         const token = localStorage.getItem('userToken');
-        await Axios.post(`http://14.58.108.70:8877/UpdateUserImpPrj`, {
+        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        await Axios.post(`${ip}/UpdateUserImpPrj`, {
             projectName: prjName, // 나중에 변경
             userName: token,
         }, {
@@ -70,7 +71,8 @@ function Board() {
 
     //pm 별표표시는 내 PC에 있어서 확인 위해 여기만 localhost로 변경하면됨
     const getProject = async (data) => {
-        return await Axios.get(`http://14.58.108.70:8877/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
+        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return await Axios.get(`${ip}/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
             headers: {
                 "Content-Type": "application/json",
                 withCredentials: true,
@@ -159,6 +161,12 @@ function Board() {
         setKanban(true);
     };
 
+    const handleCardClick = (title) => {
+        setSelectedTitle(title); // 상태 업데이트
+        console.log('선택된 타이틀: ', title);
+        // 부모 컴포넌트에서 필요한 추가 동작 수행
+      };
+
     useLayoutEffect(() => {
         allData();
         setLoading(false);
@@ -214,7 +222,7 @@ function Board() {
                         </div>
                     </div>
                     <div className="col-md-3">
-                        <ProjectStatus boardData={loadBoard} pm={pm} />
+                        <ProjectStatus boardData={loadBoard} pm={pm} handleCardClick={handleCardClick} />
                     </div>
                     <div className="col-md-3">
                         <MainKanBanBoard projectName={selectedProjectName} kanban={kanban} setKanban={setKanban} />
@@ -224,7 +232,7 @@ function Board() {
                     </div>
                 </div>
                 <div className='mt-5'>
-                    <BulletinBoard boardData={loadBoard} handleData={handleData} selectedProjectName={selectedProjectName} />
+                    <BulletinBoard boardData={loadBoard} handleData={handleData} selectedProjectName={selectedProjectName} selectedTitle={selectedTitle} />
                 </div>
             </div>
         </>

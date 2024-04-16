@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Axios from '../API/AxiosApi';
 import { Modal, Button, Form } from 'react-bootstrap';
 import DeleteToday from './DeleteToday';
+
+import './EditToday.css'
 
 function Today({ onClose, post, selectedProjectName }) {
     const [show, setShow] = useState(false);
@@ -9,8 +11,10 @@ function Today({ onClose, post, selectedProjectName }) {
     const [memo, setMemo] = useState('');
     const [selectValue, setSelectValue] = useState('');
     const [index, setIndex] = useState('');
-
     const [oldSelectValue, setOldSelectValue] = useState('');
+
+    // 컴포넌트가 처음 마운트되었는지 추적하기 위한 ref
+    const isInitialMount = useRef(true);
 
     const Continents = [ /* 상태 색상 표기 */
         { key: 1, value: '대기', color: '#CCCCFF' },
@@ -31,6 +35,11 @@ function Today({ onClose, post, selectedProjectName }) {
     }
 
     const handleShow = () => {
+        if (post === null || post === '') {
+            alert('수정할 내용을 먼저 선택해주세요');
+            return;
+        }
+
         if (selectedProjectName === 'No Data') {
             alert('프로젝트를 먼저 선택해주세요');
             return;
@@ -49,7 +58,12 @@ function Today({ onClose, post, selectedProjectName }) {
         }
 
         // Logic to handle adding the task
-        setTodoList(name);
+        if (post.Date !== dateString) {
+            setEditTodoList(name);
+        } else {
+            setTodoList(name);
+        }
+        
         if (selectValue === '이슈')
             await addKanBanList_DB();
         // Reset form and close modal
@@ -60,11 +74,13 @@ function Today({ onClose, post, selectedProjectName }) {
 
         setTask('');
         setMemo('');
+        post = null;
         handleClose();
     };
 
     const setTodoList = (name) => {
-        return Axios.post(`http://14.58.108.70:8877/UpdateToDoList`, {
+        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return Axios.post(`${ip}/UpdateToDoList`, {
             Index: post.Key,
             ProjectName: selectedProjectName,
             ChangeDate: dateString,
@@ -91,8 +107,40 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
+    const setEditTodoList = () => {
+        const name = localStorage.getItem('userToken');
+        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return Axios.post(`${ip}/ToDoList`, {
+
+            ProjectName: selectedProjectName,
+            Date: dateString,
+            Name: name,
+            Title: task,
+            Content: memo,
+            Status: selectValue,
+            FieldIndex: 0
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+
+            }
+        }).catch(error => {
+            //console.log({error});
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
+    }
+
     const addKanBanList_DB = () => {
-        return Axios.post(`http://14.58.108.70:8877/addKanBanList`, {
+        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return Axios.post(`${ip}/addKanBanList`, {
             ProjectName: selectedProjectName,
             Content: task,
             Status: 'issue',
@@ -115,10 +163,12 @@ function Today({ onClose, post, selectedProjectName }) {
     };
 
     const deleteKanBanList_DB = async () => {
-        return await Axios.delete(`http://14.58.108.70:8877/deleteKanBanList`, {
-            ProjectName: selectedProjectName,
-            Content: task,
-        }, {
+        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return await Axios.delete(`${ip}/deleteKanBanList`,{
+            data: {
+                Project: selectedProjectName,
+                Content: task,
+            }, 
             headers: {
                 "Content-Type": "application/json",
             }
@@ -163,7 +213,7 @@ function Today({ onClose, post, selectedProjectName }) {
                                 <div className='col-sm-8'>
                                     <Form.Group controlId="formBasicTask">
                                         <Form.Label>제목</Form.Label>
-                                        <Form.Control type="text" placeholder="제목을 적어주세요" value={task} onChange={handleTaskChange} />
+                                        <Form.Control type="text" placeholder="제목을 적어주세요" value={task || ''} onChange={handleTaskChange} />
                                     </Form.Group>
                                 </div>
                                 <div className='col-sm-4'>
@@ -172,14 +222,36 @@ function Today({ onClose, post, selectedProjectName }) {
                                         <Form.Select value={selectValue} onChange={handleSelectChange}>
                                             {Continents.map((item) => (
                                                 <option key={item.key} value={item.value}>
-                                                    {item.value}
+                                                    {item.value || ''}
                                                 </option>
                                             ))}
                                         </Form.Select>
                                     </Form.Group>
                                 </div>
                             </div>
-
+                            <div className="Edit-steps">
+                  <div className="Edit-step active">
+                    
+                    <div className="step-number wan">완</div>
+                    <div className="step-content">
+                      2024/04/02 - Step 1 Description
+                    </div>
+                  </div>
+                  <div className="Edit-step">
+                    <div className="step-number dae">대</div>
+                    <div className="step-content">
+                      {" "}
+                      2024/04/02 - Step 2 Description
+                    </div>
+                  </div>
+                  <div className="Edit-step">
+                    <div className="step-number jin">진</div>
+                    <div className="step-content">
+                      {" "}
+                      2024/04/02 - Step 3 Description
+                    </div>
+                  </div>
+            </div>
 
                             <Form.Group controlId="formBasicMemo" className='mt-2'>
                                 <Form.Label>내용</Form.Label>

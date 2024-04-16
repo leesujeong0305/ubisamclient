@@ -47,6 +47,8 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
     const handleDialogClose = () => {
         // 다이얼로그 닫힘 후 필요한 작업 수행, 예를 들어, 데이터를 새로 고침
         //getBoardData();
+        setSelectvalue(null);
+        setSelectRowIndex(false);
         handleData(true);
         //console.log('setState true');
 
