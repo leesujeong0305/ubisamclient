@@ -40,20 +40,21 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName, selectedTitl
 
   useEffect(() => {
     setSelectedTab('전체');
+    setCurrentPage(1);
   }, [selectedProjectName])
 
   useEffect(() => {
     let filteredItems = [];
     setSelectedTab('전체');
     if (boardData) {
-      if (selectedTitle === "전체")
+      if (selectedTitle === "전체") {
         setPosts(boardData);
+      }
       else {
         filteredItems = boardData.filter(item => item.Status === selectedTitle);
         setPosts(filteredItems);
       }
     }
-
   }, [selectedTitle])
 
   return (

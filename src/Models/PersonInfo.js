@@ -23,7 +23,7 @@ const Personnelinfo = ({ show, onHide }) => {
     const [Email, setEmail] = useState("")
     //  연속으로 저장 버튼 클릭시
     const [isLoading, setIsLoading] = useState(false);
-    const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
     const Userinfo = useFetch(`${ip}/ContactUs`);
     const navigate = useNavigate();
 
@@ -79,7 +79,7 @@ const Personnelinfo = ({ show, onHide }) => {
             //     return alert(" 이미 등록된 이름 입니다.");
             //   }
             // }
-            const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+            const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
             axios.post(`${ip}/ContactUs`, {
                     //writer: props.user.userData._id,
                     name: Name,

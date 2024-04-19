@@ -85,7 +85,7 @@ function KanBanBoardBody({ projectName }) {
   };
 
   const loadKanBanList_DB = async () => {
-    const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
     return await Axios.get(`${ip}/loadKanBanList?Project=${encodeURIComponent(projectName)}`, { //get은 body없음
       headers: {
         "Content-Type": "application/json",
@@ -107,7 +107,7 @@ function KanBanBoardBody({ projectName }) {
   }
 
   const addKanBanList_DB = (task) => {
-    const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
     return Axios.post(`${ip}/addKanBanList`, {
       ProjectName: projectName,
       Content: task.text,
@@ -132,7 +132,7 @@ function KanBanBoardBody({ projectName }) {
 
   const updataKanBanList_DB = (task, status) => {
     //console.log('updataKanBanList', projectName);
-    const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
     return Axios.post(`${ip}/updataKanBanList`, {
       Project: projectName,
       Content: task.text,

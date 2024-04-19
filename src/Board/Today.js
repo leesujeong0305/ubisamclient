@@ -52,7 +52,7 @@ function Today({ onClose, post, selectedProjectName }) {
 
     const setTodoList = () => {
         const name = localStorage.getItem('userToken');
-        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/ToDoList`, {
 
             ProjectName: selectedProjectName,
@@ -82,7 +82,7 @@ function Today({ onClose, post, selectedProjectName }) {
     }
 
     const addKanBanList_DB = () => {
-        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/addKanBanList`, {
             ProjectName: selectedProjectName,
             Content: task,

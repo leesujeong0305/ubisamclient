@@ -24,18 +24,6 @@
     font-size: 11px;
   }
   
-  .wan {
-    background-color: #4CAF50; /* Bright green */
-  }
-  
-  .dae {
-    background-color: #2196F3; /* Bright blue */
-  }
-  
-  .jin {
-    background-color: #f44336; /* Bright red */
-  }
-  
   .step-description {
     text-align: left;
   }
@@ -43,4 +31,46 @@
   .active .step-number {
     /* Add a slight shadow to the active step for effect */
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+  }
+  
+  .task-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns items to the start of the flex container */
+    width: 100%; /* Adjust width as needed */
+  }
+  
+  .task-title {
+    font-weight: bold; /* Makes the title bold */
+    margin-bottom: 15px; /* Space between title and the group box */
+  }
+  
+  .group-box {
+    border: 2px solid #ccc; /* Light grey border */
+    padding: 15px;
+    border-radius: 8px; /* Optional: rounded corners for the box */
+    width: 100%; /* Adjust width as needed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
+  }
+  
+  .task-step {
+    display: flex;
+    align-items: center; /* Vertically centers the items in the flex container */
+    margin-bottom: 10px; /* Space between each task step */
+  }
+  
+  .status-circle {
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 0.75rem; /* Adjust as needed */
+  }
+  
+  .task-description {
+    white-space:pre-wrap;
   }

@@ -12,15 +12,13 @@ function Today({ onClose, post, selectedProjectName }) {
     const [selectValue, setSelectValue] = useState('');
     const [index, setIndex] = useState('');
     const [oldSelectValue, setOldSelectValue] = useState('');
-
-    // 컴포넌트가 처음 마운트되었는지 추적하기 위한 ref
-    const isInitialMount = useRef(true);
+    const [subRows, setSubRows] = useState([]);
 
     const Continents = [ /* 상태 색상 표기 */
-        { key: 1, value: '대기', color: '#CCCCFF' },
-        { key: 2, value: '진행중', color: '#ADD8E6' },
-        { key: 3, value: '완료', color: '#FFD700' },
-        { key: 4, value: '이슈', color: '#FFC0CB' },
+        { key: 1, value: '대기', color: '#CCCCFF', letter: '대' },
+        { key: 2, value: '진행중', color: '#ADD8E6', letter: '진' },
+        { key: 3, value: '완료', color: '#FFD700', letter: '완' },
+        { key: 4, value: '이슈', color: '#FFC0CB', letter: '이' },
     ];
 
     let today = new Date();
@@ -34,7 +32,7 @@ function Today({ onClose, post, selectedProjectName }) {
         onClose();
     }
 
-    const handleShow = () => {
+    const handleShow = async () => {
         if (post === null || post === '') {
             alert('수정할 내용을 먼저 선택해주세요');
             return;
@@ -45,6 +43,8 @@ function Today({ onClose, post, selectedProjectName }) {
             return;
         }
         setShow(true);
+        
+        
     }
 
     const handleTaskChange = (e) => setTask(e.target.value);
@@ -59,11 +59,24 @@ function Today({ onClose, post, selectedProjectName }) {
 
         // Logic to handle adding the task
         if (post.Date !== dateString) {
-            setEditTodoList(name);
+            let subNum = 0;
+            if (subRows.length > 0) {
+                if (subRows[subRows.length - 1].Date !== dateString) {
+                    subNum = subRows[subRows.length - 1].FieldSubNum + 1;
+                    setSubEdit(name, subNum);
+                } else {
+                    updateSubEdit(name, subRows[subRows.length - 1]);
+                }
+                
+            } else {
+                subNum = 1;
+                setSubEdit(name, subNum);
+            }
+            
         } else {
             setTodoList(name);
         }
-        
+
         if (selectValue === '이슈')
             await addKanBanList_DB();
         // Reset form and close modal
@@ -74,12 +87,13 @@ function Today({ onClose, post, selectedProjectName }) {
 
         setTask('');
         setMemo('');
+        setSubRows([]);
         post = null;
         handleClose();
     };
 
     const setTodoList = (name) => {
-        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/UpdateToDoList`, {
             Index: post.Key,
             ProjectName: selectedProjectName,
@@ -107,18 +121,48 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
-    const setEditTodoList = () => {
-        const name = localStorage.getItem('userToken');
-        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-        return Axios.post(`${ip}/ToDoList`, {
-
+    const setSubEdit = (name, subNum) => {
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return Axios.post(`${ip}/subAddBoard`, {
             ProjectName: selectedProjectName,
             Date: dateString,
             Name: name,
             Title: task,
             Content: memo,
             Status: selectValue,
-            FieldIndex: 0
+            FieldNum: post.Key,
+            FieldSubNum: subNum,
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+
+            }
+        }).catch(error => {
+            //console.log({error});
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
+    }
+
+    const updateSubEdit = (name, subRow) => {
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return Axios.post(`${ip}/subUpdateBoard`, {
+            Index: subRow.Index,
+            ProjectName: selectedProjectName,
+            ChangeDate: dateString,
+            Name: name,
+            Title: task,
+            Content: memo,
+            Status: selectValue,
+            FieldNum: subRow.FieldNum,
+            FieldSubNum: subRow.FieldSubNum,
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -139,7 +183,7 @@ function Today({ onClose, post, selectedProjectName }) {
     }
 
     const addKanBanList_DB = () => {
-        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/addKanBanList`, {
             ProjectName: selectedProjectName,
             Content: task,
@@ -163,12 +207,12 @@ function Today({ onClose, post, selectedProjectName }) {
     };
 
     const deleteKanBanList_DB = async () => {
-        const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-        return await Axios.delete(`${ip}/deleteKanBanList`,{
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return await Axios.delete(`${ip}/deleteKanBanList`, {
             data: {
                 Project: selectedProjectName,
                 Content: task,
-            }, 
+            },
             headers: {
                 "Content-Type": "application/json",
             }
@@ -190,16 +234,35 @@ function Today({ onClose, post, selectedProjectName }) {
     }
 
     useEffect(() => {
-        setTask(post?.Title);
-        setMemo(post?.Content);
-        setSelectValue(post?.Status);
-        setOldSelectValue(post?.Status);
-        setIndex(post?.Index);
+        if (post?.details === undefined) {
+            setTask(post?.Title);
+            setMemo(post?.Content);
+            setSelectValue(post?.Status);
+            setOldSelectValue(post?.Status);
+            setIndex(post?.Index);
+            setSubRows([]);
+        } else {
+            if (post?.details.length > 0) {
+                const {Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, details} = post;
+                const parentRow = { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status };
+                setSubRows(post);
+                setTask(post?.details[post.details.length -1].Title);
+                if (post?.details[post.details.length -1].Date === dateString) {
+                    setMemo(post?.details[post.details.length -1].Content);
+                }
+                setSelectValue(post?.details[post.details.length -1].Status);
+                setOldSelectValue(post?.details[post.details.length -1].Status);
+                setIndex(post?.details[post.details.length -1].Index);
+                const newSubRows = [parentRow, ...details];
+                setSubRows(newSubRows);
+            }
+        }
+        
     }, [post]);
 
     return (
         <>
-            <Button style={{backgroundColor: '#7952B3', borderColor: '#734EAA', fontSize:'16px'}} onClick={handleShow}>
+            <Button style={{ backgroundColor: '#7952B3', borderColor: '#734EAA', fontSize: '16px' }} onClick={handleShow}>
                 <i className="bi bi-pencil-square d-flex fs-5 justify-content-center" aria-hidden="true"></i>
             </Button>
             <div>
@@ -229,29 +292,36 @@ function Today({ onClose, post, selectedProjectName }) {
                                     </Form.Group>
                                 </div>
                             </div>
-                            <div className="Edit-steps">
-                  <div className="Edit-step active">
-                    
-                    <div className="step-number wan">완</div>
-                    <div className="step-content">
-                      2024/04/02 - Step 1 Description
-                    </div>
-                  </div>
-                  <div className="Edit-step">
-                    <div className="step-number dae">대</div>
-                    <div className="step-content">
-                      {" "}
-                      2024/04/02 - Step 2 Description
-                    </div>
-                  </div>
-                  <div className="Edit-step">
-                    <div className="step-number jin">진</div>
-                    <div className="step-content">
-                      {" "}
-                      2024/04/02 - Step 3 Description
-                    </div>
-                  </div>
-            </div>
+
+                            <div className="task-container">
+                            {subRows.length > 0 && (
+                                <>
+                                <div className="task-title"> - 진행 내용 - </div>
+                                <div className="group-box">
+                                    {subRows.map((step, index) => {
+                                        const status = Continents.find(
+                                            (status) => status.value === step.Status
+                                        );
+                                        return (
+                                            <React.Fragment key={step.Index}>
+                                            <div className="task-step">
+                                                
+                                                <div
+                                                    className="status-circle"
+                                                    style={{ backgroundColor: status.color }}
+                                                >
+                                                    {status.letter}
+                                                </div>
+                                                <div className="task-description">{`${step.Content}`}</div>
+                                            </div>
+                                            {index !== subRows.length - 1 && <hr />} {/* 마지막 요소가 아닐 때만 <hr> 추가 */}
+                                            </React.Fragment>
+                                        );
+                                    })}
+                                </div>
+                                </>
+                            )}
+                            </div>
 
                             <Form.Group controlId="formBasicMemo" className='mt-2'>
                                 <Form.Label>내용</Form.Label>

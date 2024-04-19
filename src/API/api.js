@@ -29,7 +29,7 @@ api.interceptors.response.use(
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             const refreshToken = localStorage.getItem("refreshToken");
-            const ip = process.env.REACT_APP_API_DEV === 1 ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+            const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
             // 리프레시 토큰으로 새 액세스 토큰을 요청합니다.
             const response = await axios.post(`${ip}/refresh`, {
                 refreshToken

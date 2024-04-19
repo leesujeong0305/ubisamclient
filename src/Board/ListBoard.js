@@ -132,9 +132,20 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                             <td className="truncate">
                                 <div className="preview-container" onMouseMove={handleMouseMove}>
                                     {row.Content}
+                                    
                                     <div className="preview" style={{ top: `${previewPos.top}px`, left: `${previewPos.left}px`, flex:'10' }}>
                                         <div className='preview-hover'>
                                         {row.Content}
+                                        {row.details && (
+                                        <div>
+                                            {row.details.map((detail, index) => {
+                                                return (
+                                                    <span key={index} style={{ fontSize: 'smaller' }}>{detail.Content}</span>
+                                                )
+                                                
+                                            })}
+                                        </div>
+                                        )}
                                         </div>
                                         
                                     </div>
