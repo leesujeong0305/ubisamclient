@@ -25,7 +25,8 @@ function Logout() {
         }
 
         Axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-        Axios.post(`http://14.58.108.70:8877/logout`, {
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        Axios.post(`${ip}/logout`, {
             refreshToken
         }, {
             headers: {

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './ProjectStatus.css'; // Make sure to create a corresponding CSS file
 
-const ProjectStatus = ({ boardData, pm }) => {
+const ProjectStatus = ({ boardData, pm, handleCardClick }) => {
   const [tabStep, setTabStep] = useState([]);
   const [tabData, setTabData] = useState([]);
+
+  const [clickStatus, setClickStatus] = useState('');
 
   const colorStep = ['#CCCCFF', '#ADD8E6', '#FFD700', '#FFC0CB'];
 
@@ -69,6 +71,11 @@ const ProjectStatus = ({ boardData, pm }) => {
     await setTabData(resultData);
   };
 
+  const handleClick = (title) => {
+    handleCardClick(title);
+  }
+
+
   useEffect(() => {
     //console.log('업데이트', boardData);
     loadStep(boardData);
@@ -81,7 +88,7 @@ const ProjectStatus = ({ boardData, pm }) => {
     <>
       <div className="stats-container mb-2 flex-wrap">
         {tabStep.map((card, index) => (
-          <div key={index} className="stats-card" style={{ backgroundColor: card.color }}>
+          <div key={index} className="stats-card" style={{ backgroundColor: card.color }} onClick={() => handleClick(card.title)}>
             <div className="card-title">{card.title}</div>
             <hr style={{ height: '3px', color: 'black' }}></hr>
             <div className="card-value" >{card.value}</div>
@@ -89,14 +96,19 @@ const ProjectStatus = ({ boardData, pm }) => {
         ))}
       </div>
       <div className="stats-container mb-2 flex-wrap">
-        {tabData.map((card, index) => (
-          <div key={index} className="stats-card" style={{ backgroundColor: card.color }}>
-            <div className="card-title"><span style={{color: 'yellow'}}>{card.pm === true ? '★' : ''}</span>{card.title}</div>
-            <hr style={{ height: '3px', color: 'black' }}></hr>
-            <div className="card-value" >{card.value}</div>
-          </div>
-        ))}
+  {tabData.map((card, index) => (
+    <div key={index} className="users-card" style={{ backgroundColor: card.color }}>
+      <div className="card-title" style={{ position: 'relative', paddingTop: '20px' }}>
+        <span style={{ color: 'yellow', position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', fontSize: '20px' }}>
+          {card.pm === true ? '★' : ''}
+        </span>
+        {card.title}
       </div>
+      <hr style={{ height: '3px', color: 'black', marginTop: '10px' }}></hr>
+      <div className="card-value">{card.value}</div>
+    </div>
+  ))}
+</div>
     </>
   );
 };

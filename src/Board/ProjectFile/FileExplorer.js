@@ -8,7 +8,8 @@ function FileItem({ name, created, size, selectedProjectName, succ, setSucc }) {
     
 
     const handleDownloadFile = (filename) => {
-        const url = `http://14.58.108.70:8877/download/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`;
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        const url = `${ip}/download/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`;
     
         // Axios를 사용하여 파일을 다운로드하는 GET 요청을 보냅니다.
         // `responseType: 'blob'`을 설정하여 파일 데이터를 Blob 형태로 받습니다.
@@ -30,7 +31,8 @@ function FileItem({ name, created, size, selectedProjectName, succ, setSucc }) {
     }
 
     const handleDeleteFile = (filename) => {
-        Axios.delete(`http://14.58.108.70:8877/deleteFile/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`)
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        Axios.delete(`${ip}/deleteFile/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`)
         .then((response) => {
             console.log(response.data.message);
             // 여기에서 UI 업데이트 로직을 추가할 수 있습니다. 예를 들어, 삭제된 파일을 목록에서 제거할 수 있습니다.
@@ -114,7 +116,8 @@ function FileExplorer({ selectedProjectName }) {
 
     const LoadFiles = async () => {
         try {
-            const response = await Axios.get(`http://14.58.108.70:8877/getFile?Project=${encodeURIComponent(selectedProjectName)}`);
+            const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+            const response = await Axios.get(`${ip}/getFile?Project=${encodeURIComponent(selectedProjectName)}`);
             return response.data;
             setItems(response.data); // 가져온 데이터로 상태 업데이트
 
@@ -147,7 +150,8 @@ function FileExplorer({ selectedProjectName }) {
         console.log('file', dateTime);
         try {
             // fetch API를 사용하여 서버로 파일을 보냅니다.
-            const response = await Axios.post(`http://14.58.108.70:8877/uploadFile?Project=${encodeURIComponent(projectName)}&dateTime=${encodeURIComponent(dateTime)}`, formData, {
+            const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+            const response = await Axios.post(`${ip}/uploadFile?Project=${encodeURIComponent(projectName)}&dateTime=${encodeURIComponent(dateTime)}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data', // 이 행을 제거하거나 자동으로 설정되게 둡니다.
                 }

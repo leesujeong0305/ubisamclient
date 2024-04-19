@@ -47,6 +47,8 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
     const handleDialogClose = () => {
         // 다이얼로그 닫힘 후 필요한 작업 수행, 예를 들어, 데이터를 새로 고침
         //getBoardData();
+        setSelectvalue(null);
+        setSelectRowIndex(false);
         handleData(true);
         //console.log('setState true');
 
@@ -130,9 +132,20 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                             <td className="truncate">
                                 <div className="preview-container" onMouseMove={handleMouseMove}>
                                     {row.Content}
+                                    
                                     <div className="preview" style={{ top: `${previewPos.top}px`, left: `${previewPos.left}px`, flex:'10' }}>
                                         <div className='preview-hover'>
                                         {row.Content}
+                                        {row.details && (
+                                        <div>
+                                            {row.details.map((detail, index) => {
+                                                return (
+                                                    <span key={index} style={{ fontSize: 'smaller' }}>{detail.Content}</span>
+                                                )
+                                                
+                                            })}
+                                        </div>
+                                        )}
                                         </div>
                                         
                                     </div>

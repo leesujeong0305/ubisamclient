@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import { Container, Form, Button, Dropdown } from 'react-bootstrap';
+import React, { useState, useLayoutEffect } from 'react'
+import {  Dropdown } from 'react-bootstrap';
 import { useFooterVisibilityUpdate } from '../Layouts/FooterVisibilityContext';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
@@ -11,20 +9,14 @@ import './Board.css'
 
 import BulletinBoard from './Page/BulletinBoard';
 import ProjectStatus from './Status/ProjectStatus';
-import KanBanBoardBody from './KanbanBoard/KanBanBoardBody';
 import MainKanBanBoard from './KanbanBoard/MainKanBanBoard';
 import LoadBoard from './Page/LoadBoard';
 import UserInfo from '../Models/UserInfo';
 import FileExplorer from './ProjectFile/FileExplorer';
-import StepStepMain from './Stepbar/StepStepMain';
 import StepIndicator from './Stepbar/StepIndicator';
 
-import Cookies from 'js-cookie';
-import api from '../API/api';
-
-
 function Board() {
-    const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
+    //const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
     const toggleFooterVisibility = useFooterVisibilityUpdate();
 
     const [selectedActionText, setSelectedActionText] = useState([]);
@@ -39,15 +31,69 @@ function Board() {
 
     const [loading, setLoading] = useState(true);
     const [pm, setPM] = useState('');
-    const [handleUpdate, setHandleUpdate] = useState(false);
+    const [selectedTitle, setSelectedTitle] = useState(null);
 
     const getProjectData = async (name) => {
-        return await LoadBoard(name);
+        //return await LoadBoard(name);
+        const loadBoards = await LoadBoard(name);
+        const loadSubBoards = await subLoadBoard(name);
+
+        // 각 targetIndex에 맞는 데이터 항목에 상세 정보를 추가하는 함수
+        loadSubBoards.forEach(detail => {
+            // 해당 targetIndex를 가진 객체를 찾습니다.
+            let item = loadBoards.find(item => item.Key === detail.FieldNum);
+            if (item) {
+                // details 속성이 없다면 초기화합니다.
+                if (!item.details) {
+                    item.details = [];
+                }
+                // details 배열에 상세 정보를 추가합니다. targetIndex는 제외합니다.
+                item.details.push({
+                    Index: detail.Index,
+                    ProjectName: detail.ProjectName,
+                    Date: detail.Date,
+                    ChangeDate: detail.ChangeDate,
+                    Name: detail.Name,
+                    Title: detail.Title,
+                    Content: detail.Content,
+                    Status: detail.Status,
+                    FieldNum: detail.FieldNum,
+                    FieldSubNum: detail.FieldSubNum,
+                });
+            }
+        });
+        //console.log('loadBoards', loadBoards);
+        return loadBoards;
+    }
+
+    const subLoadBoard = async(ProjectName) => {
+        const name = localStorage.getItem('userToken');
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return await Axios.get(`${ip}/subLoadBoard?ProjectName=${encodeURIComponent(ProjectName)}&Name=${encodeURIComponent(name)}`, { //get은 body없음
+            headers: {
+                "Content-Type": "application/json",
+                withCredentials: true,
+            }
+        }).then((res) => {
+            //console.log('subLoadBoard', { res });
+            if (res.data) {
+                const dataRow = res.data;
+                return dataRow;
+            } else if (res.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+            }
+        }).catch(error => {
+            console.log({ error });
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
     }
 
     const updatePrjStatus = async (prjName) => {
         const token = localStorage.getItem('userToken');
-        await Axios.post(`http://14.58.108.70:8877/UpdateUserImpPrj`, {
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        await Axios.post(`${ip}/UpdateUserImpPrj`, {
             projectName: prjName, // 나중에 변경
             userName: token,
         }, {
@@ -70,7 +116,8 @@ function Board() {
 
     //pm 별표표시는 내 PC에 있어서 확인 위해 여기만 localhost로 변경하면됨
     const getProject = async (data) => {
-        return await Axios.get(`http://14.58.108.70:8877/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return await Axios.get(`${ip}/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
             headers: {
                 "Content-Type": "application/json",
                 withCredentials: true,
@@ -159,6 +206,12 @@ function Board() {
         setKanban(true);
     };
 
+    const handleCardClick = (title) => {
+        setSelectedTitle(title); // 상태 업데이트
+        console.log('선택된 타이틀: ', title);
+        // 부모 컴포넌트에서 필요한 추가 동작 수행
+      };
+
     useLayoutEffect(() => {
         allData();
         setLoading(false);
@@ -214,7 +267,7 @@ function Board() {
                         </div>
                     </div>
                     <div className="col-md-3">
-                        <ProjectStatus boardData={loadBoard} pm={pm} />
+                        <ProjectStatus boardData={loadBoard} pm={pm} handleCardClick={handleCardClick} />
                     </div>
                     <div className="col-md-3">
                         <MainKanBanBoard projectName={selectedProjectName} kanban={kanban} setKanban={setKanban} />
@@ -224,7 +277,7 @@ function Board() {
                     </div>
                 </div>
                 <div className='mt-5'>
-                    <BulletinBoard boardData={loadBoard} handleData={handleData} selectedProjectName={selectedProjectName} />
+                    <BulletinBoard boardData={loadBoard} handleData={handleData} selectedProjectName={selectedProjectName} selectedTitle={selectedTitle} />
                 </div>
             </div>
         </>

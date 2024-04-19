@@ -12,7 +12,6 @@
     background-color: #545455;
   }
 
-
   .table td {
     color: black !important;
   }
@@ -25,6 +24,10 @@
 .table-fixed td {
   text-align: center;
   vertical-align: middle;
+}
+
+.table-fixed th:nth-child(5), th:nth-child(6) {
+  text-align: left;
 }
 
 .table-fixed td:nth-child(5), td:nth-child(6) {

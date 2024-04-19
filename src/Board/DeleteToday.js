@@ -24,7 +24,8 @@ useEffect(() => {
 const handleDelete = async () => {
     setShow(false);
   //const res = await axios.delete(`/DeleteToDoList?id=${post.Index}`);
-  return Axios.delete(`http://14.58.108.70:8877/DeleteToDoList`, {
+  const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+  return Axios.delete(`${ip}/DeleteToDoList`, {
             data: {
                 Index: post.Index
             

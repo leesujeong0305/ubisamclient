@@ -4,7 +4,8 @@ import axios from 'axios';
 
 function MainPlus() {
     const getAccessToken = () => {
-        axios.delete(`http://14.58.108.70:8877/logouts`)
+      const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        axios.delete(`${ip}/logouts`)
         .then(response => {
             if (response.status === 204)
                 console.log(response.data); // 서버로부터의 응답 처리
