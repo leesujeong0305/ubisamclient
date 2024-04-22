@@ -72,7 +72,7 @@ function Today({ onClose, post, selectedProjectName }) {
                 subNum = 1;
                 setSubEdit(name, subNum);
             }
-            
+            updateStatusList(name);
         } else {
             setTodoList(name);
         }
@@ -121,10 +121,38 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
+    const updateStatusList = (name) => {
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return Axios.post(`${ip}/updateStatusList`, {
+            Index: post.Key,
+            ProjectName: selectedProjectName,
+            Name: name,
+            Status: selectValue,
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+
+            }
+        }).catch(error => {
+            //console.log({error});
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
+    }
+
     const setSubEdit = (name, subNum) => {
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        const _ProjectName = selectedProjectName.replace(/ /g, '_');
         return Axios.post(`${ip}/subAddBoard`, {
             ProjectName: selectedProjectName,
+            _ProjectName : _ProjectName,
             Date: dateString,
             Name: name,
             Title: task,
@@ -153,9 +181,11 @@ function Today({ onClose, post, selectedProjectName }) {
 
     const updateSubEdit = (name, subRow) => {
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        const _ProjectName = selectedProjectName.replace(/ /g, '_');
         return Axios.post(`${ip}/subUpdateBoard`, {
             Index: subRow.Index,
             ProjectName: selectedProjectName,
+            _ProjectName: _ProjectName,
             ChangeDate: dateString,
             Name: name,
             Title: task,

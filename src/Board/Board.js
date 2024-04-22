@@ -38,6 +38,14 @@ function Board() {
         const loadBoards = await LoadBoard(name);
         const loadSubBoards = await subLoadBoard(name);
 
+        if (loadSubBoards) {
+            console.log('loadSubBoards', loadSubBoards);
+            console.log('name', name);
+        }
+        if (loadSubBoards === undefined) {
+            return loadBoards;
+        }
+        
         // 각 targetIndex에 맞는 데이터 항목에 상세 정보를 추가하는 함수
         loadSubBoards.forEach(detail => {
             // 해당 targetIndex를 가진 객체를 찾습니다.
@@ -68,11 +76,15 @@ function Board() {
 
     const subLoadBoard = async(ProjectName) => {
         const name = localStorage.getItem('userToken');
+        const _ProjectName = ProjectName.replace(/ /g, '_');
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-        return await Axios.get(`${ip}/subLoadBoard?ProjectName=${encodeURIComponent(ProjectName)}&Name=${encodeURIComponent(name)}`, { //get은 body없음
+        return Axios.post(`${ip}/subLoadBoard`, {
+            ProjectName: ProjectName,
+            _ProjectName : _ProjectName,
+            Name: name,
+        }, {
             headers: {
                 "Content-Type": "application/json",
-                withCredentials: true,
             }
         }).then((res) => {
             //console.log('subLoadBoard', { res });
