@@ -72,7 +72,7 @@ function Today({ onClose, post, selectedProjectName }) {
                 subNum = 1;
                 setSubEdit(name, subNum);
             }
-            updateStatusList(name);
+            updateDate(name);
         } else {
             setTodoList(name);
         }
@@ -121,13 +121,13 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
-    const updateStatusList = (name) => {
+    const updateDate = (name) => {
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-        return Axios.post(`${ip}/updateStatusList`, {
+        return Axios.post(`${ip}/updateDateList`, {
             Index: post.Key,
             ProjectName: selectedProjectName,
             Name: name,
-            Status: selectValue,
+            ChangeDate : dateString,
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -275,7 +275,7 @@ function Today({ onClose, post, selectedProjectName }) {
             if (post?.details.length > 0) {
                 const {Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, details} = post;
                 const parentRow = { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status };
-                setSubRows(post);
+                //setSubRows(post);
                 setTask(post?.details[post.details.length -1].Title);
                 if (post?.details[post.details.length -1].Date === dateString) {
                     setMemo(post?.details[post.details.length -1].Content);
@@ -283,7 +283,7 @@ function Today({ onClose, post, selectedProjectName }) {
                 setSelectValue(post?.details[post.details.length -1].Status);
                 setOldSelectValue(post?.details[post.details.length -1].Status);
                 setIndex(post?.details[post.details.length -1].Index);
-                const newSubRows = [parentRow, ...details];
+                const newSubRows = [parentRow, ...details.slice(1)];
                 setSubRows(newSubRows);
             }
         }

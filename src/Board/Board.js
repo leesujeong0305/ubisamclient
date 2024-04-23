@@ -53,8 +53,9 @@ function Board() {
             if (item) {
                 // details 속성이 없다면 초기화합니다.
                 if (!item.details) {
-                    item.details = [];
+                    item.details = [JSON.parse(JSON.stringify(item))]; //status 업데이트를 위해 복사해서 초기화함
                 }
+                
                 // details 배열에 상세 정보를 추가합니다. targetIndex는 제외합니다.
                 item.details.push({
                     Index: detail.Index,
@@ -68,6 +69,7 @@ function Board() {
                     FieldNum: detail.FieldNum,
                     FieldSubNum: detail.FieldSubNum,
                 });
+                item.details[0].Status = item.details[item.details.length - 1].Status;
             }
         });
         //console.log('loadBoards', loadBoards);
@@ -81,7 +83,6 @@ function Board() {
         return Axios.post(`${ip}/subLoadBoard`, {
             ProjectName: ProjectName,
             _ProjectName : _ProjectName,
-            Name: name,
         }, {
             headers: {
                 "Content-Type": "application/json",

@@ -152,8 +152,8 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                                 </div>
                             </td>
                             <td>
-                                <div style={{ backgroundColor: findColorById(`${row.Status}`) }}>
-                                    {row.Status}
+                                <div style={{ backgroundColor: findColorById(`${ row.details === undefined ? row.Status : row.details[0].Status}`) }}>
+                                    { row.details === undefined ? row.Status : row.details[0].Status}
                                 </div>
                             </td>
                         </tr>

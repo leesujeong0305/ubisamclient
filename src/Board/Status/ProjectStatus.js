@@ -22,9 +22,13 @@ const ProjectStatus = ({ boardData, pm, handleCardClick }) => {
     }
 
     //****reduce 함수를 사용하면 배열의 각 요소를 순회하며 누적 계산을 실행
-    const counts = boardData.reduce((acc, { Status }) => { 
+    const counts = boardData.reduce((acc, item, { Status }) => { 
       // Status 값이 null 또는 undefined일 경우를 대비하여 기본값을 설정
-      const statusKey = (Status || '').toLowerCase(); // 기본값으로 빈 문자열을 사용
+      // details가 존재하고, 그 안에 요소가 있을 경우 details의 마지막 요소의 Status를 사용
+    const statusFromDetails = item.details && item.details.length > 0
+    ? item.details[item.details.length - 1].Status : null;
+
+    const statusKey = (statusFromDetails || item.Status || '').toLowerCase();
       acc.total += 1; // 전체 개수
       if (statusKey) { // statusKey가 빈 문자열이 아닐 경우에만 개수 증가
         acc[statusKey] = (acc[statusKey] || 0) + 1;

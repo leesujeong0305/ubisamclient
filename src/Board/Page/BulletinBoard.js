@@ -51,7 +51,14 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName, selectedTitl
         setPosts(boardData);
       }
       else {
-        filteredItems = boardData.filter(item => item.Status === selectedTitle);
+        filteredItems = boardData.filter(item => {
+          // details가 존재하고 길이가 0보다 크면, 마지막 details의 Status를 확인
+          if (item.details && item.details.length > 0) {
+              return item.details[item.details.length - 1].Status === selectedTitle;
+          }
+          // 그렇지 않으면, item의 Status만 확인
+          return item.Status === selectedTitle;
+      });
         setPosts(filteredItems);
       }
     }
