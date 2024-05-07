@@ -23,6 +23,7 @@
     max-height: 500px;
     border-radius: 8px;
     overflow-y: auto;
+    white-space:pre-wrap;
   }
   
   .todo-footer {

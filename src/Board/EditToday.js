@@ -43,8 +43,6 @@ function Today({ onClose, post, selectedProjectName }) {
             return;
         }
         setShow(true);
-        
-        
     }
 
     const handleTaskChange = (e) => setTask(e.target.value);
@@ -128,6 +126,7 @@ function Today({ onClose, post, selectedProjectName }) {
             ProjectName: selectedProjectName,
             Name: name,
             ChangeDate : dateString,
+            Title: task,
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -148,11 +147,17 @@ function Today({ onClose, post, selectedProjectName }) {
     }
 
     const setSubEdit = (name, subNum) => {
+        let project = ''
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         const _ProjectName = selectedProjectName.replace(/ /g, '_');
+        const index = _ProjectName.indexOf('(');
+        if (index !== -1) {
+            project = _ProjectName.substring(0, index);
+        }
+        else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
         return Axios.post(`${ip}/subAddBoard`, {
             ProjectName: selectedProjectName,
-            _ProjectName : _ProjectName,
+            _ProjectName : project,
             Date: dateString,
             Name: name,
             Title: task,
@@ -180,12 +185,18 @@ function Today({ onClose, post, selectedProjectName }) {
     }
 
     const updateSubEdit = (name, subRow) => {
+        let project = ''
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         const _ProjectName = selectedProjectName.replace(/ /g, '_');
+        const index = _ProjectName.indexOf('(');
+        if (index !== -1) {
+            project = _ProjectName.substring(0, index);
+        }
+        else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
         return Axios.post(`${ip}/subUpdateBoard`, {
             Index: subRow.Index,
             ProjectName: selectedProjectName,
-            _ProjectName: _ProjectName,
+            _ProjectName: project,
             ChangeDate: dateString,
             Name: name,
             Title: task,
@@ -218,7 +229,7 @@ function Today({ onClose, post, selectedProjectName }) {
             ProjectName: selectedProjectName,
             Content: task,
             Status: 'issue',
-            Order: 0,
+            Order: post.Key,
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -242,6 +253,7 @@ function Today({ onClose, post, selectedProjectName }) {
             data: {
                 Project: selectedProjectName,
                 Content: task,
+                Order: post.Key,
             },
             headers: {
                 "Content-Type": "application/json",

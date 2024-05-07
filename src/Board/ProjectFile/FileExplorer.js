@@ -31,6 +31,13 @@ function FileItem({ name, created, size, selectedProjectName, succ, setSucc }) {
     }
 
     const handleDeleteFile = (filename) => {
+        // 확인 창 띄우기
+        if (!window.confirm('정말 지우시겠습니까?')) {
+        // 사용자가 Cancel을 클릭한 경우
+        console.log('파일 삭제가 취소되었습니다.');
+        return
+        }
+
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         Axios.delete(`${ip}/deleteFile/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`)
         .then((response) => {
