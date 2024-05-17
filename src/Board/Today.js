@@ -41,8 +41,9 @@ function Today({ onClose, post, selectedProjectName }) {
     const handleAdd = () => {
         // Logic to handle adding the task
         setTodoList();
-        if (selectValue === '이슈')
+        if (selectValue === '이슈') {
             addKanBanList_DB();
+        }
         // Reset form and close modal
         setTask('');
         setMemo(setDateString + ' - ');

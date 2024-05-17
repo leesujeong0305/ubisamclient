@@ -75,8 +75,19 @@ function Today({ onClose, post, selectedProjectName }) {
             setTodoList(name);
         }
 
-        if (selectValue === '이슈')
-            await addKanBanList_DB();
+        if (selectValue === '이슈') {
+            const loadList = await loadKanBanList_DB();
+            console.log('loadList 46', loadList);
+            console.log('81', post);
+            const result = loadList.some( item => item.Content === post.Title); //같은 요소가 하나라도 있으면 즉시 true 반환함
+            console.log('loadList result 48', result);
+            if (result) {
+                await updataKanBanList_DB();
+            } else {
+                await addKanBanList_DB();
+            }
+            
+        }
         // Reset form and close modal
 
         if (oldSelectValue === '이슈' && oldSelectValue !== selectValue) {
@@ -265,6 +276,55 @@ function Today({ onClose, post, selectedProjectName }) {
                 console.log("403");
             }
         }).catch(error => {
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
+    }
+
+    const loadKanBanList_DB = async () => {
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return await Axios.get(`${ip}/loadKanBanList?Project=${encodeURIComponent(selectedProjectName)}`, { //get은 body없음
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then((res) => {
+            //console.log('getProject', { res });
+            if (res.data) {
+                //console.log('kanban load', res.data);
+                return res.data;
+            } else if (res.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+            }
+        }).catch(error => {
+            console.log({ error });
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
+    }
+
+    const updataKanBanList_DB = () => {
+        console.log('updataKanBanList 308', task);
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return Axios.post(`${ip}/updataKanBanList`, {
+            Project: selectedProjectName,
+            OldContent: post.Title,
+            Content: task,
+            Status: 'issue',
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+
+            }
+        }).catch(error => {
+            //console.log({error});
             if (error.response.status === 403) {
                 alert(`${error.response.data.message}`);
             }
