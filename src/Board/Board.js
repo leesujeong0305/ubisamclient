@@ -250,10 +250,10 @@ function Board() {
               const itemDate = new Date(item.Date);
               const diffTime = Math.abs(today - itemDate);
               const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 차이를 계산
-
+              const setDay = parseInt(item.Period.replace(/[^0-9]/g, ''), 10);
               // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '이슈'로 변경
               if (
-                diffDays > 15 &&
+                diffDays > setDay &&
                 item.Status !== "완료" && item.Status !== "이슈"
               ) {
                 //setSubEdit(token, item, item.details.FieldSubNum + 1);
