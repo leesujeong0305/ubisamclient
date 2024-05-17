@@ -21,6 +21,8 @@ function LoadBoard(name) {
                 Title: item.Title, // 서버로부터 받은 데이터 구조에 따라 접근
                 Content: item.Content, // 서버로부터 받은 데이터 구조에 따라 접근
                 Status: item.Status, // 서버로부터 받은 데이터 구조에 따라 접근
+                Period: item.Period,
+                Requester: item.Requester,
                 Plus: item.Plus
             }));
 

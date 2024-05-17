@@ -19,7 +19,9 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
         { name: "#", width: "2%" },
         { name: "등록 날짜", width: "7%" },
         { name: "변경 날짜", width: "7%" },
+        { name: "목표일", width: "5%" },
         { name: "이 름", width: "5%" },
+        { name: "요청자", width: "5%" },
         { name: "Title", width: "25%" },
         { name: "To Do List", width: "" },
         { name: "상태", width: "5%" },];
@@ -128,7 +130,9 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                             </td>
                             <td>{row.Date}</td>
                             <td>{row.ChangeDate}</td>
+                            <td>{row.Period}</td>
                             <td>{row.Name}</td>
+                            <td>{row.Requester}</td>
                             <td className="truncate">{row.Title}</td>
                             <td className="truncate">
                                 <div className="preview-container" onMouseMove={handleMouseMove}>

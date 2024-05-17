@@ -26,14 +26,14 @@
   vertical-align: middle;
 }
 
-.table-fixed th:nth-child(5), th:nth-child(6) {
+.table-fixed th:nth-child(7), th:nth-child(8) {
   text-align: left;
 }
 
-.table-fixed td:nth-child(5), td:nth-child(6) {
+.table-fixed td:nth-child(7), td:nth-child(8) {
   text-align: left;
 }
-.table-fixed td:nth-child(7) {
+.table-fixed td:nth-child(9) {
   
   margin: 0 auto;
 }

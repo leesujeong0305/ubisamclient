@@ -13,6 +13,8 @@ function Today({ onClose, post, selectedProjectName }) {
     const [index, setIndex] = useState('');
     const [oldSelectValue, setOldSelectValue] = useState('');
     const [subRows, setSubRows] = useState([]);
+    const [selectedPeriod, setSelectedPeriod] = useState("5일");
+    const [requester,setrequester] = useState('');
 
     const Continents = [ /* 상태 색상 표기 */
         { key: 1, value: '대기', color: '#CCCCFF', letter: '대' },
@@ -21,6 +23,8 @@ function Today({ onClose, post, selectedProjectName }) {
         { key: 4, value: '이슈', color: '#FFC0CB', letter: '이' },
         { key: 5, value: '알림', color: '#E64F5A', letter: '알' },
     ];
+
+    const periodOptions = ["1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일","11일","12일","13일","14일","15일"]; 
 
     let today = new Date();
     let year = today.getFullYear();
@@ -48,6 +52,11 @@ function Today({ onClose, post, selectedProjectName }) {
 
     const handleTaskChange = (e) => setTask(e.target.value);
     const handleMemoChange = (e) => setMemo(e.target.value);
+    const handlerequesterChange = (e) => setrequester(e.target.value);
+
+    const handleSelectPeriodChange = (event) => {
+        setSelectedPeriod(event.target.value);
+    };
 
     const handleAdd = async () => {
         const name = localStorage.getItem('userToken');
@@ -97,6 +106,8 @@ function Today({ onClose, post, selectedProjectName }) {
 
         setTask('');
         setMemo('');
+        setSelectedPeriod('1일');
+        setrequester('');
         setSubRows([]);
         post = null;
         handleClose();
@@ -108,6 +119,8 @@ function Today({ onClose, post, selectedProjectName }) {
             Index: post.Key,
             ProjectName: selectedProjectName,
             ChangeDate: dateString,
+            Period: selectedPeriod,
+            Requester: requester,
             Name: name,
             Title: task,
             Content: memo,
@@ -171,6 +184,8 @@ function Today({ onClose, post, selectedProjectName }) {
             ProjectName: selectedProjectName,
             _ProjectName : project,
             Date: dateString,
+            Period: selectedPeriod,
+            Requester: requester,
             Name: name,
             Title: task,
             Content: memo,
@@ -343,11 +358,13 @@ function Today({ onClose, post, selectedProjectName }) {
             setSelectValue(post?.Status);
             setOldSelectValue(post?.Status);
             setIndex(post?.Index);
+            setSelectedPeriod(post?.Period);
+            setrequester(post?.Requester);
             setSubRows([]);
         } else {
             if (post?.details.length > 0) {
-                const {Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, details} = post;
-                const parentRow = { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status };
+                const {Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, details} = post;
+                const parentRow = { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester };
                 //setSubRows(post);
                 setTask(post?.details[post.details.length -1].Title);
                 if (post?.details[post.details.length -1].Date === dateString) {
@@ -356,6 +373,8 @@ function Today({ onClose, post, selectedProjectName }) {
                 setSelectValue(post?.details[post.details.length -1].Status);
                 setOldSelectValue(post?.details[post.details.length -1].Status);
                 setIndex(post?.details[post.details.length -1].Index);
+                setSelectedPeriod(Period);
+                setrequester(Requester);
                 const newSubRows = [parentRow, ...details.slice(1)];
                 setSubRows(newSubRows);
             }
@@ -392,6 +411,49 @@ function Today({ onClose, post, selectedProjectName }) {
                                                 </option>
                                             ))}
                                         </Form.Select>
+                                    </Form.Group>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                                        <Form.Label>상태 표시</Form.Label>
+                                        <Form.Select
+                                            value={selectValue}
+                                            onChange={handleSelectChange}
+                                        >
+                                            {Continents.map((item) => (
+                                                <option key={item.key} value={item.value}>
+                                                    {item.value}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+                                </div>
+                                <div className="col-sm-3">
+                                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                                        <Form.Label>완료 목표 일</Form.Label>
+                                        <Form.Select
+                                            value={selectedPeriod}
+                                            onChange={handleSelectPeriodChange}
+                                        >
+                                            {periodOptions.map((item, index) => (
+                                                <option key={index} value={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+                                </div>
+                                <div className="col-sm-6">
+                                    <Form.Group controlId="formBasicTask">
+                                        <Form.Label>요청자 서명</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="이름작성 해주세요"
+                                            value={requester || ""}
+                                            onChange={handlerequesterChange}
+                                        />
                                     </Form.Group>
                                 </div>
                             </div>

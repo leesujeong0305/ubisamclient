@@ -7,8 +7,8 @@ function Today({ onClose, post, selectedProjectName }) {
     const [task, setTask] = useState('');
     const [memo, setMemo] = useState('');
     const [selectValue, setSelectValue] = useState('');
-    const [selectedPeriod, setSelectedPeriod] = useState("5일");
-    const [requester,setrequester] = useState('');
+    const [selectedPeriod, setSelectedPeriod] = useState("1일");
+    const [requester, setrequester] = useState('');
 
     const Continents = [ /* 상태 색상 표기 */
         { key: 1, value: '대기',   color: '#CCCCFF' },
@@ -18,7 +18,7 @@ function Today({ onClose, post, selectedProjectName }) {
         { key: 5, value: '알림',   color: '#E64F5A' },
     ];
 
-    const periodOptions = ["1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일","11일","12일","13일","14일","15일"]; 
+    const periodOptions = ["1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일", "13일", "14일", "15일"];
 
     let today = new Date();
     let year = today.getFullYear();
@@ -54,6 +54,8 @@ function Today({ onClose, post, selectedProjectName }) {
         setTask('');
         setMemo(setDateString + ' - ');
         setSelectValue('대기');
+        setSelectedPeriod('1일');
+        setrequester('');
         handleClose();
     };
 
@@ -61,9 +63,10 @@ function Today({ onClose, post, selectedProjectName }) {
         const name = localStorage.getItem('userToken');
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/ToDoList`, {
-
             ProjectName: selectedProjectName,
             Date: dateString,
+            Period: selectedPeriod,
+            Requester: requester,
             Name: name,
             Title: task,
             Content: memo,
@@ -118,7 +121,7 @@ function Today({ onClose, post, selectedProjectName }) {
 
     const handleSelectPeriodChange = (event) => {
         setSelectedPeriod(event.target.value);
-      };
+    };
 
     useEffect(() => {
         setTask(post?.Title);
@@ -127,109 +130,109 @@ function Today({ onClose, post, selectedProjectName }) {
     }, [post]);
 
     return (
-      <>
-        <Button
-          style={{
-            backgroundColor: "#5090CC",
-            fontWeight: "bold",
-            borderColor: "#3F72A2",
-          }}
-          onClick={handleShow}
-        >
-          <i
-            className="bi bi-plus-square d-flex fs-5 justify-content-center"
-            aria-hidden="true"
-          ></i>
-        </Button>
-        <div>
-          <Modal show={show} onHide={handleClose} centered size="lg">
-            <Modal.Header closeButton>
-              <Modal.Title style={{ color: "#7952B3", fontWeight: "bold" }}>
-                To Do List
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <div className="row">
-                  <div className="col-sm-12">
-                    <Form.Group controlId="formBasicTask">
-                      <Form.Label>제목</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="제목을 적어주세요"
-                        value={task || ""}
-                        onChange={handleTaskChange}
-                      />
-                    </Form.Group>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-sm-3">
-                    <Form.Group className="mb-3" controlId="formBasicPosition">
-                      <Form.Label>상태 표시</Form.Label>
-                      <Form.Select
-                        value={selectValue}
-                        onChange={handleSelectChange}
-                      >
-                        {Continents.map((item) => (
-                          <option key={item.key} value={item.value}>
-                            {item.value}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-                  </div>
-                  <div className="col-sm-3">
-                    <Form.Group className="mb-3" controlId="formBasicPosition">
-                      <Form.Label>완료 목표 요일</Form.Label>
-                      <Form.Select
-                        value={selectedPeriod}
-                        onChange={handleSelectPeriodChange}
-                      >
-                        {periodOptions.map((item, index) => (
-                          <option key={index} value={item}>
-                            {item}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-                  </div>
-                  <div className="col-sm-6">
-                    <Form.Group controlId="formBasicTask">
-                      <Form.Label>요청자 서명</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="이름작성 해주세요"
-                        value={requester || ""}
-                        onChange={handlerequesterChange}
-                      />
-                    </Form.Group>
-                  </div>
-                </div>
+        <>
+            <Button
+                style={{
+                    backgroundColor: "#5090CC",
+                    fontWeight: "bold",
+                    borderColor: "#3F72A2",
+                }}
+                onClick={handleShow}
+            >
+                <i
+                    className="bi bi-plus-square d-flex fs-5 justify-content-center"
+                    aria-hidden="true"
+                ></i>
+            </Button>
+            <div>
+                <Modal show={show} onHide={handleClose} centered size="lg">
+                    <Modal.Header closeButton>
+                        <Modal.Title style={{ color: "#7952B3", fontWeight: "bold" }}>
+                            To Do List
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <Form.Group controlId="formBasicTask">
+                                        <Form.Label>제목</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="제목을 적어주세요"
+                                            value={task || ""}
+                                            onChange={handleTaskChange}
+                                        />
+                                    </Form.Group>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                                        <Form.Label>상태 표시</Form.Label>
+                                        <Form.Select
+                                            value={selectValue}
+                                            onChange={handleSelectChange}
+                                        >
+                                            {Continents.map((item) => (
+                                                <option key={item.key} value={item.value}>
+                                                    {item.value}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+                                </div>
+                                <div className="col-sm-3">
+                                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                                        <Form.Label>완료 목표 일</Form.Label>
+                                        <Form.Select
+                                            value={selectedPeriod}
+                                            onChange={handleSelectPeriodChange}
+                                        >
+                                            {periodOptions.map((item, index) => (
+                                                <option key={index} value={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+                                </div>
+                                <div className="col-sm-6">
+                                    <Form.Group controlId="formBasicTask">
+                                        <Form.Label>요청자 서명</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="이름작성 해주세요"
+                                            value={requester || ""}
+                                            onChange={handlerequesterChange}
+                                        />
+                                    </Form.Group>
+                                </div>
+                            </div>
 
-                <Form.Group controlId="formBasicMemo" className="mt-2">
-                  <Form.Label>내용</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={10}
-                    placeholder="내용을 적어주세요"
-                    value={memo || ""}
-                    onChange={handleMemoChange}
-                  />
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="primary" onClick={handleAdd}>
-                Add
-              </Button>
-              <Button variant="secondary" onClick={handleClose}>
-                Cancel
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </>
+                            <Form.Group controlId="formBasicMemo" className="mt-2">
+                                <Form.Label>내용</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={10}
+                                    placeholder="내용을 적어주세요"
+                                    value={memo || ""}
+                                    onChange={handleMemoChange}
+                                />
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={handleAdd}>
+                            Add
+                        </Button>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Cancel
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
+        </>
     );
 }
 
