@@ -285,9 +285,10 @@ function Board() {
                             <StepIndicator status={status} />
                         </div>
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-4">
                         <ProjectStatus boardData={loadBoard} pm={pm} handleCardClick={handleCardClick} />
                     </div>
+                    
                     <div className="col-md-3">
                         <MainKanBanBoard projectName={selectedProjectName} kanban={kanban} setKanban={setKanban} />
                     </div>

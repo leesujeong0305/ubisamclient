@@ -7,7 +7,7 @@ const ProjectStatus = ({ boardData, pm, handleCardClick }) => {
 
   const [clickStatus, setClickStatus] = useState('');
 
-  const colorStep = ['#CCCCFF', '#ADD8E6', '#FFD700', '#FFC0CB'];
+  const colorStep = ['#CCCCFF', '#ADD8E6', '#FFD700', '#FFC0CB', '#E64F5A'];
 
   let today = new Date();
   let month = ('0' + (today.getMonth() + 1)).slice(-2);
@@ -37,7 +37,7 @@ const ProjectStatus = ({ boardData, pm, handleCardClick }) => {
     }, { 대기: 0, 진행중: 0, 완료: 0, 이슈: 0 });
 
     // 상태별 개수를 기반으로 newTable 생성
-    const title = ['대기', '진행중', '완료', '이슈'];
+    const title = ['대기', '진행중', '완료', '이슈', '알림'];
     const newTable = title.map((status, index) => ({
       title: status,
       // statusKey가 빈 문자열인 경우(예: Status가 null) 0을 기본값으로 사용
