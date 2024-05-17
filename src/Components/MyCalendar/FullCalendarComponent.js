@@ -55,6 +55,9 @@ export default function FullCalendarComponent({ selectedCategory, boardData, Get
         if (selectedCategory.has('이 슈')) {
           filtered = [...filtered, ...boardData.filter(event => event.category === '이슈')];
         }
+        if (selectedCategory.has('알 림')) {
+          filtered = [...filtered, ...boardData.filter(event => event.category === '알림')];
+        }
       }
     }
     setFilteredEvents(filtered);

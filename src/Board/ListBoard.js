@@ -12,6 +12,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
         { id: '진행중', color: '#ADD8E6' },
         { id: '완료', color: '#FFD700' },
         { id: '이슈', color: '#FFC0CB' },
+        { id: '알림', color: '#E64F5A' },
     ];
 
     const columns = [

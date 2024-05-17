@@ -11,10 +11,11 @@ function Today({ onClose, post, selectedProjectName }) {
     const [requester,setrequester] = useState('');
 
     const Continents = [ /* 상태 색상 표기 */
-        { key: 1, value: '대기', color: '#CCCCFF' },
+        { key: 1, value: '대기',   color: '#CCCCFF' },
         { key: 2, value: '진행중', color: '#ADD8E6' },
-        { key: 3, value: '완료', color: '#FFD700' },
-        { key: 4, value: '이슈', color: '#FFC0CB' },
+        { key: 3, value: '완료',   color: '#FFD700' },
+        { key: 4, value: '이슈',   color: '#FFC0CB' },
+        { key: 5, value: '알림',   color: '#E64F5A' },
     ];
 
     const periodOptions = ["1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일","11일","12일","13일","14일","15일"]; 

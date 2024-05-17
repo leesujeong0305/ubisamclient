@@ -33,6 +33,50 @@ function Board() {
     const [pm, setPM] = useState('');
     const [selectedTitle, setSelectedTitle] = useState(null);
 
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = ('0' + (today.getMonth() + 1)).slice(-2);
+    let day = ('0' + today.getDate()).slice(-2);
+    let dateString = year + '-' + month + '-' + day;
+
+    const setSubEdit = async (name, sub, subNum) => {
+        let project = ''
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        const _ProjectName = sub.ProjectName.replace(/ /g, '_');
+        const index = _ProjectName.indexOf('(');
+        if (index !== -1) {
+            project = _ProjectName.substring(0, index);
+        }
+        else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
+        return await Axios.post(`${ip}/subAddBoard`, {
+            ProjectName: sub.ProjectName,
+            _ProjectName : project,
+            Date: dateString,
+            Name: name,
+            Title: sub.Title,
+            Content: sub.Content,
+            Status: '알림',
+            FieldNum: sub.Index,
+            FieldSubNum: subNum,
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+
+            }
+        }).catch(error => {
+            //console.log({error});
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
+    }
+
     const getProjectData = async (name) => {
         //return await LoadBoard(name);
         const loadBoards = await LoadBoard(name);
@@ -193,18 +237,46 @@ function Board() {
     }
 
     const allData = async () => {
+        const token = localStorage.getItem('userToken');
         try {
+            
             const results = await fetchData();
-            if (results === undefined) return 'No Data';
+            console.log("getresults", results);
+            if (results === undefined) return "No Data";
+
+            // 여기에 추가
+            const today = new Date(); // 기준 날짜는 오늘로 설정
+            results.projectData = results.projectData.map((item) => {
+              const itemDate = new Date(item.Date);
+              const diffTime = Math.abs(today - itemDate);
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 차이를 계산
+
+              // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '이슈'로 변경
+              if (
+                diffDays > 15 &&
+                item.Status !== "완료" && item.Status !== "이슈"
+              ) {
+                //setSubEdit(token, item, item.details.FieldSubNum + 1);
+
+                item.Status = "알림";
+
+              }
+              return item;
+            });
+
+            console.log("Updated Project Data:", results.projectData);
+
             const user = results.userInfo;
-            const selectedProject = results.periodData.find(periodData => periodData.text === user.impProject);
+            const selectedProject = results.periodData.find(
+              (periodData) => periodData.text === user.impProject
+            );
             if (selectedProject) {
-                setPM(selectedProject.pm);
-                setPeriod(selectedProject.period);
-                await setLoadBoard(results.projectData);
-                setSelectedProjectName(selectedProject.text);
-                setStatus(selectedProject.status);
-                return selectedProject;
+              setPM(selectedProject.pm);
+              setPeriod(selectedProject.period);
+              await setLoadBoard(results.projectData);
+              setSelectedProjectName(selectedProject.text);
+              setStatus(selectedProject.status);
+              return selectedProject;
             }
         } catch (error) {
             console.error('An error occurred in pickAllFruits:', error);

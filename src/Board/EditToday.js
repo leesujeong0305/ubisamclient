@@ -19,6 +19,7 @@ function Today({ onClose, post, selectedProjectName }) {
         { key: 2, value: '진행중', color: '#ADD8E6', letter: '진' },
         { key: 3, value: '완료', color: '#FFD700', letter: '완' },
         { key: 4, value: '이슈', color: '#FFC0CB', letter: '이' },
+        { key: 5, value: '알림', color: '#E64F5A', letter: '알' },
     ];
 
     let today = new Date();

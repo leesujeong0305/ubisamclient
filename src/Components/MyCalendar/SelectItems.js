@@ -6,9 +6,10 @@ function SelectItems({ select, setSelect }) {
   const selectsOptions = [
     { name: '전 체', color: '#CCFFCC' },
     { name: '대 기', color: '#CCCCFF' },
-    { name: '진행중', color: '#FFFFCC' },
-    { name: '완 료', color: '#CCFFFF' },
-    { name: '이 슈', color: '#FFCCFF' },
+    { name: '진행중', color: '#ADD8E6' },
+    { name: '완 료', color: '#FFD700' },
+    { name: '이 슈', color: '#FFC0CB' },
+    { name: '알 림', color: '#E64F5A' },
   ];
 
   const handleSelect = (sport) => {
