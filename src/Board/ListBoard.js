@@ -19,11 +19,10 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
         { name: "#", width: "2%" },
         { name: "등록 날짜", width: "7%" },
         { name: "변경 날짜", width: "7%" },
-        { name: "목표일", width: "5%" },
         { name: "이 름", width: "5%" },
-        { name: "요청자", width: "5%" },
         { name: "Title", width: "25%" },
         { name: "To Do List", width: "" },
+        { name: "목표일", width: "5%" },
         { name: "상태", width: "5%" },];
 
     const [selectvalue, setSelectvalue] = useState(null);
@@ -44,6 +43,15 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
     const findColorById = (id) => {
         const item = items.find(item => item.id === id);
         return item ? item.color : 'white'; // 해당 상태가 없으면 투명색 반환
+    };
+
+    //목표일에 따른 색상 변경
+    const findDayById = (id) => {
+        if (id.includes('D-')) {
+            return 'red';
+        } else {
+            return id.color;
+        }
     };
 
     // 다이얼로그가 닫혔을 때 실행할 로직
@@ -130,9 +138,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                             </td>
                             <td>{row.Date}</td>
                             <td>{row.ChangeDate}</td>
-                            <td>{row.Period}</td>
                             <td>{row.Name}</td>
-                            <td>{row.Requester}</td>
                             <td className="truncate">{row.Title}</td>
                             <td className="truncate">
                                 <div className="preview-container" onMouseMove={handleMouseMove}>
@@ -154,6 +160,11 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                                         </div>
                                         
                                     </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style={{color: findDayById(`${row.Period}`) }}>
+                                    {row.Period}
                                 </div>
                             </td>
                             <td>

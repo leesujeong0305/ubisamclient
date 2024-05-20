@@ -256,7 +256,45 @@ function Board() {
               const setDay = parseInt(item.Period.replace(/[^0-9]/g, ''), 10);
               const detailsStatuses = item.details ? item.details.map(detail => detail.Status) : [];
 
+              const difference = diffDays - setDay;
+              //console.log('itemDate', item.Title, itemDate);
+              //console.log('difference 계산 ', difference, diffDays, setDay);
               // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '알림'으로 변경
+
+                if (item.details) {
+                    if (item.details[0].Status === '완료') {
+                        item.Period = '👍';
+                    } else if (item.details[0].Status === '이슈') {
+                        item.Period = '🚨';
+                    }
+                    else {
+                        if (difference > 0) {
+                            item.Period =  `D-${Math.abs(difference)}`;
+                        } else if (difference < 0) {
+                            item.Period = `${Math.abs(difference)}일`;
+                        } else {
+                            item.Period = `D-Day`;
+                        }
+                    }
+                } else {
+                    if (item.Status === '완료') {
+                        item.Period = '👍';
+                    } else if (item.Status === '이슈') {
+                        item.Period = '🚨';
+                    } else {
+                        if (difference > 0) {
+                            item.Period =  `D-${Math.abs(difference)}`;
+                        } else if (difference < 0) {
+                            item.Period = `${Math.abs(difference)}일`;
+                        } else {
+                            item.Period = `D-Day`;
+                        }
+                    }
+                    
+                }
+
+                
+              
               if (
                 diffDays > setDay &&
                 item.Status !== "완료" &&
