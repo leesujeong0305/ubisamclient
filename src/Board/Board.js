@@ -251,17 +251,20 @@ function Board() {
               const diffTime = Math.abs(today - itemDate);
               const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 차이를 계산
 
+
               // item.details 배열이 존재하는지 확인 후 모든 항목의 Status를 확인
+              const setDay = parseInt(item.Period.replace(/[^0-9]/g, ''), 10);
               const detailsStatuses = item.details ? item.details.map(detail => detail.Status) : [];
 
               // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '알림'으로 변경
               if (
-                diffDays > 15 &&
+                diffDays > setDay &&
                 item.Status !== "완료" &&
                 item.Status !== "이슈" &&
                 detailsStatuses.every(
                   (status) => status !== "완료" && status !== "이슈"
                 )
+              // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '이슈'로 변경
               ) {
                 item.Status = "알림";
                 alertTitles.push({ title: item.Title, key: item.Key }); // 제목과 키를 alertTitles 배열에 추가
