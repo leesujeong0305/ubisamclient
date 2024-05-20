@@ -55,7 +55,7 @@ function Layout() {
   };
 
   const verifyToken = async () => {
-    console.log("1111.",isLoggedIn);
+    console.log("verifyToken 58",isLoggedIn);
     // 컴포넌트가 마운트될 때 토큰 유효성 검사를 시도합니다.
     if (isLoggedIn === false) {
         alert("로그인 부터 해주세요");

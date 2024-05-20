@@ -173,7 +173,7 @@ const MyCalenderApp = () => {
           content: item.Content,
           category: item.Status,
           backgroundColor: (item.Status === '대기' ? '#CCCCFF' : item.Status === '진행중' ? '#ADD8E6' : item.Status === '완료' ? '#FFD700' : item.Status === '이슈' ? '#FFC0CB' : item.Status === '알림' ? '#E64F5A' : '#fff'),
-          borderColor: (item.Status === '대기' ? '#CCCCFF' : item.Status === '진행중' ? '#ADD8E6' : item.Status === '완료' ? '#FFD700' : item.Status === '이슈' ? '#FFC0CB' : item.Status === '알림' ? '#E64F5A' : '#fff'),
+          borderColor:     (item.Status === '대기' ? '#CCCCFF' : item.Status === '진행중' ? '#ADD8E6' : item.Status === '완료' ? '#FFD700' : item.Status === '이슈' ? '#FFC0CB' : item.Status === '알림' ? '#E64F5A' : '#fff'),
           textColor: '#333'
         }));
       } else {

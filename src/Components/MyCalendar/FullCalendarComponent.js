@@ -17,21 +17,11 @@ export default function FullCalendarComponent({ selectedCategory, boardData, Get
   const handleEventClick = (clickInfo) => {
     // clickInfo is an object containing event information and more
     console.log("Event clicked: ", clickInfo.event);
-    // const seData = boardData.filter(item => {
-    //   // item의 Index 값을 콘솔에 출력
-    //   console.log(item.Index);
-    //   console.log(clickInfo.event.extendedProps.index);
-    //   // 클릭한 이벤트의 index와 item의 Index를 비교하여 조건에 맞는 요소만 필터링
-    //   return item.Index === clickInfo.event.extendedProps.index;
-    // });
-    // //SetBoardData(seData);
-    // console.log(seData);
+
      console.log(clickInfo.event._def.title);
     const userData = boardData.filter(item=>{
       return item.title === clickInfo.event._def.title;
     })[0];
-
-
     GetBoardData(userData);
     // Perform actions like opening an event detail view or an edit form
   };
@@ -40,6 +30,7 @@ export default function FullCalendarComponent({ selectedCategory, boardData, Get
     let filtered = [];
     if (selectedCategory) {
       if (selectedCategory.has('전 체')) {
+        console.log("boardData 33",boardData);
         filtered = boardData;
       } else {
         // 'comp'와 'issue'가 중복 선택될 수 있도록 로직 변경
@@ -62,19 +53,12 @@ export default function FullCalendarComponent({ selectedCategory, boardData, Get
     }
     setFilteredEvents(filtered);
   }, [selectedCategory, boardData]);
-
-
   return (
-
     <div className="calendar-parent" >
       <FullCalendar className="fc-daygrid-day-events real-event-container-class"
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
-        headerToolbar={{
-          left: 'prev',
-          center: 'title',
-          right: 'next,today'
-        }}
+        headerToolbar={{ left: 'prev',center: 'title',right: 'next,today'}}
         locale={koLocale}
         events={filteredEvents}
         dayCellContent={handleDayCellContent}

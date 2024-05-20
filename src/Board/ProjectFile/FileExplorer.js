@@ -41,7 +41,7 @@ function FileItem({ name, created, size, selectedProjectName, succ, setSucc }) {
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         Axios.delete(`${ip}/deleteFile/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`)
         .then((response) => {
-            console.log(response.data.message);
+            console.log('handleDeleteFile',response.data.message);
             // 여기에서 UI 업데이트 로직을 추가할 수 있습니다. 예를 들어, 삭제된 파일을 목록에서 제거할 수 있습니다.
             setSucc(true);
         })
@@ -116,7 +116,7 @@ function FileExplorer({ selectedProjectName }) {
             size: `${item.size} bytes`,
         }));
 
-        console.log(newItems);
+        //console.log('Load 119',newItems);
         //새 항목으로 아이템 상태를 업데이트합니다.
         setItems(newItems);
     };
