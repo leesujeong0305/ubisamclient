@@ -48,10 +48,14 @@ function Today({ onClose, post, selectedProjectName }) {
         // Logic to handle adding the task
         const data = await setTodoList();
         console.log('add data',data);
-        const index = await getListIndex(data);
+        
+        ////////////////////////
+        //여기서 부터 다시 진행 Kanban아직 끝나지 않았음
+        ////////////////////////
+        const index = await getListIndex(data.data);
         console.log('load index', index);
         if (selectValue === '이슈') {
-             addKanBanList_DB(index);
+             addKanBanList_DB();
         }
         // Reset form and close modal
         setTask('');
