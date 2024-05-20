@@ -251,20 +251,57 @@ function Board() {
               const diffTime = Math.abs(today - itemDate);
               const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 차이를 계산
               const setDay = parseInt(item.Period.replace(/[^0-9]/g, ''), 10);
+              const difference = diffDays - setDay;
+              //console.log('itemDate', item.Title, itemDate);
+              //console.log('difference 계산 ', difference, diffDays, setDay);
               // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '이슈'로 변경
+
+                if (item.details) {
+                    if (item.details[0].Status === '완료') {
+                        item.Period = '👍';
+                    } else if (item.details[0].Status === '이슈') {
+                        item.Period = '🚨';
+                    }
+                    else {
+                        if (difference > 0) {
+                            item.Period =  `D-${Math.abs(difference)}`;
+                        } else if (difference < 0) {
+                            item.Period = `${Math.abs(difference)}일`;
+                        } else {
+                            item.Period = `D-Day`;
+                        }
+                    }
+                } else {
+                    if (item.Status === '완료') {
+                        item.Period = '👍';
+                    } else if (item.Status === '이슈') {
+                        item.Period = '🚨';
+                    } else {
+                        if (difference > 0) {
+                            item.Period =  `D-${Math.abs(difference)}`;
+                        } else if (difference < 0) {
+                            item.Period = `${Math.abs(difference)}일`;
+                        } else {
+                            item.Period = `D-Day`;
+                        }
+                    }
+                    
+                }
+
+                
+              
               if (
                 diffDays > setDay &&
                 item.Status !== "완료" && item.Status !== "이슈"
               ) {
                 //setSubEdit(token, item, item.details.FieldSubNum + 1);
-
                 item.Status = "알림";
 
               }
               return item;
             });
 
-            console.log("Updated Project Data:", results.projectData);
+            //console.log("Updated Project Data:", results.projectData);
 
             const user = results.userInfo;
             const selectedProject = results.periodData.find(

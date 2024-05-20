@@ -44,11 +44,14 @@ function Today({ onClose, post, selectedProjectName }) {
     const handleMemoChange = (e) => setMemo(e.target.value);
     const handlerequesterChange = (e) => setrequester(e.target.value);
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
         // Logic to handle adding the task
-        setTodoList();
+        const data = await setTodoList();
+        console.log('add data',data);
+        const index = await getListIndex(data);
+        console.log('load index', index);
         if (selectValue === '이슈') {
-            addKanBanList_DB();
+             addKanBanList_DB(index);
         }
         // Reset form and close modal
         setTask('');
@@ -58,6 +61,36 @@ function Today({ onClose, post, selectedProjectName }) {
         setrequester('');
         handleClose();
     };
+
+    const getListIndex = async (data) => {
+        const name = localStorage.getItem('userToken');
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        return await Axios.post(`${ip}/LoadListIndex`, {
+            ProjectName: data.ProjectName,
+            Date: data.Date,
+            Name: name,
+            Title: data.Title,
+            Content: data.Content,
+            Status: data.Status,
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            console.log({ response });
+            if (response.status === 200) {
+                return response.data;
+            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+                console.log("403");
+
+            }
+        }).catch(error => {
+            //console.log({error});
+            if (error.response.status === 403) {
+                alert(`${error.response.data.message}`);
+            }
+        });
+    } 
 
     const setTodoList = () => {
         const name = localStorage.getItem('userToken');
@@ -79,6 +112,7 @@ function Today({ onClose, post, selectedProjectName }) {
         }).then(response => {
             console.log({ response });
             if (response.status === 200) {
+                return response.data;
             } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
                 console.log("403");
 
