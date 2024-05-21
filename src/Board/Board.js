@@ -15,6 +15,7 @@ import UserInfo from '../Models/UserInfo';
 import FileExplorer from './ProjectFile/FileExplorer';
 import StepIndicator from './Stepbar/StepIndicator';
 import Scrolling from '../Components/ScrollingSignboard/Scrolling';
+import ViewGitHistory from '../Components/GitHistory/ViewGitHistory';
 
 function Board() {
     //const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
@@ -400,6 +401,9 @@ function Board() {
                     </div>
                     <div className="col-md-4">
                         <ProjectStatus boardData={loadBoard} pm={pm} handleCardClick={handleCardClick} />
+                    </div>
+                    <div className="col-md">
+                        <ViewGitHistory selectedProjectName={selectedProjectName} />
                     </div>
                     <div className="col-md-3">
                         <FileExplorer selectedProjectName={selectedProjectName} />
