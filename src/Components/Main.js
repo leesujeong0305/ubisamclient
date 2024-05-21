@@ -64,7 +64,6 @@ export default function MainUI() {
         localStorage.setItem('userRankToken', data.rank);
         localStorage.setItem('userImpProjectToken', data.impProject);
       }
-      console.log('진행완료', data);
 
     } catch (error) {
       console.error("Fetching project data failed:", error);

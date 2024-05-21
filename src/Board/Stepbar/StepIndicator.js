@@ -8,7 +8,7 @@ const steps = [
   { label: '완료', icon: '✓' },
 ];
 
-function StepIndicator({status}) {
+function StepIndicator({ status }) {
   const [currentStep, setCurrentStep] = useState(0);
 
   const isStepCompleted = (stepIndex) => stepIndex < currentStep;
@@ -19,30 +19,37 @@ function StepIndicator({status}) {
 
   useEffect(() => {
     //if (status !== 0) {
-      setCurrentStep(status);
-   // }
+    setCurrentStep(status);
+    // }
   }, [status])
 
   return (
     <div className="step-indicator-container">
       {/* 여기에 제목 표시줄 추가 */}
-    <div className="title-bar">
-      프로젝트 현황
-    </div>
-      <div className="steps">
-        {steps.map((step, index) => (
-          <div key={index} className={`step ${isCurrentStep(index) ? 'current' : ''}`}>
-            <div className={`step-icon ${isStepCompleted(index) ? 'completed' : ''}`}>
-              {isStepCompleted(index) ? step.icon : index + 1}
-            </div>
-            <div className="step-label">{step.label}</div>
-            {index !== steps.length - 1 && <div className="step-line"></div>}
-          </div>
-        ))}
+      <div className="title-bar">
+        프로젝트 현황
       </div>
-      <div className="buttons-container">
-        <button onClick={goBack} disabled={currentStep === 0}> ◀️​​ </button>
-        <button onClick={goNext} disabled={currentStep === steps.length - 1}>▶️​​</button>
+      <div className='d-flex col'>
+
+        <div className="buttons-container left">
+          <button onClick={goBack} disabled={currentStep === 0}> ◀️​​ </button>
+        </div>
+
+        <div className="steps">
+          {steps.map((step, index) => (
+            <div key={index} className={`step ${isCurrentStep(index) ? 'current' : ''}`}>
+              <div className={`step-icon ${isStepCompleted(index) ? 'completed' : ''}`}>
+                {isStepCompleted(index) ? step.icon : index + 1}
+              </div>
+              <div className="step-label">{step.label}</div>
+              {index !== steps.length - 1 && <div className="step-line"></div>}
+            </div>
+          ))}
+        </div>
+        
+        <div className="buttons-container">
+          <button onClick={goNext} disabled={currentStep === steps.length - 1}>▶️​​</button>
+        </div>
       </div>
     </div>
   );

@@ -48,6 +48,11 @@ npm install xlsx file-saver
 npm install react-datepicker
 npm install date-fns // 한글 폰트
 
+//24.05.21
+npm install styled-components
+npm i @fortawesome/react-fontawesome
+npm i @fortawesome/free-solid-svg-icons
+
 //24.04.03 프로젝트 배포
 npm run build
 - 진행하게 되면 bulid 폴더 생성됨

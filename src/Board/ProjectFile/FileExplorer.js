@@ -77,7 +77,6 @@ function FileExplorer({ selectedProjectName }) {
     }, [selectedProjectName])
 
     useEffect(() => {
-        console.log(succ);
         setItems([]);
         Load();
         setSucc(false);

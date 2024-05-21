@@ -1,0 +1,49 @@
+.Scrolling {
+  display: flex;
+  justify-content : center;
+  margin: 0 3rem;
+}
+
+.column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.bell-column {
+  flex: 0; /* 아이콘에 맞게 조정 */
+  color: pink;
+  padding: 0 10px; /* 적절한 간격을 위한 패딩 조정 */
+}
+
+.text-column {
+  background: #CF8083;
+  color: #fff;
+  padding: 0.5rem 0.8rem;
+}
+
+.start-text {
+  border-radius: 1rem 0rem 0rem 1rem;
+}
+
+.end-text {
+  border-radius: 0rem 1rem 1rem 0rem;
+}
+
+.scroll-column {
+  display: flex;
+  align-items: center;
+  flex-grow: 1; /* 나머지 공간을 차지 */
+  max-width: 80%;
+  min-width: 50%;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

@@ -1,5 +1,5 @@
-import React, { useState, useLayoutEffect } from 'react'
-import {  Dropdown } from 'react-bootstrap';
+import React, { useState, useLayoutEffect, useEffect } from 'react'
+import { Dropdown } from 'react-bootstrap';
 import { useFooterVisibilityUpdate } from '../Layouts/FooterVisibilityContext';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -14,6 +14,7 @@ import LoadBoard from './Page/LoadBoard';
 import UserInfo from '../Models/UserInfo';
 import FileExplorer from './ProjectFile/FileExplorer';
 import StepIndicator from './Stepbar/StepIndicator';
+import Scrolling from '../Components/ScrollingSignboard/Scrolling';
 
 function Board() {
     //const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
@@ -25,7 +26,7 @@ function Board() {
     const [selectedProjectName, setSelectedProjectName] = useState("No Data");
 
     const [data, setData] = useState(false);
-    const [kanban, setKanban] = useState(false);
+    //const [kanban, setKanban] = useState(false);
     const [period, setPeriod] = useState(false);
     const [status, setStatus] = useState(0);
 
@@ -50,7 +51,7 @@ function Board() {
         else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
         return await Axios.post(`${ip}/subAddBoard`, {
             ProjectName: sub.ProjectName,
-            _ProjectName : project,
+            _ProjectName: project,
             Date: dateString,
             Name: name,
             Title: sub.Title,
@@ -89,7 +90,7 @@ function Board() {
         if (loadSubBoards === undefined) {
             return loadBoards;
         }
-        
+
         // 각 targetIndex에 맞는 데이터 항목에 상세 정보를 추가하는 함수
         loadSubBoards.forEach(detail => {
             // 해당 targetIndex를 가진 객체를 찾습니다.
@@ -99,7 +100,7 @@ function Board() {
                 if (!item.details) {
                     item.details = [JSON.parse(JSON.stringify(item))]; //status 업데이트를 위해 복사해서 초기화함
                 }
-                
+
                 // details 배열에 상세 정보를 추가합니다. targetIndex는 제외합니다.
                 item.details.push({
                     Index: detail.Index,
@@ -120,7 +121,7 @@ function Board() {
         return loadBoards;
     }
 
-    const subLoadBoard = async(ProjectName) => {
+    const subLoadBoard = async (ProjectName) => {
         let project = ''
         const name = localStorage.getItem('userToken');
         const _ProjectName = ProjectName.replace(/ /g, '_');
@@ -132,7 +133,7 @@ function Board() {
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/subLoadBoard`, {
             ProjectName: ProjectName,
-            _ProjectName : project,
+            _ProjectName: project,
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -193,7 +194,7 @@ function Board() {
                     text: item.ProjectName,
                     period: item.Period,
                     status: item.Status,
-                    pm : item.PM
+                    pm: item.PM
                 }));
                 setSelectedActionText(dataRow);
                 return dataRow;
@@ -241,25 +242,24 @@ function Board() {
         let alertTitles = [];
         try {
             const results = await fetchData();
-            console.log("getresults 244", results);
             if (results === undefined) return "No Data";
 
             // 여기에 추가
             const today = new Date(); // 기준 날짜는 오늘로 설정
             results.projectData = results.projectData.map((item) => {
-              const itemDate = new Date(item.Date);
-              const diffTime = Math.abs(today - itemDate);
-              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 차이를 계산
+                const itemDate = new Date(item.Date);
+                const diffTime = Math.abs(today - itemDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 차이를 계산
 
 
-              // item.details 배열이 존재하는지 확인 후 모든 항목의 Status를 확인
-              const setDay = parseInt(item.Period.replace(/[^0-9]/g, ''), 10);
-              const detailsStatuses = item.details ? item.details.map(detail => detail.Status) : [];
+                // item.details 배열이 존재하는지 확인 후 모든 항목의 Status를 확인
+                const setDay = parseInt(item.Period.replace(/[^0-9]/g, ''), 10);
+                const detailsStatuses = item.details ? item.details.map(detail => detail.Status) : [];
 
-              const difference = diffDays - setDay;
-              //console.log('itemDate', item.Title, itemDate);
-              //console.log('difference 계산 ', difference, diffDays, setDay);
-              // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '알림'으로 변경
+                const difference = diffDays - setDay;
+                //console.log('itemDate', item.Title, itemDate);
+                //console.log('difference 계산 ', difference, diffDays, setDay);
+                // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '알림'으로 변경
 
                 if (item.details) {
                     if (item.details[0].Status === '완료') {
@@ -269,7 +269,7 @@ function Board() {
                     }
                     else {
                         if (difference > 0) {
-                            item.Period =  `D-${Math.abs(difference)}`;
+                            item.Period = `D-${Math.abs(difference)}`;
                         } else if (difference < 0) {
                             item.Period = `${Math.abs(difference)}일`;
                         } else {
@@ -283,46 +283,43 @@ function Board() {
                         item.Period = '🚨';
                     } else {
                         if (difference > 0) {
-                            item.Period =  `D-${Math.abs(difference)}`;
+                            item.Period = `D-${Math.abs(difference)}`;
                         } else if (difference < 0) {
                             item.Period = `${Math.abs(difference)}일`;
                         } else {
                             item.Period = `D-Day`;
                         }
                     }
-                    
+
                 }
 
-                
-              
-              if (
-                diffDays > setDay &&
-                item.Status !== "완료" &&
-                item.Status !== "이슈" &&
-                detailsStatuses.every(
-                  (status) => status !== "완료" && status !== "이슈"
-                )
-              // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '이슈'로 변경
-              ) {
-                item.Status = "알림";
-                alertTitles.push({ title: item.Title, key: item.Key }); // 제목과 키를 alertTitles 배열에 추가
-              }
-              return item;
+                if (
+                    diffDays > setDay &&
+                    item.Status !== "완료" &&
+                    item.Status !== "이슈" &&
+                    detailsStatuses.every(
+                        (status) => status !== "완료" && status !== "이슈"
+                    )
+                    // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '이슈'로 변경
+                ) {
+                    item.Status = "알림";
+                    alertTitles.push({ title: item.Title, key: item.Key }); // 제목과 키를 alertTitles 배열에 추가
+                }
+                return item;
             });
-            console.log("alertTitles Data:", alertTitles);
             // console.log("Updated Project Data:", results.projectData);
 
             const user = results.userInfo;
             const selectedProject = results.periodData.find(
-              (periodData) => periodData.text === user.impProject
+                (periodData) => periodData.text === user.impProject
             );
             if (selectedProject) {
-              setPM(selectedProject.pm);
-              setPeriod(selectedProject.period);
-              await setLoadBoard(results.projectData);
-              setSelectedProjectName(selectedProject.text);
-              setStatus(selectedProject.status);
-              return selectedProject;
+                setPM(selectedProject.pm);
+                setPeriod(selectedProject.period);
+                await setLoadBoard(results.projectData);
+                setSelectedProjectName(selectedProject.text);
+                setStatus(selectedProject.status);
+                return selectedProject;
             }
         } catch (error) {
             console.error('An error occurred in pickAllFruits:', error);
@@ -340,14 +337,12 @@ function Board() {
     const handleData = (newData) => {
         setData(newData);
         allData();
-        setKanban(true);
     };
 
     const handleCardClick = (title) => {
         setSelectedTitle(title); // 상태 업데이트
-        console.log('선택된 타이틀: ', title);
         // 부모 컴포넌트에서 필요한 추가 동작 수행
-      };
+    };
 
     useLayoutEffect(() => {
         allData();
@@ -406,15 +401,15 @@ function Board() {
                     <div className="col-md-4">
                         <ProjectStatus boardData={loadBoard} pm={pm} handleCardClick={handleCardClick} />
                     </div>
-                    
-                    <div className="col-md-3">
-                        <MainKanBanBoard projectName={selectedProjectName} kanban={kanban} setKanban={setKanban} />
-                    </div>
                     <div className="col-md-3">
                         <FileExplorer selectedProjectName={selectedProjectName} />
                     </div>
                 </div>
-                <div className='mt-5'>
+                <div className='mt-4'>
+                    <Scrolling selectedProjectName={selectedProjectName} />
+                </div>
+
+                <div className='mt-4'>
                     <BulletinBoard boardData={loadBoard} handleData={handleData} selectedProjectName={selectedProjectName} selectedTitle={selectedTitle} />
                 </div>
             </div>

@@ -68,7 +68,7 @@ function ExcelExport( { data, name, selectedProjectName } ) {
     
     return (
         <>
-        <div className="container">
+        <div>
             <Button className="export-to-excel" onClick={handleExport}>
                 <i className="bi bi-filetype-exe d-flex fs-5 justify-content-center"></i>
             </Button>
