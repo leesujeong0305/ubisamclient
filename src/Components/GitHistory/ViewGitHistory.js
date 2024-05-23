@@ -47,7 +47,7 @@ function ViewGitHistory({ selectedProjectName }) {
 
     useEffect(() => {
         setIsLoading(0);
-        
+        setPath('');
 
         const initStart = async () => {
             const info = await GetProjectInfo(selectedProjectName);
