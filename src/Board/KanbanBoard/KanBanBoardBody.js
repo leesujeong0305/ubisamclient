@@ -57,7 +57,7 @@ function KanBanBoardBody({ projectName }) {
     console.log('자리이동', draggedItem, finalIndex, updatedTasks);
 
     setTasks(updatedTasks);
-    updataKanBanList_DB(draggedItem, status);
+    //updataKanBanList_DB(draggedItem, status);
     setDraggedItem(null);
   };
 

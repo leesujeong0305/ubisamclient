@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Axios from '../API/AxiosApi';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { GetIndex } from '../API/GetIndex';
 
 function Today({ onClose, post, selectedProjectName }) {
     const [show, setShow] = useState(false);
@@ -52,10 +53,13 @@ function Today({ onClose, post, selectedProjectName }) {
         ////////////////////////
         //여기서 부터 다시 진행 Kanban아직 끝나지 않았음
         ////////////////////////
-        const index = await getListIndex(data.data);
-        console.log('load index', index);
+        
         if (selectValue === '이슈') {
-             addKanBanList_DB();
+            let index = null;
+            setTimeout( async() => {
+                index = await GetIndex(data.data);
+                await addKanBanList_DB(index.data.Index);
+            }, 500); // 2초 지연
         }
         // Reset form and close modal
         setTask('');
@@ -65,36 +69,6 @@ function Today({ onClose, post, selectedProjectName }) {
         setrequester('');
         handleClose();
     };
-
-    const getListIndex = async (data) => {
-        const name = localStorage.getItem('userToken');
-        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-        return await Axios.post(`${ip}/LoadListIndex`, {
-            ProjectName: data.ProjectName,
-            Date: data.Date,
-            Name: name,
-            Title: data.Title,
-            Content: data.Content,
-            Status: data.Status,
-        }, {
-            headers: {
-                "Content-Type": "application/json",
-            }
-        }).then(response => {
-            console.log({ response });
-            if (response.status === 200) {
-                return response.data;
-            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
-                console.log("403");
-
-            }
-        }).catch(error => {
-            //console.log({error});
-            if (error.response.status === 403) {
-                alert(`${error.response.data.message}`);
-            }
-        });
-    } 
 
     const setTodoList = () => {
         const name = localStorage.getItem('userToken');
@@ -108,7 +82,6 @@ function Today({ onClose, post, selectedProjectName }) {
             Title: task,
             Content: memo,
             Status: selectValue,
-            FieldIndex: 0
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -129,13 +102,13 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
-    const addKanBanList_DB = () => {
+    const addKanBanList_DB = (index) => {
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/addKanBanList`, {
             ProjectName: selectedProjectName,
             Content: task,
             Status: 'issue',
-            Order: 0,
+            Order: index,
         }, {
             headers: {
                 "Content-Type": "application/json",

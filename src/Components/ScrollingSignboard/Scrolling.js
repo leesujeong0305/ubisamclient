@@ -14,22 +14,21 @@ const Scrolling = ({ selectedProjectName }) => {
   useEffect(() => {
 
     if (data === true) {
-    const bellElement = bellRef.current;
-    let isPink = true;
-    console.log('이거탐?');
+      const bellElement = bellRef.current;
+      let isPink = true;
       const toggleColor = () => {
         if (isPink) {
-          bellElement.style.color = 'yellow';
+          bellElement.style.color = 'gray';
         } else {
-          bellElement.style.color = 'pink';
+          bellElement.style.color = 'rgb(238, 65, 65)';
         }
         isPink = !isPink;
       };
-      
+
       const intervalId = setInterval(toggleColor, 500);
-  
+
       return () => clearInterval(intervalId);
-    }  
+    }
   }, [data]);
 
 
@@ -80,7 +79,7 @@ const Scrolling = ({ selectedProjectName }) => {
   useEffect(() => {
     deleteAllTasks();
     setProjectName(selectedProjectName);
-    
+
   }, [selectedProjectName]);
 
   useEffect(() => {
@@ -91,23 +90,23 @@ const Scrolling = ({ selectedProjectName }) => {
 
   return (
     <>
-    { data === true && (
-<div className="Scrolling">
-        <div className="column bell-column">
-          <FontAwesomeIcon icon={faBell} size="2x" ref={bellRef} />
+      {data === true && (
+        <div className="Scrolling">
+          <div className="column bell-column">
+            <FontAwesomeIcon icon={faBell} size="2x" ref={bellRef} />
+          </div>
+          <div className="column text-column start-text">
+            <div>이슈 발생</div>
+          </div>
+          <div className="column scroll-column">
+            <ScrollText text={tasks} />
+          </div>
+          <div className="column text-column end-text">
+            <div>관리자는 빨리 조치 해주세요!</div>
+          </div>
         </div>
-        <div className="column text-column start-text">
-          <div>이슈 발생</div>
-        </div>
-        <div className="column scroll-column">
-        <ScrollText text={tasks} />
-        </div>
-        <div className="column text-column end-text">
-          <div>관리자는 빨리 조치 해주세요!</div>
-        </div>
-      </div>
       )}
-        
+
     </>
   );
 }

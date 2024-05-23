@@ -23,9 +23,10 @@
 
 .text {
   display: inline-block;
-  background-color: rgb(238, 65, 65); /* 배경 색상 조정 */
+  background-color: #F8D7DA; /* 배경 색상 조정 */
   padding: 0.3rem 1rem; /* 패딩 조정 */
   margin-right: 1.5rem; /* 스크롤링 텍스트 간 간격 */
   border-radius: 1rem;
-  color: white;
+  color: black;
+  font-weight: bold;
 }

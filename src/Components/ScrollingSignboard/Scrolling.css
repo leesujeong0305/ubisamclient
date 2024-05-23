@@ -18,24 +18,26 @@
 }
 
 .text-column {
-  background: #CF8083;
-  color: #fff;
+  background: #D37676;
+  color: #222;
   padding: 0.5rem 0.8rem;
 }
 
 .start-text {
   border-radius: 1rem 0rem 0rem 1rem;
+  font-size: 1rem;
 }
 
 .end-text {
   border-radius: 0rem 1rem 1rem 0rem;
+  font-size: 1rem;
 }
 
 .scroll-column {
   display: flex;
   align-items: center;
   flex-grow: 1; /* 나머지 공간을 차지 */
-  max-width: 80%;
+  max-width: 70%;
   min-width: 50%;
 }
 

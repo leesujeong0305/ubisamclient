@@ -1,11 +1,12 @@
 .git-container {
+    position: relative;
     width: 100%;
-    max-width: 500px;
     margin: 0 auto;
     border: 1px solid #ccc;
     border-radius: 8px;
     max-height: 303px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* .git-container-title {
@@ -20,25 +21,52 @@
 
 .git-container-header {
     display: flex;
+    position: sticky;
+    top: 0;
     justify-content: space-between;
+    width: 100%;
     align-items: center;
-    padding: 10px 20px;
+    padding: 0.3rem 0.5rem;
     border-bottom: 1px solid #ccc;
-    background-color: #DDCCFF;
+    background-color: #CAE6B2;
+    font-size: 0.9rem;
+}
+
+.button-container {
+    display: flex;
 }
 
 .git-path {
-    border: none;
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     background-color: transparent;
-    max-width: 70%;
-    min-width: 210px;
     padding: 0.3rem;
+    box-sizing: border-box;
 }
 
+.git-container-body {
+    margin: 0.5rem;
+}
 
+.git-list {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
 
-.add-button {
-    padding: 5px 10px;
+.git-list-name {
+    display: flex;
+    text-align: right;
+    margin-top: 0.2rem;
+    font-size: 0.7rem;
+    color: #333;
+}
+
+.conn-button {
+    padding: 0.3rem 0.5rem;
     font-size: 1em;
     color: #333;
     background-color: #eee;
@@ -49,64 +77,4 @@
     /* Rounded corners for the button */
     cursor: pointer;
     /* Change the cursor to indicate it's clickable */
-}
-
-.file-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    border-bottom: 1px solid #eee;
-}
-
-.file-item:last-child {
-    border-bottom: none;
-}
-
-
-.file-created{
-    text-align: left;
-    /* Ensure some spacing between columns */
-    font-size: 0.7rem;
-}
-.file-name,
-.file-size {
-    text-align: left;
-    margin-right: 10px;
-    /* Ensure some spacing between columns */
-    font-size: 0.8rem;
-}
-
-.file-name {
-    flex: 5;
-    /* Allocate more space for the file name */
-}
-
-.file-created {
-    flex: 3;
-    /* Allocate space for the created date, allowing it to display fully */
-}
-
-.file-size {
-    flex: 1;
-    /* Less space for the size as it's typically a shorter column */
-}
-
-.file-actions {
-    display: flex;
-    justify-content: flex-end;
-    flex: 1;
-    min-width: 60px;
-    /* Ensure enough space for all action buttons */
-}
-
-.file-actions button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1em;
-}
-
-.file-item:hover {
-    background-color: #f9f9f9;
 }

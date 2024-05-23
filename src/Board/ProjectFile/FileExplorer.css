@@ -11,29 +11,22 @@
 .file-explorer-title {
 
     color: #333;
-    font-size: 1em;
-    padding: 10px 10px;
+    font-size: 0.8em;
+    padding: 0.3rem 0.5rem;
     margin: 0;
-    border-bottom: 1px solid rgb(12, 6, 6);
 }
 
 .file-explorer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 0.3rem 0.5rem;
     border-bottom: 1px solid #ccc;
     background-color: #DDCCFF;
 }
 
-.file-explorer-title {
-    color: #333;
-    font-size: 1.2em;
-    margin: 0;
-}
-
 .add-button {
-    padding: 5px 10px;
+    padding: 0.3rem 0.5rem;
     font-size: 1em;
     color: #333;
     background-color: #eee;

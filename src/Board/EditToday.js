@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from '../API/AxiosApi';
 import { Modal, Button, Form } from 'react-bootstrap';
-import DeleteToday from './DeleteToday';
-
 import './EditToday.css'
 
 function Today({ onClose, post, selectedProjectName }) {
@@ -78,14 +76,11 @@ function Today({ onClose, post, selectedProjectName }) {
 
         if (selectValue === '이슈') {
             const loadList = await loadKanBanList_DB();
-            console.log('loadList 46', loadList);
-            console.log('81', post);
             const result = loadList.some( item => item.Content === post.Title); //같은 요소가 하나라도 있으면 즉시 true 반환함
-            console.log('loadList result 48', result);
             if (result) {
-                await updataKanBanList_DB();
+                await updataKanBanList_DB(post.Key);
             } else {
-                await addKanBanList_DB();
+                await addKanBanList_DB(post.Key);
             }
             
         }
@@ -264,7 +259,7 @@ function Today({ onClose, post, selectedProjectName }) {
         return await Axios.delete(`${ip}/deleteKanBanList`, {
             data: {
                 Project: selectedProjectName,
-                Content: task,
+                Content: post.Title,
                 Order: post.Key,
             },
             headers: {
@@ -305,14 +300,16 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
-    const updataKanBanList_DB = () => {
-        console.log('updataKanBanList 308', task);
-        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    const updataKanBanList_DB = (item) => {
+        console.log('updataKanBanList 308', task, item);
+        //const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        const ip = `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/updataKanBanList`, {
             Project: selectedProjectName,
             OldContent: post.Title,
+            Index: item,
             Content: task,
-            Status: 'issue',
+            
         }, {
             headers: {
                 "Content-Type": "application/json",
@@ -320,6 +317,7 @@ function Today({ onClose, post, selectedProjectName }) {
         }).then(response => {
             console.log({ response });
             if (response.status === 200) {
+                return response.data;
             } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
                 console.log("403");
 
@@ -352,6 +350,8 @@ function Today({ onClose, post, selectedProjectName }) {
                 setTask(post?.details[post.details.length -1].Title);
                 if (post?.details[post.details.length -1].Date === dateString) {
                     setMemo(post?.details[post.details.length -1].Content);
+                } else {
+                    setMemo(dateString + ' - ');
                 }
                 setSelectValue(post?.details[post.details.length -1].Status);
                 setOldSelectValue(post?.details[post.details.length -1].Status);
