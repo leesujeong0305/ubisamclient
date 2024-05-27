@@ -10,6 +10,7 @@ function Today({ onClose, post, selectedProjectName }) {
     const [selectValue, setSelectValue] = useState('');
     const [selectedPeriod, setSelectedPeriod] = useState("1일");
     const [requester, setrequester] = useState('');
+    const [reqManager, setReqManager] = useState('');
 
     const Continents = [ /* 상태 색상 표기 */
         { key: 1, value: '대기',   color: '#CCCCFF' },
@@ -44,15 +45,12 @@ function Today({ onClose, post, selectedProjectName }) {
     const handleTaskChange = (e) => setTask(e.target.value);
     const handleMemoChange = (e) => setMemo(e.target.value);
     const handlerequesterChange = (e) => setrequester(e.target.value);
+    const handlereqManagerChange = (e) => setReqManager(e.target.value);
 
     const handleAdd = async () => {
         // Logic to handle adding the task
         const data = await setTodoList();
-        console.log('add data',data);
-        
-        ////////////////////////
-        //여기서 부터 다시 진행 Kanban아직 끝나지 않았음
-        ////////////////////////
+        //console.log('add data',data);
         
         if (selectValue === '이슈') {
             let index = null;
@@ -67,6 +65,7 @@ function Today({ onClose, post, selectedProjectName }) {
         setSelectValue('대기');
         setSelectedPeriod('1일');
         setrequester('');
+        setReqManager('');
         handleClose();
     };
 
@@ -78,6 +77,7 @@ function Today({ onClose, post, selectedProjectName }) {
             Date: dateString,
             Period: selectedPeriod,
             Requester: requester,
+            ReqManager: reqManager,
             Name: name,
             Title: task,
             Content: memo,
@@ -208,14 +208,25 @@ function Today({ onClose, post, selectedProjectName }) {
                                         </Form.Select>
                                     </Form.Group>
                                 </div>
-                                <div className="col-sm-6">
+                                <div className="col-sm-3">
                                     <Form.Group controlId="formBasicTask">
-                                        <Form.Label>요청자 서명</Form.Label>
+                                        <Form.Label>요청자</Form.Label>
                                         <Form.Control
                                             type="text"
                                             placeholder="이름작성 해주세요"
                                             value={requester || ""}
                                             onChange={handlerequesterChange}
+                                        />
+                                    </Form.Group>
+                                </div>
+                                <div className="col-sm-3">
+                                    <Form.Group controlId="formBasicTask">
+                                        <Form.Label>요청 담당자</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="이름작성 해주세요"
+                                            value={reqManager || ""}
+                                            onChange={handlereqManagerChange}
                                         />
                                     </Form.Group>
                                 </div>
