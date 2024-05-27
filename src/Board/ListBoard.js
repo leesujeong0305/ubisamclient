@@ -112,7 +112,6 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                     />
                 </div>
             </div>
-
             <table className="table table-striped table-hover border-primary table-fixed">
                 <thead className="list-Title">
                     <tr>

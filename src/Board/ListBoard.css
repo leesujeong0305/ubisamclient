@@ -66,11 +66,58 @@
   }
 
   .preview-hover {
-    
     white-space:pre-wrap;
   }
 
   .preview-container:hover .preview {
     display: block;
     /* opacity: 1; */ /* 항상 불투명하게 설정 */
+  }
+
+  .custom-button {
+    background-color: #5090CC;
+    font-weight: bold;
+    border-color: #ccc;
+    position: relative;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+  }
+  
+  .custom-button .plus-icon {
+    font-size: 20px;
+    margin-right: 5px;
+  }
+  
+  .custom-button .separator {
+    width: 1px;
+    height: 15px;
+    background-color: #fff;
+    margin: 0 5px;
+  }
+  .custom-button:hover .tooltip-text {
+    display: block;
+  }  
+  .tooltip-text {
+    display: none;
+    position: absolute;
+    top: -30px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f8f676;
+    color: #222;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1;
+  }
+  
+  .custom-input {
+    margin-top: 10px;
+    padding: 5px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
   }

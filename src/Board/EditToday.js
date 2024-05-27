@@ -367,95 +367,118 @@ function Today({ onClose, post, selectedProjectName }) {
     }, [post]);
 
     return (
-        <>
-            <Button style={{ backgroundColor: '#7952B3', borderColor: '#734EAA', fontSize: '16px' }} onClick={handleShow}>
-                <i className="bi bi-pencil-square d-flex fs-5 justify-content-center" aria-hidden="true"></i>
-            </Button>
-            <div>
-                <Modal show={show} onHide={handleClose} centered size='lg'>
-                    <Modal.Header closeButton >
-                        <Modal.Title style={{ color: '#7952B3', fontWeight: 'bold' }}>To Do Edit</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form>
-                            <div className="row">
-                                <div className='col-sm-6'>
-                                    <Form.Group controlId="formBasicTask">
-                                        <Form.Label>제목</Form.Label>
-                                        <Form.Control type="text" placeholder="제목을 적어주세요" value={task || ''} onChange={handleTaskChange} />
-                                    </Form.Group>
-                                </div>
-                                <div className='col-sm-3'>
-                                    <Form.Group className="mb-3" controlId="formBasicPosition">
-                                        <Form.Label>상태 표시</Form.Label>
-                                        <Form.Select value={selectValue} onChange={handleSelectChange}>
-                                            {Continents.map((item) => (
-                                                <option key={item.key} value={item.value}>
-                                                    {item.value || ''}
-                                                </option>
-                                            ))}
-                                        </Form.Select>
-                                    </Form.Group>
-                                </div>
-                                <div className='col-sm-3'>
-                                    <Form.Group className="mb-3" controlId="formBasicPosition">
-                                        <Form.Label>요청자</Form.Label>
-                                        <Form.Control type="text" value={requester || ''} readOnly />
-                                    </Form.Group>
-                                </div>
-                            </div>
+      <>
+        <Button className="custom-button" style={{ backgroundColor: "#7952B3", display: "flex" }} onClick={handleShow}>
+          <i className="bi bi-pencil-square d-flex fs-5 justify-content-center" aria-hidden="true"></i>
+          <div className="separator"></div>
+          <span className="button-text">EDIT</span>
+          <div className="tooltip-text">TodoList 내용 수정</div>
+        </Button>
+        <div>
+          <Modal show={show} onHide={handleClose} centered size="lg">
+            <Modal.Header closeButton>
+              <Modal.Title style={{ color: "#7952B3", fontWeight: "bold" }}>
+                To Do Edit
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <div className="row">
+                  <div className="col-sm-6">
+                    <Form.Group controlId="formBasicTask">
+                      <Form.Label>제목</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="제목을 적어주세요"
+                        value={task || ""}
+                        onChange={handleTaskChange}
+                      />
+                    </Form.Group>
+                  </div>
+                  <div className="col-sm-3">
+                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                      <Form.Label>상태 표시</Form.Label>
+                      <Form.Select
+                        value={selectValue}
+                        onChange={handleSelectChange}
+                      >
+                        {Continents.map((item) => (
+                          <option key={item.key} value={item.value}>
+                            {item.value || ""}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+                  </div>
+                  <div className="col-sm-3">
+                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                      <Form.Label>요청자</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={requester || ""}
+                        readOnly
+                      />
+                    </Form.Group>
+                  </div>
+                </div>
 
-                            <div className="task-container">
-                            {subRows.length > 0 && (
-                                <>
-                                <div className="task-title"> - 진행 내용 - </div>
-                                <div className="group-box">
-                                    {subRows.map((step, index) => {
-                                        const status = Continents.find(
-                                            (status) => status.value === step.Status
-                                        );
-                                        return (
-                                            <React.Fragment key={step.Index}>
-                                            <div className="task-step">
-                                                
-                                                <div
-                                                    className="status-circle"
-                                                    style={{ backgroundColor: status.color }}
-                                                >
-                                                    {status.letter}
-                                                </div>
-                                                <div className="task-description">{`${step.Content}`}</div>
-                                            </div>
-                                            {index !== subRows.length - 1 && <hr />} {/* 마지막 요소가 아닐 때만 <hr> 추가 */}
-                                            </React.Fragment>
-                                        );
-                                    })}
+                <div className="task-container">
+                  {subRows.length > 0 && (
+                    <>
+                      <div className="task-title"> - 진행 내용 - </div>
+                      <div className="group-box">
+                        {subRows.map((step, index) => {
+                          const status = Continents.find(
+                            (status) => status.value === step.Status
+                          );
+                          return (
+                            <React.Fragment key={step.Index}>
+                              <div className="task-step">
+                                <div
+                                  className="status-circle"
+                                  style={{ backgroundColor: status.color }}
+                                >
+                                  {status.letter}
                                 </div>
-                                </>
-                            )}
-                            </div>
+                                <div className="task-description">{`${step.Content}`}</div>
+                              </div>
+                              {index !== subRows.length - 1 && <hr />}{" "}
+                              {/* 마지막 요소가 아닐 때만 <hr> 추가 */}
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
 
-                            <Form.Group controlId="formBasicMemo" className='mt-2'>
-                                <Form.Label>내용</Form.Label>
-                                <Form.Control as="textarea" rows={10} placeholder="내용을 적어주세요" value={memo} onChange={handleMemoChange} />
-                            </Form.Group>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        {/*<DeleteToday show={show} type="button" className="btn btn-outline-danger" post={post}>
+                <Form.Group controlId="formBasicMemo" className="mt-2">
+                  <Form.Label>내용</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={10}
+                    placeholder="내용을 적어주세요"
+                    value={memo}
+                    onChange={handleMemoChange}
+                  />
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              {/*<DeleteToday show={show} type="button" className="btn btn-outline-danger" post={post}>
                             삭제
                         </DeleteToday> */}
-                        <Button variant="primary" onClick={handleAdd}>
-                            Edit
-                        </Button>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Cancel
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-        </>
-    )
+              <Button variant="primary" onClick={handleAdd}>
+                Edit
+              </Button>
+              <Button variant="secondary" onClick={handleClose}>
+                Cancel
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      </>
+    );
 }
 
 export default Today

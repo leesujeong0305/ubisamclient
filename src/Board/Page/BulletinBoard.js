@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Pagination from './Pagination';
 import ListBoard from '../ListBoard'
-import LoadBoard from './LoadBoard'
 import './BulletinBoard.css'
 
 // 가정: postData는 제공된 포스트 객체 배열입니다.
@@ -66,19 +65,29 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName, selectedTitl
 
   return (
     <div>
-      <div className='d-flex nav-context'>
+      <div className="d-flex nav-context">
         <div className="nav-container">
-                      {tabs.map(tab => (
-                          <button className={selectedTab === tab ? "tab-button" : "nav-tab"} key={tab} onClick={() => setSelectedTab(tab)}>
-                            {tab}
-                          </button>
-                      ))}
-          </div>
+          {tabs.map((tab) => (
+            <button
+              className={selectedTab === tab ? "tab-button" : "nav-tab"}
+              key={tab}
+              onClick={() => setSelectedTab(tab)}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
+      </div>
       <div>
-        <ListBoard posts={currentPosts} allposts={posts} pageNumber={currentPage - 1}
-          postsPerPage={postsPerPage} totalPage={totalPage}// 페이지 당 포스트 수
-          tab={selectedTab} handleData={handleData} selectedProjectName={selectedProjectName}
+        <ListBoard
+          posts={currentPosts}
+          allposts={posts}
+          pageNumber={currentPage - 1}
+          postsPerPage={postsPerPage}
+          totalPage={totalPage} // 페이지 당 포스트 수
+          tab={selectedTab}
+          handleData={handleData}
+          selectedProjectName={selectedProjectName}
         />
       </div>
       <br></br>

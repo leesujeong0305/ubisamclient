@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 //import './Excel-Export.css'
 import { Button } from 'react-bootstrap';
+import CustomConfirmModal from './CustomConfirmModal';
+
 
 function ExcelExport( { data, name, selectedProjectName } ) {
-    
+
     const handleExport = () => {
          // 새 워크북을 생성하고 워크시트를 추가합니다
         
@@ -18,7 +20,6 @@ function ExcelExport( { data, name, selectedProjectName } ) {
             alert('데이터가 없습니다.');
             return;
         }
-
 
         const wb = XLSX.utils.book_new();
         let newData = [];
@@ -64,17 +65,22 @@ function ExcelExport( { data, name, selectedProjectName } ) {
         // 파일로 저장합니다
         const blob = new Blob([buf], { type: 'application/octet-stream' });
         saveAs(blob, filename);
+        
     };
     
     return (
-        <>
-        <div>
-            <Button className="export-to-excel" onClick={handleExport}>
-                <i className="bi bi-filetype-exe d-flex fs-5 justify-content-center"></i>
-            </Button>
-        </div>
-        </>
-        
+      <>
+        <Button
+          className="custom-button"
+          style={{ backgroundColor: "#66A593", display: "flex" }}
+          onClick={handleExport}
+        >
+          <i className="bi bi-filetype-exe d-flex fs-5 justify-content-center" aria-hidden="true" />
+          <div className="separator"></div>
+          <span className="button-text">Excel Save</span>
+          <div className="tooltip-text">TodoList 내용 Excel Save</div>
+        </Button>
+      </>
     );
 };
 
