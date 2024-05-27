@@ -23,6 +23,7 @@ function LoadBoard(name) {
                 Status: item.Status, // 서버로부터 받은 데이터 구조에 따라 접근
                 Period: item.Period,
                 Requester: item.Requester,
+                ReqManager: item.ReqManager,
                 Plus: item.Plus
             }));
 

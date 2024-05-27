@@ -12,6 +12,7 @@ function Today({ onClose, post, selectedProjectName }) {
     const [oldSelectValue, setOldSelectValue] = useState('');
     const [subRows, setSubRows] = useState([]);
     const [requester, setRequester] = useState('');
+    const [reqManager, setReqManager] = useState('');
 
     const Continents = [ /* 상태 색상 표기 */
         { key: 1, value: '대기', color: '#CCCCFF', letter: '대' },
@@ -343,11 +344,12 @@ function Today({ onClose, post, selectedProjectName }) {
             setOldSelectValue(post?.Status);
             setIndex(post?.Index);
             setRequester(post?.Requester);
+            setReqManager(post?.ReqManager);
             setSubRows([]);
         } else {
             if (post?.details.length > 0) {
-                const {Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, details} = post;
-                const parentRow = { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester };
+                const {Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, ReqManager, details} = post;
+                const parentRow = { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, ReqManager };
                 //setSubRows(post);
                 setTask(post?.details[post.details.length -1].Title);
                 if (post?.details[post.details.length -1].Date === dateString) {
@@ -360,67 +362,65 @@ function Today({ onClose, post, selectedProjectName }) {
                 setIndex(post?.details[post.details.length -1].Index);
                 const newSubRows = [parentRow, ...details.slice(1)];
                 setSubRows(newSubRows);
+
                 setRequester(post?.Requester);
+                setReqManager(post?.ReqManager);
             }
         }
         
     }, [post]);
 
     return (
-      <>
-        <Button className="custom-button" style={{ backgroundColor: "#7952B3", display: "flex" }} onClick={handleShow}>
-          <i className="bi bi-pencil-square d-flex fs-5 justify-content-center" aria-hidden="true"></i>
+        <>
+            <Button style={{ backgroundColor: '#7952B3', borderColor: '#734EAA', fontSize: '16px', display: "flex" }} onClick={handleShow}>
+            <i className="bi bi-pencil-square d-flex fs-5 justify-content-center" aria-hidden="true"></i>
           <div className="separator"></div>
           <span className="button-text">EDIT</span>
           <div className="tooltip-text">TodoList 내용 수정</div>
-        </Button>
-        <div>
-          <Modal show={show} onHide={handleClose} centered size="lg">
-            <Modal.Header closeButton>
-              <Modal.Title style={{ color: "#7952B3", fontWeight: "bold" }}>
+            </Button>
+            <div>
+                <Modal show={show} onHide={handleClose} size='lg'>
+                <Modal.Header closeButton>
+              <Modal.Title style={{ color: "#7952B3", fontWeight: "bold", display: "flex"  }}>
                 To Do Edit
               </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <Form.Group controlId="formBasicTask">
-                      <Form.Label>제목</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="제목을 적어주세요"
-                        value={task || ""}
-                        onChange={handleTaskChange}
-                      />
-                    </Form.Group>
-                  </div>
-                  <div className="col-sm-3">
-                    <Form.Group className="mb-3" controlId="formBasicPosition">
-                      <Form.Label>상태 표시</Form.Label>
-                      <Form.Select
-                        value={selectValue}
-                        onChange={handleSelectChange}
-                      >
-                        {Continents.map((item) => (
-                          <option key={item.key} value={item.value}>
-                            {item.value || ""}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-                  </div>
-                  <div className="col-sm-3">
-                    <Form.Group className="mb-3" controlId="formBasicPosition">
-                      <Form.Label>요청자</Form.Label>
-                      <Form.Control
-                        type="text"
-                        value={requester || ""}
-                        readOnly
-                      />
-                    </Form.Group>
-                  </div>
-                </div>
+                    <Modal.Body>
+                        <Form style={{textAlign:"left"}}>
+                            <div className="row">
+                                <div className='col-sm-12'>
+                                    <Form.Group controlId="formBasicTask">
+                                        <Form.Label>제목</Form.Label>
+                                        <Form.Control type="text" placeholder="제목을 적어주세요" value={task || ''} onChange={handleTaskChange} />
+                                    </Form.Group>
+                                </div>
+                            </div>
+                            <div className='row'>
+                            <div className='col-sm-4'>
+                                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                                        <Form.Label>상태 표시</Form.Label>
+                                        <Form.Select value={selectValue} onChange={handleSelectChange}>
+                                            {Continents.map((item) => (
+                                                <option key={item.key} value={item.value}>
+                                                    {item.value || ''}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+                                </div>
+                                <div className='col-sm-4'>
+                                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                                        <Form.Label>요청자</Form.Label>
+                                        <Form.Control type="text" value={requester || ''} readOnly />
+                                    </Form.Group>
+                                </div>
+                                <div className='col-sm-4'>
+                                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                                        <Form.Label>요청 담당자</Form.Label>
+                                        <Form.Control type="text" value={reqManager || ''} readOnly />
+                                    </Form.Group>
+                                </div>
+                            </div>
 
                 <div className="task-container">
                   {subRows.length > 0 && (
