@@ -169,15 +169,11 @@ function Today({ onClose, post, selectedProjectName }) {
     return (
         <>
             <Button
-                style={{
-                    backgroundColor: "#5090CC",
-                    fontWeight: "bold",
-                    borderColor: "#3F72A2",
-                    display: "flex"
-                }}
+                className="custom-button"
+                style={{ backgroundColor: "#5090CC",borderColor: "#3F72A2", display: "flex" }}
                 onClick={handleShow}
             >
-                <i className="bi bi-plus-square plus-icon" aria-hidden="true"></i>
+                <i className="bi bi-plus-square d-flex fs-5 justify-content-center" aria-hidden="true" />
                 <div className="separator"></div>
                 <span className="button-text">추가</span>
                 <div className="tooltip-text">TodoList 내용 추가</div>

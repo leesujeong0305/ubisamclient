@@ -75,7 +75,7 @@ function ExcelExport( { data, name, selectedProjectName } ) {
           style={{ backgroundColor: "#66A593", display: "flex" }}
           onClick={handleExport}
         >
-          <i className="bi bi-filetype-exe d-flex fs-5 justify-content-center" aria-hidden="true" />
+          <i className="bi bi-file-earmark-excel d-flex fs-5 justify-content-center" aria-hidden="true" />
           <div className="separator"></div>
           <span className="button-text">Excel Save</span>
           <div className="tooltip-text">TodoList 내용 Excel Save</div>

@@ -134,7 +134,7 @@ function Today({ onClose, post, selectedProjectName }) {
             Index: post.Key,
             ProjectName: selectedProjectName,
             Name: name,
-            ChangeDate : dateString,
+            ChangeDate: dateString,
             Title: task,
         }, {
             headers: {
@@ -166,7 +166,7 @@ function Today({ onClose, post, selectedProjectName }) {
         else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
         return Axios.post(`${ip}/subAddBoard`, {
             ProjectName: selectedProjectName,
-            _ProjectName : project,
+            _ProjectName: project,
             Date: dateString,
             Name: name,
             Title: task,
@@ -348,18 +348,18 @@ function Today({ onClose, post, selectedProjectName }) {
             setSubRows([]);
         } else {
             if (post?.details.length > 0) {
-                const {Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, ReqManager, details} = post;
+                const { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, ReqManager, details } = post;
                 const parentRow = { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, ReqManager };
                 //setSubRows(post);
-                setTask(post?.details[post.details.length -1].Title);
-                if (post?.details[post.details.length -1].Date === dateString) {
-                    setMemo(post?.details[post.details.length -1].Content);
+                setTask(post?.details[post.details.length - 1].Title);
+                if (post?.details[post.details.length - 1].Date === dateString) {
+                    setMemo(post?.details[post.details.length - 1].Content);
                 } else {
                     setMemo(dateString + ' - ');
                 }
-                setSelectValue(post?.details[post.details.length -1].Status);
-                setOldSelectValue(post?.details[post.details.length -1].Status);
-                setIndex(post?.details[post.details.length -1].Index);
+                setSelectValue(post?.details[post.details.length - 1].Status);
+                setOldSelectValue(post?.details[post.details.length - 1].Status);
+                setIndex(post?.details[post.details.length - 1].Index);
                 const newSubRows = [parentRow, ...details.slice(1)];
                 setSubRows(newSubRows);
 
@@ -372,21 +372,25 @@ function Today({ onClose, post, selectedProjectName }) {
 
     return (
         <>
-            <Button style={{ backgroundColor: '#7952B3', borderColor: '#734EAA', fontSize: '16px', display: "flex" }} onClick={handleShow}>
-            <i className="bi bi-pencil-square d-flex fs-5 justify-content-center" aria-hidden="true"></i>
-          <div className="separator"></div>
-          <span className="button-text">EDIT</span>
-          <div className="tooltip-text">TodoList 내용 수정</div>
+            <Button
+                className="custom-button"
+                style={{ backgroundColor: '#7952B3', borderColor: '#734EAA', display: "flex" }}
+                onClick={handleShow}
+            >
+                <i className="bi bi-pencil-square d-flex fs-5 justify-content-center" aria-hidden="true" />
+                <div className="separator"></div>
+                <span className="button-text">EDIT</span>
+                <div className="tooltip-text">TodoList 내용 수정</div>
             </Button>
             <div>
                 <Modal show={show} onHide={handleClose} size='lg'>
-                <Modal.Header closeButton>
-              <Modal.Title style={{ color: "#7952B3", fontWeight: "bold", display: "flex"  }}>
-                To Do Edit
-              </Modal.Title>
-            </Modal.Header>
+                    <Modal.Header closeButton>
+                        <Modal.Title style={{ color: "#7952B3", fontWeight: "bold", display: "flex" }}>
+                            To Do Edit
+                        </Modal.Title>
+                    </Modal.Header>
                     <Modal.Body>
-                        <Form style={{textAlign:"left"}}>
+                        <Form style={{ textAlign: "left" }}>
                             <div className="row">
                                 <div className='col-sm-12'>
                                     <Form.Group controlId="formBasicTask">
@@ -396,8 +400,8 @@ function Today({ onClose, post, selectedProjectName }) {
                                 </div>
                             </div>
                             <div className='row'>
-                            <div className='col-sm-4'>
-                                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                                <div className='col-sm-4'>
+                                    <Form.Group controlId="formBasicPosition">
                                         <Form.Label>상태 표시</Form.Label>
                                         <Form.Select value={selectValue} onChange={handleSelectChange}>
                                             {Continents.map((item) => (
@@ -409,76 +413,76 @@ function Today({ onClose, post, selectedProjectName }) {
                                     </Form.Group>
                                 </div>
                                 <div className='col-sm-4'>
-                                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                                    <Form.Group controlId="formBasicPosition">
                                         <Form.Label>요청자</Form.Label>
                                         <Form.Control type="text" value={requester || ''} readOnly />
                                     </Form.Group>
                                 </div>
                                 <div className='col-sm-4'>
-                                    <Form.Group className="mb-3" controlId="formBasicPosition">
+                                    <Form.Group controlId="formBasicPosition">
                                         <Form.Label>요청 담당자</Form.Label>
                                         <Form.Control type="text" value={reqManager || ''} readOnly />
                                     </Form.Group>
                                 </div>
                             </div>
 
-                <div className="task-container">
-                  {subRows.length > 0 && (
-                    <>
-                      <div className="task-title"> - 진행 내용 - </div>
-                      <div className="group-box">
-                        {subRows.map((step, index) => {
-                          const status = Continents.find(
-                            (status) => status.value === step.Status
-                          );
-                          return (
-                            <React.Fragment key={step.Index}>
-                              <div className="task-step">
-                                <div
-                                  className="status-circle"
-                                  style={{ backgroundColor: status.color }}
-                                >
-                                  {status.letter}
-                                </div>
-                                <div className="task-description">{`${step.Content}`}</div>
-                              </div>
-                              {index !== subRows.length - 1 && <hr />}{" "}
-                              {/* 마지막 요소가 아닐 때만 <hr> 추가 */}
-                            </React.Fragment>
-                          );
-                        })}
-                      </div>
-                    </>
-                  )}
-                </div>
+                            <div className="task-container">
+                                {subRows.length > 0 && (
+                                    <>
+                                        <div className="task-title"> - 진행 내용 - </div>
+                                        <div className="group-box">
+                                            {subRows.map((step, index) => {
+                                                const status = Continents.find(
+                                                    (status) => status.value === step.Status
+                                                );
+                                                return (
+                                                    <React.Fragment key={step.Index}>
+                                                        <div className="task-step">
+                                                            <div
+                                                                className="status-circle"
+                                                                style={{ backgroundColor: status.color }}
+                                                            >
+                                                                {status.letter}
+                                                            </div>
+                                                            <div className="task-description">{`${step.Content}`}</div>
+                                                        </div>
+                                                        {index !== subRows.length - 1 && <hr />}{" "}
+                                                        {/* 마지막 요소가 아닐 때만 <hr> 추가 */}
+                                                    </React.Fragment>
+                                                );
+                                            })}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
 
-                <Form.Group controlId="formBasicMemo" className="mt-2">
-                  <Form.Label>내용</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={10}
-                    placeholder="내용을 적어주세요"
-                    value={memo}
-                    onChange={handleMemoChange}
-                  />
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              {/*<DeleteToday show={show} type="button" className="btn btn-outline-danger" post={post}>
+                            <Form.Group controlId="formBasicMemo" className="mt-2">
+                                <Form.Label>내용</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={10}
+                                    placeholder="내용을 적어주세요"
+                                    value={memo}
+                                    onChange={handleMemoChange}
+                                />
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        {/*<DeleteToday show={show} type="button" className="btn btn-outline-danger" post={post}>
                             삭제
                         </DeleteToday> */}
-              <Button variant="primary" onClick={handleAdd}>
-                Edit
-              </Button>
-              <Button variant="secondary" onClick={handleClose}>
-                Cancel
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      </>
-    );
+                        <Button variant="primary" onClick={handleAdd}>
+                            Edit
+                        </Button>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Cancel
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
+        </>
+    )
 }
 
 export default Today
