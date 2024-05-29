@@ -32,7 +32,7 @@ function SelectItems({ select, setSelect }) {
         }
       }
        // Log the updated selected sports before the state is updated
-    console.log('Updated selected sports:', Array.from(updatedSelectedSports));
+    //console.log('Updated selected sports:', sport, Array.from(updatedSelectedSports));
       return updatedSelectedSports;
     });
   };

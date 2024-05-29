@@ -32,7 +32,7 @@ const MyCalenderApp = () => {
       }
     }).then((res) => {
       if (res.data) {
-        console.log('getPersnalBoard_DB',res.data);
+        //console.log('getPersnalBoard_DB', res.data);
         const dataRow = res.data.map((item, index) => ({
           title: item.Title,
           index: item.Index,
@@ -42,7 +42,7 @@ const MyCalenderApp = () => {
           content: item.Content,
           category: item.Status,
           backgroundColor: (item.Status === '대기' ? '#CCCCFF' : item.Status === '진행중' ? '#ADD8E6' : item.Status === '완료' ? '#FFD700' : item.Status === '이슈' ? '#FFC0CB' : item.Status === '알림' ? '#E64F5A' : '#fff'),
-          borderColor:     (item.Status === '대기' ? '#CCCCFF' : item.Status === '진행중' ? '#ADD8E6' : item.Status === '완료' ? '#FFD700' : item.Status === '이슈' ? '#FFC0CB' : item.Status === '알림' ? '#E64F5A' : '#fff'),
+          borderColor: (item.Status === '대기' ? '#CCCCFF' : item.Status === '진행중' ? '#ADD8E6' : item.Status === '완료' ? '#FFD700' : item.Status === '이슈' ? '#FFC0CB' : item.Status === '알림' ? '#E64F5A' : '#fff'),
           textColor: '#333'
         }));
         return dataRow;
@@ -57,19 +57,13 @@ const MyCalenderApp = () => {
     });
   };
 
-  const SubBoardData = async ( data ) => {
-    // const processedData = data.map(({ title, Name, project }) => {
-    //   return { title, Name, project };
-    // });
-    // console.log('getSubPersnalBoardData 60',processedData);
-
-      // Initialize a Set to keep track of unique project names
+  const SubBoardData = async (data) => {
     const uniqueProjects = new Set();
 
     const processedData = data.map(item => {
       // Extract the properties you need
-      const { Name,project } = item;
-      return { Name,project };
+      const { Name, project } = item;
+      return { Name, project };
     }).filter(item => {
       // Filter out duplicates based on the 'project' property
       const isDuplicate = uniqueProjects.has(item.project);
@@ -77,9 +71,9 @@ const MyCalenderApp = () => {
       return !isDuplicate;
     });
 
-    console.log('Unique Project Data', processedData);
+//    console.log('Unique Project Data', processedData);
     return processedData;
-  
+
   };
 
   const LoadPersnalBoard = async () => {
@@ -90,18 +84,12 @@ const MyCalenderApp = () => {
     const subsubdata = await subLoadBoard(subdata);
     const result = [...data, ...subsubdata];
     SetBoardData(result);
-    console.log("LoadPersnalBoard 91",subsubdata);
-    console.log("LoadPersnalBoard 91",result);
-
 
     const name = localStorage.getItem('userToken');
     setUserName(name);
-    //console.log('load', data);
   }
+
   const subLoadBoard = async (subdata) => {
-    // Retrieve the user token from localStorage
-    const name = localStorage.getItem("userToken");
-    console.log("subLoadBoard 98", subdata);
     // Check if subdata is an array and has items
     if (!Array.isArray(subdata) || subdata.length === 0) {
       console.log("No subdata provided or subdata is empty");
@@ -115,15 +103,14 @@ const MyCalenderApp = () => {
     const results = [];
     let project = '';
     const _Name = subdata[0].Name;
-    console.log("subLoadBoard 113",_Name);
     for (const item of subdata) {
       // Replace spaces with underscores in the project name
       const _ProjectName = item.project.replace(/ /g, "_");
       const index = _ProjectName.indexOf('(');
-        if (index !== -1) {
-            project = _ProjectName.substring(0, index);
-        }
-        else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
+      if (index !== -1) {
+        project = _ProjectName.substring(0, index);
+      }
+      else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
       try {
         const res = await Axios.post(
           `${ip}/subLoadBoard`,
@@ -139,8 +126,7 @@ const MyCalenderApp = () => {
         );
 
         if (res.data) {
-          console.log("subLoadBoard 124", res.data);
-
+          //console.log("subLoadBoard 124",project, res.data);
           results.push(res.data); // Collect the successful response
         } else if (res.data.code === 403) {
           console.log(
@@ -156,8 +142,8 @@ const MyCalenderApp = () => {
         // Depending on your error handling, you might want to continue or break the loop
       }
     }
-   
-    const filteredResults = results.map(innerArray => 
+
+    const filteredResults = results.map(innerArray =>
       innerArray.filter(item => item.Name === _Name)
     );
 
@@ -173,11 +159,11 @@ const MyCalenderApp = () => {
           content: item.Content,
           category: item.Status,
           backgroundColor: (item.Status === '대기' ? '#CCCCFF' : item.Status === '진행중' ? '#ADD8E6' : item.Status === '완료' ? '#FFD700' : item.Status === '이슈' ? '#FFC0CB' : item.Status === '알림' ? '#E64F5A' : '#fff'),
-          borderColor:     (item.Status === '대기' ? '#CCCCFF' : item.Status === '진행중' ? '#ADD8E6' : item.Status === '완료' ? '#FFD700' : item.Status === '이슈' ? '#FFC0CB' : item.Status === '알림' ? '#E64F5A' : '#fff'),
+          borderColor: (item.Status === '대기' ? '#CCCCFF' : item.Status === '진행중' ? '#ADD8E6' : item.Status === '완료' ? '#FFD700' : item.Status === '이슈' ? '#FFC0CB' : item.Status === '알림' ? '#E64F5A' : '#fff'),
           textColor: '#333'
         }));
       } else {
-        console.log(`No items match the name in array index ${arrayIndex} or it is empty.`);
+        //console.log(`No items match the name in array index ${arrayIndex} or it is empty.`,innerArray);
         return []; // 이 배열은 비어있거나 해당 이름을 가진 아이템이 없습니다.
       }
     });
@@ -199,7 +185,7 @@ const MyCalenderApp = () => {
         </div>
 
         {/* 선택 항목 컴포넌트에 현재 선택된 항목과 선택을 변경하는 함수를 전달합니다. */}
-        <SelectItems select={select} setSelect={setSelect} />
+        {select && <SelectItems select={select} setSelect={setSelect} /> }
         <Today className="item-normal" getData={getData} />
       </div>
       <div className="right-column">

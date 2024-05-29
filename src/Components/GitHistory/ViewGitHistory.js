@@ -9,11 +9,14 @@ function ViewGitHistory({ selectedProjectName }) {
     const [history, setHistory] = useState(null);
     const [isLoading, setIsLoading] = useState(0);  // 0 : 초기, 1: 연결 중, 2: 성공시, 3: 실패시
     const [isShow, setIsShow] = useState(false);
+    const [firstLoad, setFirstLoad] = useState(false);
 
     const handleGitConn = async () => {
+        
         if (path === '') {
             return;
         }
+
         setIsLoading(1);
         const res = await GitHistory(path);
         if (res.result === 'SUCCESS') {
@@ -21,17 +24,16 @@ function ViewGitHistory({ selectedProjectName }) {
         console.log('res', res);
         setTimeout(() => {
             if (res.commitLog.length > 0) {
-                console.log('2초 후');
                 setIsLoading(2);
             }
-        }, 2000); // 2초 지연
+        }, 1000); // 2초 지연
         } else {
             setIsLoading(3);
         }
     };
 
     const handleGitSave = async () => {
-        if (path === '') {
+        if (path === '' || path === undefined) {
             return;
         }
 
@@ -51,10 +53,11 @@ function ViewGitHistory({ selectedProjectName }) {
 
         const initStart = async () => {
             const info = await GetProjectInfo(selectedProjectName);
-            if (info[0].GitURL !== undefined) {
-                setPath(info[0].GitURL);
-            } else {
+            if (info[0].GitURL === null) {
                 setPath('');
+            } else {
+                setPath(info[0].GitURL);
+                setFirstLoad(true);
             }
             
             if (selectedProjectName.includes('CS')) {
@@ -68,6 +71,13 @@ function ViewGitHistory({ selectedProjectName }) {
         }
         
     }, [selectedProjectName])
+
+    useEffect(() => {
+        if (firstLoad === true) {
+            handleGitConn();
+        }
+        setFirstLoad(false);
+    }, [firstLoad])
 
     return (
         <div className="git-container">
@@ -108,7 +118,7 @@ function ViewGitHistory({ selectedProjectName }) {
 
                         ) 
                     ) : (
-                            <p>Git Conn Fail. OpenVPN이 켜져있는지 확인해주세요</p>
+                            <p>Git Conn Fail. 관리자에게 문의해주세요</p>
                         )
                     
                 }

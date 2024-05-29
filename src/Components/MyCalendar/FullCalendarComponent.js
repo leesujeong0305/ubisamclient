@@ -16,22 +16,57 @@ export default function FullCalendarComponent({ selectedCategory, boardData, Get
 
   const handleEventClick = (clickInfo) => {
     // clickInfo is an object containing event information and more
-    console.log("Event clicked: ", clickInfo.event);
+    const data = clickInfo.event._def.extendedProps;
+    const userData = boardData.find(item => {
+      return item.title === clickInfo.event._def.title && item.content === data.content && item.index === data.index;
+    });
+    if (userData !== undefined) {
+      GetBoardData(userData);
+    }
 
-     console.log(clickInfo.event._def.title);
-    const userData = boardData.filter(item=>{
-      return item.title === clickInfo.event._def.title;
-    })[0];
-    GetBoardData(userData);
     // Perform actions like opening an event detail view or an edit form
   };
 
   useEffect(() => {
+
+    if (boardData.length <= 0) {
+      return;
+    }
+    const test = new Date();
+    const startDate = new Date(boardData[0].date);
+    const end = new Date();
+    const updatedDataRows = [];
+    const endDate = end.setDate(end.getDate() - 1)
+
+    for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+      const dateStr = d.toISOString().split('T')[0];
+      const dayOfWeek = d.getDay();
+      if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 토요일(0) 및 일요일(6) 제외
+        const hasEvent = boardData.some(event => event.date === dateStr);
+        //console.log('hasEvent', hasEvent);
+        if (!hasEvent) {
+          updatedDataRows.push({
+            title: '데이터가 없습니다',
+            date: dateStr,
+            Name: '',
+            status: '',
+            category: '예외',
+            content: '',
+            project: '',
+            textColor: '#333',
+            backgroundColor: "#FFF",
+            borderColor: "#e5edff",
+          });
+        }
+      }
+    }
+
+
+
     let filtered = [];
     if (selectedCategory) {
       if (selectedCategory.has('전 체')) {
-        console.log("boardData 33",boardData);
-        filtered = boardData;
+        filtered = [...boardData, ...updatedDataRows];
       } else {
         // 'comp'와 'issue'가 중복 선택될 수 있도록 로직 변경
         if (selectedCategory.has('대 기')) {
@@ -49,16 +84,18 @@ export default function FullCalendarComponent({ selectedCategory, boardData, Get
         if (selectedCategory.has('알 림')) {
           filtered = [...filtered, ...boardData.filter(event => event.category === '알림')];
         }
+
+        filtered = [...filtered, ...updatedDataRows];
       }
     }
     setFilteredEvents(filtered);
   }, [selectedCategory, boardData]);
   return (
-    <div className="calendar-parent" >
-      <FullCalendar className="fc-daygrid-day-events real-event-container-class"
+    <div className="calendar-parent">
+      <FullCalendar
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
-        headerToolbar={{ left: 'prev',center: 'title',right: 'next,today'}}
+        headerToolbar={{ left: 'prev', center: 'title', right: 'next,today', }}
         locale={koLocale}
         events={filteredEvents}
         dayCellContent={handleDayCellContent}
