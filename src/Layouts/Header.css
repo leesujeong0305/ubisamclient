@@ -43,10 +43,6 @@
 .nav .navbar-collapse {
  text-align: center;   
 }
-.nav-items {
-  margin-right: 6rem;
-}
-
 .nav-link {
   display: inline-flex;
   color: white !important; /*!important 규칙을 사용하여 기본 Bootstrap 스타일보다 우선 순위를 높여줍니다.*/

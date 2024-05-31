@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "../API/AxiosApi";
 import { Modal, Button, Form } from "react-bootstrap";
 import { GetIndex } from "../API/GetIndex";
+import GetUserInfo from "../API/GetUserInfo";
 
 function Today({ onClose, post, selectedProjectName }) {
     const [show, setShow] = useState(false);
@@ -13,7 +14,8 @@ function Today({ onClose, post, selectedProjectName }) {
     const [reqManager, setReqManager] = useState('');
 
     const Continents = [
-    /* 상태 색상 표기 */ { key: 1, value: "대기", color: "#CCCCFF" },
+        /* 상태 색상 표기 */ 
+        { key: 1, value: "대기", color: "#CCCCFF" },
         { key: 2, value: "진행중", color: "#ADD8E6" },
         { key: 3, value: "완료", color: "#FFD700" },
         { key: 4, value: "이슈", color: "#FFC0CB" },
@@ -103,7 +105,7 @@ function Today({ onClose, post, selectedProjectName }) {
                 "Content-Type": "application/json",
             }
         }).then(response => {
-            console.log({ response });
+            //console.log({ response });
             if (response.status === 200) {
                 return response.data;
             } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
@@ -160,11 +162,33 @@ function Today({ onClose, post, selectedProjectName }) {
         setSelectedPeriod(event.target.value);
     };
 
+    const dateReplace = (item) => {
+        const text = item
+        .replace('YYYY', year)
+        .replace('MM', month.toString().padStart(2, '0'))
+        .replace('DD', day.toString().padStart(2, '0'));
+        return text;
+    }
+
     useEffect(() => {
-        setTask(post?.Title);
-        setMemo(setDateString + " - ");
-        setSelectValue(post?.value.Status ? post?.value.Status : "대기");
-    }, [post]);
+        const setTodoList = async () => {
+            const user = await GetUserInfo();
+            if (user.custom !== null) {
+                const custom = await dateReplace(user.custom);
+                await setMemo(custom);
+            } else {
+                await setMemo(setDateString + " - ");
+            }
+            setTask(post?.Title);
+            setSelectValue(post?.value.Status ? post?.value.Status : "대기");
+        }
+        
+
+        if (show) {
+            setTodoList();
+        }
+        
+    }, [show]);
 
     return (
         <>

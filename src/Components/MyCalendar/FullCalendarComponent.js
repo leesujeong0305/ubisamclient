@@ -32,7 +32,6 @@ export default function FullCalendarComponent({ selectedCategory, boardData, Get
     if (boardData.length <= 0) {
       return;
     }
-    const test = new Date();
     const startDate = new Date(boardData[0].date);
     const end = new Date();
     const updatedDataRows = [];

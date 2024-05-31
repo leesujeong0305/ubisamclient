@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Axios from '../API/AxiosApi';
 import { Modal, Button, Form } from 'react-bootstrap';
 import './EditToday.css'
+import GetUserInfo from '../API/GetUserInfo';
 
 function Today({ onClose, post, selectedProjectName }) {
     const [show, setShow] = useState(false);
@@ -27,6 +28,7 @@ function Today({ onClose, post, selectedProjectName }) {
     let month = ('0' + (today.getMonth() + 1)).slice(-2);
     let day = ('0' + today.getDate()).slice(-2);
     let dateString = year + '-' + month + '-' + day;
+    let setDateString = year + "/" + month + "/" + day;
 
     const handleClose = () => {
         setShow(false);
@@ -50,6 +52,8 @@ function Today({ onClose, post, selectedProjectName }) {
     const handleMemoChange = (e) => setMemo(e.target.value);
 
     const handleAdd = async () => {
+        console.log('length확인', subRows.length);
+        return;
         const name = localStorage.getItem('userToken');
         if (post.Name !== name) {
             alert('다른 사람의 내용은 수정할수 없습니다');
@@ -336,8 +340,31 @@ function Today({ onClose, post, selectedProjectName }) {
         setSelectValue(event.target.value);
     }
 
+    const dateReplace = (item) => {
+        const text = item
+        .replace('YYYY', year)
+        .replace('MM', month.toString().padStart(2, '0'))
+        .replace('DD', day.toString().padStart(2, '0'));
+        return text;
+    }
+
     useEffect(() => {
-        if (post?.details === undefined) {
+        let getDateString = '';
+        const setCustom = async () => {
+            
+            const user = await GetUserInfo();
+            if (user.custom !== null) {
+                const custom = await dateReplace(user.custom);
+                getDateString = custom;
+            } else {
+                getDateString = setDateString + " - ";
+            }
+            setTodoList();
+        };
+
+        const setTodoList = async () => {
+        console.log('확인 360', post?.Date, dateString);
+        if (post?.Date === dateString && post?.details === undefined) {
             setTask(post?.Title);
             setMemo(post?.Content);
             setSelectValue(post?.Status);
@@ -346,8 +373,11 @@ function Today({ onClose, post, selectedProjectName }) {
             setRequester(post?.Requester);
             setReqManager(post?.ReqManager);
             setSubRows([]);
+            console.log('들어옴 확인' );
         } else {
-            if (post?.details.length > 0) {
+            console.log('들어옴?' );
+            if (post?.details?.length > 0) {
+                
                 const { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, ReqManager, details } = post;
                 const parentRow = { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, ReqManager };
                 //setSubRows(post);
@@ -355,7 +385,7 @@ function Today({ onClose, post, selectedProjectName }) {
                 if (post?.details[post.details.length - 1].Date === dateString) {
                     setMemo(post?.details[post.details.length - 1].Content);
                 } else {
-                    setMemo(dateString + ' - ');
+                    setMemo(getDateString);
                 }
                 setSelectValue(post?.details[post.details.length - 1].Status);
                 setOldSelectValue(post?.details[post.details.length - 1].Status);
@@ -365,10 +395,34 @@ function Today({ onClose, post, selectedProjectName }) {
 
                 setRequester(post?.Requester);
                 setReqManager(post?.ReqManager);
+            } else { //detail 없고 다른 날짜
+                const { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, ReqManager } = post;
+                const parentRow = { Index, Key, ProjectName, Date, ChangeDate, Name, Title, Content, Status, Period, Requester, ReqManager };
+
+                setTask(post?.Title);
+                if (post?.Date === dateString) {
+                    setMemo(post?.Content);
+                } else {
+                    setMemo(getDateString);
+                }
+                
+                setSelectValue(post?.Status);
+                setOldSelectValue(post?.Status);
+                setIndex(post?.Index);
+                setSubRows([parentRow]);
+                setRequester(post?.Requester);
+                setReqManager(post?.ReqManager);
+                
             }
         }
+    }
+
+        if (show) {
+            setCustom();
+            
+        }
         
-    }, [post]);
+    }, [post, show]);
 
     return (
         <>

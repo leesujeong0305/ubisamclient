@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { login, logout, updateUserInfo } from '../Redux/Action';
 import Cookies from 'js-cookie';
 import UserInfo from '../Models/UserInfo';
+import GetUserInfo from '../API/GetUserInfo';
 
 export default function MainUI() {
   const [userId, setUserId] = useState('');
@@ -58,7 +59,7 @@ export default function MainUI() {
   }
   const fetchData = async () => {
     try {
-      const data = await UserInfo();
+      const data = await GetUserInfo();
       if (data) {
         localStorage.setItem('userTeamToken', data.team);
         localStorage.setItem('userRankToken', data.rank);
