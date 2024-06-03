@@ -1,0 +1,31 @@
+.custom-button {
+    background-color: #5090CC;
+    font-weight: bold;
+    border-color: #ccc;
+    position: relative;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+  }
+  
+  .custom-button .plus-icon {
+    font-size: 20px;
+    margin-right: 5px;
+  }
+  
+  .custom-button .separator {
+    width: 1px;
+    height: 15px;
+    background-color: #fff;
+    margin: 0 5px;
+  }
+  .custom-button:hover .tooltip-text {
+    display: block;
+  }
+
+  textarea {
+    width: 100%;
+    height: 25vh;
+    resize: none;
+  }

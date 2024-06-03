@@ -31,10 +31,12 @@ const CustomDatePicker = ( {name, boardData} ) => {
     // tomorrow.setDate(tomorrow.getDate() + 1);
 
     // 드롭박스에서 선택한 기간에 따라 endDate를 계산합니다.
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState("1Day");
 
     const handleSelectChange = (e) => {
-        console.log("여기당",e.target.value);
+        if (e.target.value === undefined) {
+            return;
+        }
         const value = e.target.value;
         setSelectedOption(value); // Set the selected option in the state
         const today = new Date();
@@ -127,8 +129,13 @@ const CustomDatePicker = ( {name, boardData} ) => {
         // 작업 완료 후, ExcelExport 컴포넌트는 isReadyForExport 상태에 의해 렌더링됩니다.
     };
 
+    const onClickExcel = () => {
+        //ExcelExport data={serchData} name={name}
+        console.log('진행?');
+        ExcelExport({serchData, name});
+    }
+
     useEffect(() => {
-        console.log('CustomDatePicker', name, boardData);
         SetData(boardData);
     }, [boardData]);
 
@@ -145,7 +152,7 @@ const CustomDatePicker = ( {name, boardData} ) => {
                 <option value="3months" disabled={selectedOption === "3months"}>3개월</option>
                 <option value="6months" disabled={selectedOption === "6months"}>6개월</option>
                 <option value="1year"   disabled={selectedOption === "1year"}>1년</option>
-            </select>
+            </select> 
             {/* <DatePicker
                 locale="ko" // locale 속성을 'ko'로 설정합니다.
                 selected={startDate}
@@ -188,8 +195,8 @@ const CustomDatePicker = ( {name, boardData} ) => {
                 dateFormat="yyyy-MM-dd"
             />
             <div>
-            
-            {isReadyForExport ? <ExcelExport data={serchData} name={name} /> : <button className='search-button' onClick={handleExportClick}>📄</button>}
+            {/**/}
+            {isReadyForExport ? <ExcelExport data={serchData} name={name} className='mt-3' /> : <button className='search-button' onClick={handleExportClick}>📄</button>}
         </div>
             {/* 검색 결과를 보여주는 부분 */}
             <br></br>

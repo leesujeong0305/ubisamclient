@@ -4,6 +4,7 @@ import { Navbar, Nav, Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { BsRss } from "react-icons/bs";
 import Logout from '../Components/Login/Logout';
+import CustomWaterMark from '../Components/Settings/CustomWaterMark';
 
 
 const Header = () => {
@@ -11,6 +12,7 @@ const Header = () => {
   const [user, setUser] = useState('');
   const [team, setTeam] = useState('');
   const [rank, setRank] = useState('');
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated)
@@ -27,11 +29,6 @@ const Header = () => {
   }, [isAuthenticated])
 
 
-
-//
-//<div className="header-profile-team mt-1">{team}</div>
-
-//<span className="ml-2 header-profile-rank">{rank}</span>
   return (
     <>
       <header>
@@ -50,7 +47,11 @@ const Header = () => {
               </Nav.Item>
               <div className="divider"></div>
               <Nav.Item>
-                {isAuthenticated ? <Nav.Link className='nav-items  sm-8' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
+                {isAuthenticated ? <Nav.Link className='' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
+              </Nav.Item>
+              <div className="divider"></div>
+              <Nav.Item>
+                {isAuthenticated ? <Nav.Link className=''><CustomWaterMark show={show} onHide={() => setShow(false)}>워터마크</CustomWaterMark></Nav.Link> : <div className='disabled me-5'></div>}
               </Nav.Item>
             </Nav>
           </Navbar.Collapse>

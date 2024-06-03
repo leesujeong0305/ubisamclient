@@ -16,6 +16,7 @@ import FileExplorer from './ProjectFile/FileExplorer';
 import StepIndicator from './Stepbar/StepIndicator';
 import Scrolling from '../Components/ScrollingSignboard/Scrolling';
 import ViewGitHistory from '../Components/GitHistory/ViewGitHistory';
+import GetUserInfo from '../API/GetUserInfo';
 
 function Board() {
     //const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
@@ -168,7 +169,6 @@ function Board() {
             }
         }).then(response => {
             if (response.status === 200) {
-
             } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
                 console.log("403");
             }
@@ -190,6 +190,7 @@ function Board() {
         }).then((res) => {
             //console.log('getProject', { res });
             if (res.data) {
+                console.log('잘 옴 ? ', res.data);
                 const dataRow = res.data.map((item, index) => ({
                     id: index + 1,
                     text: item.ProjectName,
@@ -220,7 +221,7 @@ function Board() {
 
     const fetchData = async () => {
         try {
-            const data = await UserInfo();
+            const data = await GetUserInfo();
             if (data === undefined) return;
             if (!data) throw new Error("No data returned from UserInfo");
             const [periodData, projectData] = await Promise.all([
@@ -329,6 +330,7 @@ function Board() {
 
     const handleSelect = async (eventKey) => {
         const selectedProject = selectedActionText.find(project => project.text === eventKey);
+        console.log(selectedProject);
         if (selectedProject) {
             await updatePrjStatus(selectedProject.text);
             await allData();

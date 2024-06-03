@@ -2,9 +2,6 @@ import React, { useEffect } from 'react';
 import './Today.css';
 
 function Today(getData) {
-    useEffect(() => {
-        console.log('today', getData);
-    }, [getData])
     
     return (
     <div className="todo-app">
