@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './StepIndicator.css';
+import { UpdateStep } from '../../API/UpdateStep';
 
 const steps = [
   { label: '대기', icon: '✓' },
@@ -8,14 +9,31 @@ const steps = [
   { label: '완료', icon: '✓' },
 ];
 
-function StepIndicator({ status }) {
+function StepIndicator({ status, selectedProjectName }) {
   const [currentStep, setCurrentStep] = useState(0);
 
   const isStepCompleted = (stepIndex) => stepIndex < currentStep;
   const isCurrentStep = (stepIndex) => stepIndex === currentStep;
 
-  const goBack = () => setCurrentStep((prev) => (prev > 0 ? prev - 1 : 0));
-  const goNext = () => setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev));
+  const goBack = async () => {
+    if (currentStep > 0) {
+      UpdateStep(selectedProjectName, currentStep - 1);
+    } else {
+      UpdateStep(selectedProjectName, 0);
+    }
+    await setCurrentStep((prev) => (prev > 0 ? prev - 1 : 0));
+    //UpdateStep(selectedProjectName, currentStep);
+  }
+  
+  const goNext = async () => {
+    if (currentStep < steps.length - 1) {
+      UpdateStep(selectedProjectName, currentStep + 1);
+    } else {
+      UpdateStep(selectedProjectName, currentStep);
+    }
+    await setCurrentStep((prev) => (prev < steps.length - 1 ? prev + 1 : prev));
+    //UpdateStep(selectedProjectName, currentStep);
+  }
 
   useEffect(() => {
     //if (status !== 0) {

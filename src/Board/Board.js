@@ -182,6 +182,7 @@ function Board() {
     //pm 별표표시는 내 PC에 있어서 확인 위해 여기만 localhost로 변경하면됨
     const getProject = async (data) => {
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        //const ip = `http://localhost:8877`;
         return await Axios.get(`${ip}/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
             headers: {
                 "Content-Type": "application/json",
@@ -190,7 +191,7 @@ function Board() {
         }).then((res) => {
             //console.log('getProject', { res });
             if (res.data) {
-                console.log('잘 옴 ? ', res.data);
+                //console.log('잘 옴 ? ', res.data);
                 const dataRow = res.data.map((item, index) => ({
                     id: index + 1,
                     text: item.ProjectName,
@@ -313,9 +314,11 @@ function Board() {
 
             const user = results.userInfo;
             const selectedProject = results.periodData.find(
+                
                 (periodData) => periodData.text === user.impProject
             );
             if (selectedProject) {
+                //console.log('selectedProject', selectedProject);
                 setPM(selectedProject.pm);
                 setPeriod(selectedProject.period);
                 await setLoadBoard(results.projectData);
@@ -398,10 +401,10 @@ function Board() {
                         </div>
                         <div className="col mt-2">
                             {/* <StepStepMain /> */}
-                            <StepIndicator status={status} />
+                            <StepIndicator status={status} selectedProjectName={selectedProjectName} />
                         </div>
                     </div>
-                    <div className="col-md-4">
+                    <div className="col-md-3">
                         <ProjectStatus boardData={loadBoard} pm={pm} handleCardClick={handleCardClick} />
                     </div>
                     <div className="col-md">

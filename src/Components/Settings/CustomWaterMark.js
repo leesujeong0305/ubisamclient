@@ -49,8 +49,16 @@ const CustomWaterMark = ({isOpen}) => {
 
     return (
         <>
-
-            <span className="button-text" onClick={handleShow}>워터마크</span>
+            <Button
+                className="custom-button"
+                style={{ backgroundColor: 'gray', borderColor: '#6F6F6F', display: "flex" }}
+                onClick={handleShow}
+            >
+                <i className="bi bi-journal d-flex fs-5 justify-content-center" aria-hidden="true" />
+                <div className="separator"></div>
+                <span className="button-text">워터마크</span>
+                <div className="tooltip-text">워터마크</div>
+            </Button>
 
             <Modal show={show} onHide={handleClose} centered size="md">
                 <Modal.Header closeButton>

@@ -4,6 +4,7 @@ import EditToday from './EditToday';
 import ExcelExport from '../db/Excel/ExcelExport';
 import './ListBoard.css';
 import { Form } from 'react-bootstrap';
+import CustomWaterMark from '../Components/Settings/CustomWaterMark';
 
 function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, handleData, selectedProjectName }) {
 
@@ -88,6 +89,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
             <div className="nav-context">
                 <div></div>
                 <div className="d-flex gap-2 mb-2">
+                    <CustomWaterMark show={show} onHide={() => setShow(false)} />
                     <ExcelExport
                         data={allposts}
                         name={tab}
@@ -124,6 +126,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                 </thead>
                 <tbody className="">
                     {posts.map((row, index) => (
+                        
                         <tr
                             key={index + 1}
                             onClick={() => {
@@ -135,9 +138,9 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                                 {" "}
                                 {row.Index}
                             </td>
-                            <td>{row.Date}</td>
-                            <td>{row.ChangeDate}</td>
-                            <td>{row.Name}</td>
+                            <td onMouseMove={handleMouseMove}>{row.Date}</td>
+                            <td onMouseMove={handleMouseMove}>{row.ChangeDate}</td>
+                            <td onMouseMove={handleMouseMove}>{row.Name}</td>
                             <td className="truncate">{row.Title}</td>
                             <td className="truncate">
                                 <div className="preview-container" onMouseMove={handleMouseMove}>

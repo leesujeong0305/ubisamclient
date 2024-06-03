@@ -49,10 +49,6 @@ const Header = () => {
               <Nav.Item>
                 {isAuthenticated ? <Nav.Link className='' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
               </Nav.Item>
-              <div className="divider"></div>
-              <Nav.Item>
-                {isAuthenticated ? <Nav.Link className=''><CustomWaterMark show={show} onHide={() => setShow(false)}>워터마크</CustomWaterMark></Nav.Link> : <div className='disabled me-5'></div>}
-              </Nav.Item>
             </Nav>
           </Navbar.Collapse>
 

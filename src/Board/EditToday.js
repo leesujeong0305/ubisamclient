@@ -52,8 +52,6 @@ function Today({ onClose, post, selectedProjectName }) {
     const handleMemoChange = (e) => setMemo(e.target.value);
 
     const handleAdd = async () => {
-        console.log('length확인', subRows.length);
-        return;
         const name = localStorage.getItem('userToken');
         if (post.Name !== name) {
             alert('다른 사람의 내용은 수정할수 없습니다');
@@ -308,8 +306,8 @@ function Today({ onClose, post, selectedProjectName }) {
 
     const updataKanBanList_DB = (item) => {
         console.log('updataKanBanList 308', task, item);
-        //const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-        const ip = `http://14.58.108.70:8877`;
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        //const ip = `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/updataKanBanList`, {
             Project: selectedProjectName,
             OldContent: post.Title,

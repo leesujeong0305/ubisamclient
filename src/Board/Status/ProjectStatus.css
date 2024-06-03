@@ -5,10 +5,10 @@
   .stats-card {
     background-color: #FFBB64;
     border-radius: 10px;
-    padding: 10px;
+    padding: 8px;
     text-align: center;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-    margin: 0px 5px 5px 0px;
+    margin: 0px 4px 4px 0px;
     min-width: 70px;
     max-width: 80px;
   }
@@ -20,10 +20,10 @@
   .users-card {
     background-color: #FFBB64;
     border-radius: 10px;
-    padding: 10px;
+    padding: 8px;
     text-align: center;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-    margin: 0px 5px 5px 0px;
+    margin: 0px 4px 4px 0px;
     min-width: 70px;
     max-width: 80px;
   }
