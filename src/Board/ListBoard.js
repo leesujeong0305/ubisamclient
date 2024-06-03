@@ -77,10 +77,21 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
 
     // 마우스 움직임에 따라 말풍선 위치 업데이트
     const handleMouseMove = (e) => {
-        setPreviewPos({
-            top: e.clientY - 10, // 마우스 포인터 아래로 조금 떨어진 위치
-            left: e.clientX + 50, // 마우스 포인터의 가운데 정도에 위치
-        });
+
+        console.log(`Mouse Position - X: ${e.clientX}, Y: ${e.clientY}`);
+        let newTop = e.clientY - 250; // 마우스 위에 말풍선 위치
+        let newLeft = e.clientX + 50;
+
+
+        if(newLeft > 1300){
+            newLeft = newLeft - 560;
+        }
+
+        setPreviewPos({ top: newTop, left: newLeft });
+        // setPreviewPos({
+        //     top: e.clientY - 250, // 마우스 포인터 아래로 조금 떨어진 위치
+        //     left: e.clientX + 50, // 마우스 포인터의 가운데 정도에 위치
+        // });
     };
 
     return (
