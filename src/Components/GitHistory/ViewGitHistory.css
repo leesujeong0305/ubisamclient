@@ -19,6 +19,18 @@
     border-bottom: 1px solid rgb(12, 6, 6);
 } */
 
+.git-container-page-header {
+    display: flex;
+    position: sticky;
+    top: 0;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding: 0.3rem 0.5rem;
+    background-color: #eee;
+    font-size: 0.9rem;
+}
+
 .git-container-header {
     display: flex;
     position: sticky;
@@ -34,6 +46,15 @@
 
 .button-container {
     display: flex;
+}
+
+.git-page-path {
+    flex-grow: 1;
+    border: 1px solid #4e4e4e;
+    border-radius: 5px;
+    background-color: transparent;
+    padding: 0.3rem;
+    box-sizing: border-box;
 }
 
 .git-path {
@@ -66,8 +87,8 @@
 }
 
 .conn-button {
-    padding: 0.3rem 0.5rem;
-    font-size: 1em;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.7em;
     color: #333;
     background-color: #eee;
     /* A light green background */
