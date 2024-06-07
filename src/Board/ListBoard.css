@@ -57,7 +57,6 @@
   text-align: left; /* 텍스트 왼쪽 정렬 */
   min-width:  400px;
   max-width:  500px;
-  max-height: 600px;
   word-wrap: break-word; /* 긴 단어 줄바꿈 처리 */
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* 그림자 효과 */
   border-radius: 8px; /* 모서리 둥글게 처리 */

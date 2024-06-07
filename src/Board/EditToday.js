@@ -58,24 +58,30 @@ function Today({ onClose, post, selectedProjectName }) {
             return;
         }
 
+        let setToday = new Date();
+        let setYear = setToday.getFullYear();
+        let setMonth = ('0' + (setToday.getMonth() + 1)).slice(-2);
+        let setDay = ('0' + setToday.getDate()).slice(-2);
+        let date = setYear + '-' + setMonth + '-' + setDay;
+
         // Logic to handle adding the task
-        if (post.Date !== dateString) {
+        if (post.Date !== date) {
             let subNum = 0;
             if (subRows.length > 0) {
-                if (subRows[subRows.length - 1].Date !== dateString) {
+                if (subRows[subRows.length - 1].Date !== date) {
                     subNum = subRows[subRows.length - 1].FieldSubNum + 1;
-                    setSubEdit(name, subNum);
+                    setSubEdit(name, subNum, date);
                 } else {
-                    updateSubEdit(name, subRows[subRows.length - 1]);
+                    updateSubEdit(name, subRows[subRows.length - 1], date);
                 }
                 
             } else {
                 subNum = 1;
-                setSubEdit(name, subNum);
+                setSubEdit(name, subNum, date);
             }
-            updateDate(name);
+            updateDate(name, date);
         } else {
-            setTodoList(name);
+            setTodoList(name, date);
         }
 
         if (selectValue === '이슈') {
@@ -101,12 +107,12 @@ function Today({ onClose, post, selectedProjectName }) {
         handleClose();
     };
 
-    const setTodoList = (name) => {
+    const setTodoList = (name, date) => {
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/UpdateToDoList`, {
             Index: post.Key,
             ProjectName: selectedProjectName,
-            ChangeDate: dateString,
+            ChangeDate: date,
             Name: name,
             Title: task,
             Content: memo,
@@ -130,13 +136,13 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
-    const updateDate = (name) => {
+    const updateDate = (name, date) => {
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         return Axios.post(`${ip}/updateDateList`, {
             Index: post.Key,
             ProjectName: selectedProjectName,
             Name: name,
-            ChangeDate: dateString,
+            ChangeDate: date,
             Title: task,
         }, {
             headers: {
@@ -157,7 +163,7 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
-    const setSubEdit = (name, subNum) => {
+    const setSubEdit = (name, subNum, date) => {
         let project = ''
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         const _ProjectName = selectedProjectName.replace(/ /g, '_');
@@ -169,7 +175,7 @@ function Today({ onClose, post, selectedProjectName }) {
         return Axios.post(`${ip}/subAddBoard`, {
             ProjectName: selectedProjectName,
             _ProjectName: project,
-            Date: dateString,
+            Date: date,
             Name: name,
             Title: task,
             Content: memo,
@@ -195,7 +201,7 @@ function Today({ onClose, post, selectedProjectName }) {
         });
     }
 
-    const updateSubEdit = (name, subRow) => {
+    const updateSubEdit = (name, subRow, date) => {
         let project = ''
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         const _ProjectName = selectedProjectName.replace(/ /g, '_');
@@ -208,7 +214,7 @@ function Today({ onClose, post, selectedProjectName }) {
             Index: subRow.Index,
             ProjectName: selectedProjectName,
             _ProjectName: project,
-            ChangeDate: dateString,
+            ChangeDate: date,
             Name: name,
             Title: task,
             Content: memo,
