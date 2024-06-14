@@ -121,7 +121,7 @@ export default function MainUI() {
                           value={password} pattern='[0-9]+' autoComplete="off"
                           onChange={(e) => setPassword(e.target.value)}></input>
                       </div>
-                      <Link to={'/Signup'} style={{ display: 'flex', justifyContent: 'right', textDecoration: 'none', marginRight: '20px' }}>회원가입</Link>
+                      {/* <Link to={'/Signup'} style={{ display: 'flex', justifyContent: 'right', textDecoration: 'none', marginRight: '20px' }}>회원가입</Link> */}
                       <p />
                       <p className="mb-3">
                         <button className='btn btn-primary w-100' type='buttn' onClick={loginSumit}>로그인</button>
