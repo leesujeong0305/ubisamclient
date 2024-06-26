@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Axios from '../API/AxiosApi';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { login, logout, updateUserInfo } from '../Redux/Action';
+import { login, logout, updateUser } from '../Redux/Store'; // store 파일 경로
+//import { login, logout, updateUserInfo } from '../Redux/Action';
 //import { useFooterVisibilityUpdate } from './FooterVisibilityContext'
 import Cookies from 'js-cookie';
 
@@ -14,17 +15,23 @@ import SignUp from '../SignUp/SignUp'
 import Board from '../Board/Board'
 import Today from '../Board/Today';
 import MainPlus from '../Components/MainView/MainPlus';
-import AdminPage from '../Components/MainView/AdminPage';
+import AdminPage from '../Components/AdminPage/AdminPage';
 
 import './Layout.css'; // 스타일 시트 임포트
 import MyCalenderApp from '../Components/MyCalendar/MyCalenderApp';
 import api from '../API/api';
+import AdminLayout from '../Components/AdminPage/AdminLayout';
 
 function Layout() {
-  const { isAuthenticated } = useSelector(state => state.auth);
-  const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
+  //const { isAuthenticated, isAdmin } = useSelector(state => state.auth);
+  //const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
   //const { updataBoard } = useSelector(state => state.)
   const dispatch = useDispatch();
+  const isLogged = useSelector(state => state.auth.isLoggedIn);
+  const authUserId = useSelector(state => state.userInfo.authUserId);
+  const authUserName = useSelector(state => state.userInfo.authUserName);
+  const authUserRank = useSelector(state => state.userInfo.authUserRank);
+
   
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 추적하는 상태 추가
 
@@ -39,7 +46,7 @@ function Layout() {
     localStorage.removeItem('userEmailToken');
     localStorage.removeItem('userImpProjectToken');
     localStorage.removeItem('userToken');
-    dispatch(logout('LOGOUT'));
+    dispatch(logout());
     // 사용자를 로그인 페이지로 리다이렉트할 수 있습니다.
   };
 
@@ -48,7 +55,7 @@ function Layout() {
     if (accessToken === undefined || accessToken === null) {
       handleLogout();
       setIsLoggedIn(false);
-      if (isAuthenticated)
+      if (isLogged)
       return;
     }
     verifyToken();
@@ -109,7 +116,7 @@ useEffect(() => {
   const storedRefreshToken = localStorage.getItem("refreshToken");
   if (storedRefreshToken) {
     setIsLoggedIn(true);
-    dispatch(login('LOGIN'));
+    dispatch(login());//'LOGIN', storedRefreshToken));
   }
 }, []);
 
@@ -127,16 +134,18 @@ useEffect(() => {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/" element={isAuthenticated ? <Board /> : <Main /> } />
+          <Route path="/" element={isLogged ? <Board /> : <Main /> } />
           <Route path='/UserList' element={ <UserList /> } />
           <Route path='/Signup' element={ <SignUp />} />
-          <Route path='/Board' element={isAuthenticated ? <Board /> : <Main /> } />
-          <Route path='/Today' element={isAuthenticated ? <Today /> : <Main /> } />
-          <Route path='/MainPlus' element={isAuthenticated ? <MainPlus /> : <Main /> } />
-          <Route path='/AdminPage' element={isAuthenticated ? <AdminPage /> : <Main /> } />
-          <Route path='/FullCalendar' element={isAuthenticated ? <MyCalenderApp /> : <Main /> } />
+          <Route path='/Board' element={isLogged ? <Board /> : <Main /> } />
+          <Route path='/Today' element={isLogged ? <Today /> : <Main /> } />
+          <Route path='/MainPlus' element={isLogged ? <MainPlus /> : <Main /> } />
+          <Route path='/AdminPage' element={isLogged ? <AdminPage /> : <Main /> } />
+          <Route path='/AdminLayout' element={isLogged ? <AdminLayout /> : <Main /> } />
+          <Route path='/FullCalendar' element={isLogged ? <MyCalenderApp /> : <Main /> } />
         </Routes>
       </BrowserRouter>
+      
     </div>
   </>
 }

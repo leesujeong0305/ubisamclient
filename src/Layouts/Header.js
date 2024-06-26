@@ -2,31 +2,39 @@ import React, { useState, useEffect } from 'react'
 import './Header.css'
 import { Navbar, Nav, Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { BsRss } from "react-icons/bs";
 import Logout from '../Components/Login/Logout';
 import CustomWaterMark from '../Components/Settings/CustomWaterMark';
-
+import { updateUser } from '../Redux/Store';
+import GetUserInfo from '../API/GetUserInfo';
 
 const Header = () => {
-  const { isAuthenticated, isAdmin } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   const [user, setUser] = useState('');
-  const [team, setTeam] = useState('');
-  const [rank, setRank] = useState('');
-  const [show, setShow] = useState(false);
+  const isLogged = useSelector(state => state.auth.isLoggedIn);
+  const {authUserId, authUserName, authUserRank} = useSelector(state => state.userInfo);
+
+  const positions = ['사원', '대리', '과장', '차장', '부장', '상무'];
+  const position = (rank) => {
+    return positions.indexOf(rank) > positions.indexOf('과장');
+  }
 
   useEffect(() => {
-    if (isAuthenticated)
+    const updateUserInfo = async () => {
+      const data = await GetUserInfo();
+      dispatch(updateUser(data));
+    };
+
+    if (isLogged)
     {
       setUser(localStorage.getItem('userToken'));
-      //setTeam(localStorage.getItem('userTeamToken'));
-      //setRank(localStorage.getItem('userRankToken'));
+      updateUserInfo();
     } else {
       setUser('');
-      //setTeam('');
-      //setRank('');
     }
     
-  }, [isAuthenticated])
+  }, [isLogged])
 
 
   return (
@@ -41,27 +49,45 @@ const Header = () => {
             <BsRss className='navbar-logo-icon' />
           </Navbar.Brand>
           <Navbar.Collapse className="">
-            <Nav defaultActiveKey='/' className=''>
+            <Nav defaultActiveKey='/' className='col'>
               <Nav.Item>
-                {isAuthenticated ? <Nav.Item><Nav.Link className='ms-5' href="/">대시보드</Nav.Link></Nav.Item> : <div className='disabled me-5'></div>}
+                {isLogged ? <Nav.Item><Nav.Link className='ms-5' href="/">대시보드</Nav.Link></Nav.Item> : <div className='disabled me-5'></div>}
               </Nav.Item>
               <div className="divider"></div>
               <Nav.Item>
-                {isAuthenticated ? <Nav.Link className='' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
+                {isLogged ? <Nav.Link className='' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
+              </Nav.Item>
+              <Nav.Item>
+                {isLogged && position(authUserRank) &&
+                <>
+                
+                <Nav.Link className='' eventKey="link-1" href="/AdminPage">관리자</Nav.Link>
+                </>
+                }
+                
+              </Nav.Item>
+              <Nav.Item>
+                {isLogged && position(authUserRank) &&
+                <>
+                
+                <Nav.Link className='' eventKey="link-1" href="/AdminLayout">관리자 Board</Nav.Link>
+                </>
+                }
+                
               </Nav.Item>
             </Nav>
           </Navbar.Collapse>
 
-          {isAuthenticated ?
+          {isLogged ?
          
             <div className="d-flex  header-profile-user">
-              <span>{user}</span>
+              <span>{authUserName}</span>
               <div>
               </div>
             </div>
           : <div></div> }
           
-          {isAuthenticated ?
+          {isLogged ?
             <Nav.Link className='justify-content-end me-4 bs-auto'><Logout /></Nav.Link> : <div className='disabled me-5'></div>}
           <Navbar.Toggle />
         </Navbar>

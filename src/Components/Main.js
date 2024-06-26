@@ -3,7 +3,8 @@ import './Main.css'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Login from './Login/Login'
 import { useDispatch } from 'react-redux';
-import { login, logout, updateUserInfo } from '../Redux/Action';
+//import { login, logout, updateUserInfo } from '../Redux/Action';
+import { login, logout, updateUser } from '../Redux/Store'; // store 파일 경로
 import Cookies from 'js-cookie';
 import UserInfo from '../Models/UserInfo';
 import GetUserInfo from '../API/GetUserInfo';
@@ -38,7 +39,7 @@ export default function MainUI() {
           localStorage.setItem('accessToken', accessToken, { path: '/' });
           localStorage.setItem('refreshToken', refreshToken, { path: '/' });
 
-          dispatch(login());
+          dispatch(login());//"LOGIN", accessToken));
           parseName(accessToken);
           // User info related logic
           fetchData();

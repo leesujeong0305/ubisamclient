@@ -58,6 +58,10 @@ npm run build
 - 진행하게 되면 bulid 폴더 생성됨
 - bulid 폴더를 서버로 이동
 
+//24.06.24 Grid
+npm install @mui/material @emotion/react @emotion/styled
+npm install @mui/x-data-grid
+
 
 서버쪽에서는 이 부분을 app.listen... 위에 추가
 

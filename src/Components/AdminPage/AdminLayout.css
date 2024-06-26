@@ -1,0 +1,43 @@
+.layout {
+  display: grid;
+  grid-template-rows: 1fr 10fr 1fr; /* Equal heights */
+  grid-template-columns: 15% 1fr; /* Sider and content columns */
+  height: 100vh;
+  width: 100%;
+  background-color: #7C9DBC;
+}
+
+.layout.collapsed {
+grid-template-columns: 60px 1fr; /* Width for collapsed sidebar */
+}
+
+.header {
+grid-row: 1 / 2;
+grid-column: 2 / 3; /* Only spans the content column */
+background-color: #E1E4E9;
+align-items: center;
+}
+
+.sider {
+grid-row: 1 / 4;
+grid-column: 1 / 2;
+background-color: #7C9DBC;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.content {
+grid-row: 2 / 3;
+grid-column: 2 / 3;
+background-color: #eeeeee;
+}
+
+.footer {
+grid-row: 3 / 4;
+grid-column: 2 / 3; /* Only spans the content column */
+background-color: #6ca0dc;
+display: flex;
+justify-content: center;
+align-items: center;
+}

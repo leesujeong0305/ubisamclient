@@ -1,6 +1,8 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { Dropdown } from 'react-bootstrap';
 import { useFooterVisibilityUpdate } from '../Layouts/FooterVisibilityContext';
+import { useDispatch } from 'react-redux';
+import { updateUser } from '../Redux/Store';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
@@ -17,6 +19,7 @@ import StepIndicator from './Stepbar/StepIndicator';
 import Scrolling from '../Components/ScrollingSignboard/Scrolling';
 import ViewGitHistory from '../Components/GitHistory/ViewGitHistory';
 import GetUserInfo from '../API/GetUserInfo';
+import GetSubLoadBoard from '../API/GetSubLoadBoard';
 
 function Board() {
     //const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
@@ -35,6 +38,8 @@ function Board() {
     const [loading, setLoading] = useState(true);
     const [pm, setPM] = useState('');
     const [selectedTitle, setSelectedTitle] = useState(null);
+
+    const dispatch = useDispatch();
 
     let today = new Date();
     let year = today.getFullYear();
@@ -83,12 +88,9 @@ function Board() {
     const getProjectData = async (name) => {
         //return await LoadBoard(name);
         const loadBoards = await LoadBoard(name);
-        const loadSubBoards = await subLoadBoard(name);
-
-        if (loadSubBoards) {
-            //console.log('loadSubBoards', loadSubBoards);
-            //console.log('name', name);
-        }
+        //const loadSubBoards = await subLoadBoard(name);
+        const loadSubBoards = await GetSubLoadBoard(name);
+        
         if (loadSubBoards === undefined) {
             return loadBoards;
         }
@@ -121,39 +123,6 @@ function Board() {
         });
         //console.log('loadBoards', loadBoards);
         return loadBoards;
-    }
-
-    const subLoadBoard = async (ProjectName) => {
-        let project = ''
-        const name = localStorage.getItem('userToken');
-        const _ProjectName = ProjectName.replace(/ /g, '_');
-        const index = _ProjectName.indexOf('(');
-        if (index !== -1) {
-            project = _ProjectName.substring(0, index);
-        }
-        else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
-        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-        return Axios.post(`${ip}/subLoadBoard`, {
-            ProjectName: ProjectName,
-            _ProjectName: project,
-        }, {
-            headers: {
-                "Content-Type": "application/json",
-            }
-        }).then((res) => {
-            //console.log('subLoadBoard', { res });
-            if (res.data) {
-                const dataRow = res.data;
-                return dataRow;
-            } else if (res.data.code === 403) { //에러메세지 로그 없이 처리하려할때
-                console.log("403");
-            }
-        }).catch(error => {
-            console.log({ error });
-            if (error.response.status === 403) {
-                alert(`${error.response.data.message}`);
-            }
-        });
     }
 
     const updatePrjStatus = async (prjName) => {
@@ -225,6 +194,7 @@ function Board() {
             const data = await GetUserInfo();
             if (data === undefined) return;
             if (!data) throw new Error("No data returned from UserInfo");
+            //dispatch(updateUser(data));
             const [periodData, projectData] = await Promise.all([
                 updatePeriod(data),
                 getProjectData(data.impProject),

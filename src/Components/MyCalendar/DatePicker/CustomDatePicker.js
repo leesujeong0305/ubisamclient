@@ -118,7 +118,7 @@ const CustomDatePicker = ( {name, boardData} ) => {
             Content: item.content,
             Status: item.category,
         }));
-        console.log('filterData',filterData);
+        //console.log('filterData',filterData);
         // 작업이 완료된 후 ExcelExport를 실행할 준비가 되었다는 신호를 상태에 저장
         setSerchData(filterData);
         setIsReadyForExport(true);
@@ -131,7 +131,7 @@ const CustomDatePicker = ( {name, boardData} ) => {
 
     const onClickExcel = () => {
         //ExcelExport data={serchData} name={name}
-        console.log('진행?');
+        //console.log('진행?');
         ExcelExport({serchData, name});
     }
 

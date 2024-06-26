@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import Today from './Today';
-import EditToday from './EditToday';
-import ExcelExport from '../db/Excel/ExcelExport';
-import './ListBoard.css';
-import { Form } from 'react-bootstrap';
-import CustomWaterMark from '../Components/Settings/CustomWaterMark';
+import { useSelector } from 'react-redux';
+import { DataGrid } from '@mui/x-data-grid';
+import { Box, FormControl, MenuItem, Select, TextField, Button, InputLabel } from '@mui/material';
 
-function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, handleData, selectedProjectName }) {
+import EditToday from '../../../../Board/EditToday';
+
+
+
+const TeamBoard = ({posts}) => {
 
     const items = [ /* 상태 색상 표기 */
         { id: '대기', color: '#CCCCFF' },
@@ -18,6 +19,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
 
     const columns = [
         { name: "#", width: "2%" },
+        { name: "프로젝트", width: "12%" },
         { name: "등록 날짜", width: "7%" },
         { name: "변경 날짜", width: "7%" },
         { name: "이 름", width: "5%" },
@@ -26,14 +28,19 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
         { name: "목표일", width: "5%" },
         { name: "상태", width: "5%" },];
 
+    const isLogged = useSelector(state => state.auth.isLoggedIn);
+    const [board, setBoard] = useState([]);
     const [selectvalue, setSelectvalue] = useState(null);
     const [show, setShow] = useState(false);
     const [selectRowIndex, setSelectRowIndex] = useState(false);
+
+    
 
     const handleRowClick = (row) => {
         console.log('클릭된 행의 데이터:', row, row.Index);
         setSelectvalue(row);
         setSelectRowIndex(row.Index);
+
     }
 
     const getRowStyle = (index) => {
@@ -54,24 +61,6 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
             return id.color;
         }
     };
-
-    // 다이얼로그가 닫혔을 때 실행할 로직
-    const handleDialogClose = () => {
-        // 다이얼로그 닫힘 후 필요한 작업 수행, 예를 들어, 데이터를 새로 고침
-        //getBoardData();
-        setSelectvalue(null);
-        setSelectRowIndex(false);
-        handleData(true);
-        //console.log('setState true');
-
-    };
-
-    const handleClick = () => {
-        if (selectedProjectName === 'No Data') {
-            alert('프로젝트를 먼저 선택해주세요');
-            return;
-        }
-    }
 
     // 말풍선 위치 상태
     const [previewPos, setPreviewPos] = useState({ top: 0, left: 0 });
@@ -95,36 +84,25 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
         // });
     };
 
+    // 다이얼로그가 닫혔을 때 실행할 로직
+    const handleDialogClose = () => {
+        // 다이얼로그 닫힘 후 필요한 작업 수행, 예를 들어, 데이터를 새로 고침
+        //getBoardData();
+        setSelectvalue(null);
+        setSelectRowIndex(false);
+        //console.log('setState true');
+
+    };
+
+    useEffect(() => {
+        if (posts !== undefined) {
+            setBoard(posts);
+        }
+    }, [posts])
+
+
     return (
         <div>
-            <div className="nav-context">
-                <div></div>
-                <div className="d-flex gap-2 mb-2">
-                    <CustomWaterMark show={show} onHide={() => setShow(false)} />
-                    <ExcelExport
-                        data={allposts}
-                        name={tab}
-                        selectedProjectName={selectedProjectName}
-                    />
-                    <EditToday
-                        show={show}
-                        onHide={() => setShow(false)}
-                        onClose={handleDialogClose}
-                        post={selectvalue}
-                        selectedProjectName={selectedProjectName}
-                        dialogClassName="custom-modal-size"
-                    />
-                    <Today
-                        show={show}
-                        onHide={() => setShow(false)}
-                        onClick={handleClick}
-                        onClose={handleDialogClose}
-                        post={null}
-                        selectedProjectName={selectedProjectName}
-                        dialogClassName="custom-modal-size"
-                    />
-                </div>
-            </div>
             <table className="table table-striped table-hover border-primary table-fixed">
                 <thead className="list-Title">
                     <tr>
@@ -136,8 +114,8 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                     </tr>
                 </thead>
                 <tbody className="">
-                    {posts.map((row, index) => (
-                        
+                    {board.map((row, index) => (
+
                         <tr
                             key={index + 1}
                             onClick={() => {
@@ -149,6 +127,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                                 {" "}
                                 {row.Index}
                             </td>
+                            <td>{row.ProjectName}</td>
                             <td onMouseMove={handleMouseMove}>{row.Date}</td>
                             <td onMouseMove={handleMouseMove}>{row.ChangeDate}</td>
                             <td onMouseMove={handleMouseMove}>{row.Name}</td>
@@ -156,41 +135,54 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
                             <td className="truncate">
                                 <div className="preview-container" onMouseMove={handleMouseMove}>
                                     {row.Content}
-                                    
-                                    <div className="preview" style={{ top: `${previewPos.top}px`, left: `${previewPos.left}px`, flex:'10' }}>
+
+                                    <div className="preview" style={{ top: `${previewPos.top}px`, left: `${previewPos.left}px`, flex: '10' }}>
                                         <div className='preview-hover'>
-                                        {row.Content}
-                                        {row.details && (
-                                        <div>
-                                            {row.details.map((detail, index) => {
-                                                return (
-                                                    <span key={index} style={{ fontSize: 'smaller' }}>{detail.Content}</span>
-                                                )
-                                                
-                                            })}
+                                            {row.Content}
+                                            {row.details && (
+                                                <div>
+                                                    {row.details.map((detail, index) => {
+                                                        return (
+                                                            <span key={index} style={{ fontSize: 'smaller' }}>{detail.Content}</span>
+                                                        )
+
+                                                    })}
+                                                </div>
+                                            )}
                                         </div>
-                                        )}
-                                        </div>
-                                        
+
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <div style={{color: findDayById(`${row.Period}`) }}>
+                                <div style={{ color: findDayById(`${row.Period}`) }}>
                                     {row.Period}
                                 </div>
                             </td>
                             <td>
-                                <div style={{ backgroundColor: findColorById(`${ row.details === undefined ? row.Status : row.details[0].Status}`) }}>
-                                    { row.details === undefined ? row.Status : row.details[0].Status}
+                                <div style={{ backgroundColor: findColorById(`${row.details === undefined ? row.Status : row.details[0].Status}`) }}>
+                                    {row.details === undefined ? row.Status : row.details[0].Status}
                                 </div>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {
+                selectvalue && (
+                    <EditToday
+                        show={show}
+                        onHide={() => setShow(false)}
+                        onClose={handleDialogClose}
+                        post={selectvalue}
+                        selectedProjectName={"All"}
+                        dialogClassName="custom-modal-size"
+                    />
+                )
+            }
         </div>
-    );
+    )
 }
 
-export default ListBoard
+
+export default TeamBoard

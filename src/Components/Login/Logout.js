@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import Axios from '../../API/AxiosApi';
 import Cookies from 'js-cookie';
-import { logout, deleteUserInfo } from '../../Redux/Action';
+//import { logout, deleteUserInfo } from '../../Redux/Action';
+import { login, logout, resetUser } from '../../Redux/Store'; // store 파일 경로
 import { MdLogout } from "react-icons/md";
 
 import './Logout.css'
@@ -19,7 +20,7 @@ function Logout() {
         if (refreshToken !== undefined && accessToken !== undefined) {
             Axios.defaults.headers.common.Authorization = undefined;
             dispatch(logout());
-            dispatch(deleteUserInfo());
+            dispatch(resetUser());
             navigate('/');
             localStorage.clear();
         }

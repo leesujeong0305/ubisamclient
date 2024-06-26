@@ -1,8 +1,8 @@
 // SelectItems.js
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './SelectItems.css';
 
-function SelectItems({ select, setSelect }) {
+function SelectItems({ select, setSelect, isAdmin=false }) {
   const selectsOptions = [
     { name: '전 체', color: '#CCFFCC' },
     { name: '대 기', color: '#CCCCFF' },
@@ -43,7 +43,8 @@ function SelectItems({ select, setSelect }) {
 
   return (
     <div className="select-container">
-      <div className="select-grid">
+      <div className={`select-grid${isAdmin ? '-admin' : ''}`}>
+      
         {selectsOptions.map((sel) => (
           <div
             key={sel.name}

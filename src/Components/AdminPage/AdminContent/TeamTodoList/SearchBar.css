@@ -1,0 +1,38 @@
+/* src/components/SearchBar.css */
+.search-bar {
+    display: flex;
+    align-items: center; /* Align items vertically centered */
+    background-color: #f0f4f8; /* Set background color */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  .search-bar > div,
+  .search-bar > span {
+    margin-right: 15px; /* Add spacing between text and other elements */
+  }
+  
+  .date-picker,
+  .dropdown,
+  .input-field {
+    margin-right: 10px; /* Add spacing between elements */
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    width: 150px; /* Adjust width */
+  }
+  
+  .search-button {
+    background-color: #007bff; /* Keep the button background color */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    width: auto; /* Adjust width */
+  }
+  
+  .search-button i {
+    font-size: 16px;
+    width: 80px;
+  }
