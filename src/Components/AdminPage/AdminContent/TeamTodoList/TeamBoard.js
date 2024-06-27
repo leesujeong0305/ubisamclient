@@ -4,10 +4,13 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Box, FormControl, MenuItem, Select, TextField, Button, InputLabel } from '@mui/material';
 
 import EditToday from '../../../../Board/EditToday';
+import { Modal } from 'react-bootstrap';
 
 
 
 const TeamBoard = ({posts}) => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [selectedRowData, setSelectedRowData] = useState(null);
 
     const items = [ /* 상태 색상 표기 */
         { id: '대기', color: '#CCCCFF' },
@@ -94,6 +97,17 @@ const TeamBoard = ({posts}) => {
 
     };
 
+    const openModal = (row) => {
+        console.log('row', row);
+        setSelectedRowData(row);
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+        setSelectedRowData(null);
+    };
+
     useEffect(() => {
         if (posts !== undefined) {
             setBoard(posts);
@@ -119,7 +133,7 @@ const TeamBoard = ({posts}) => {
                         <tr
                             key={index + 1}
                             onClick={() => {
-                                handleRowClick(row);
+                                openModal(row);
                             }}
                             style={getRowStyle(row.Index)}
                         >
@@ -168,18 +182,26 @@ const TeamBoard = ({posts}) => {
                     ))}
                 </tbody>
             </table>
-            {
-                selectvalue && (
-                    <EditToday
-                        show={show}
-                        onHide={() => setShow(false)}
-                        onClose={handleDialogClose}
-                        post={selectvalue}
-                        selectedProjectName={"All"}
-                        dialogClassName="custom-modal-size"
-                    />
-                )
-            }
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Row Details"
+                className="modal"
+                overlayClassName="modal-overlay"
+            >
+                {selectedRowData && (
+                    <div>
+                        <h2>Row Details</h2>
+                        <p><strong>날짜:</strong> {selectedRowData.date}</p>
+                        <p><strong>이름:</strong> {selectedRowData.name}</p>
+                        <p><strong>Title:</strong> {selectedRowData.title}</p>
+                        <p><strong>To Do List:</strong> {selectedRowData.todo}</p>
+                        <p><strong>목표일:</strong> {selectedRowData.goal}</p>
+                        <p><strong>상태:</strong> {selectedRowData.status}</p>
+                        <button onClick={closeModal}>Close</button>
+                    </div>
+                )}
+            </Modal>
         </div>
     )
 }

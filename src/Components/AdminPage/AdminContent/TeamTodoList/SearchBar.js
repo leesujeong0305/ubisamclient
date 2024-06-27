@@ -11,12 +11,11 @@ const SearchBar = ({handleData}) => {
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
   const [selectedOption, setSelectedOption] = useState('');
-  const [name, setName] = useState('');
 
   
 
   const handleSerch = () => {
-    handleData([true, startDate, endDate, name]);
+    handleData([true, startDate, endDate]);
   }
 
   return (
@@ -50,8 +49,6 @@ const SearchBar = ({handleData}) => {
         <option value="option2">Option 2</option>
         <option value="option3">Option 3</option>
       </select>
-      <div>이름</div>
-      <input type="text" placeholder="이름 검색" className="input-field" onChange={(e) => setName(e.target.value)} />
       <div>검색</div>
       <input type="text" placeholder="내용입력" className="input-field" />
       <button className="search-button" onClick={handleSerch}>

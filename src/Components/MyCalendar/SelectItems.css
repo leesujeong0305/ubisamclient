@@ -7,6 +7,16 @@
     margin: 10px 0px 10px 10px;
 
   }
+
+  .select-container-admin {
+    background-color: #E1E4E8;
+    border-radius: 8px;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin: 10px 10px 10px 10px;
+    justify-content: center;
+    display: flex;
+  }
   
   .select-grid {
     display: grid;
@@ -24,6 +34,18 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333; /* Text color for better contrast */
+    transition: border-color 0.3s; /* Smooth transition for hover effect */
+  }
+
+  .select-item-admin {
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 7px 12px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;

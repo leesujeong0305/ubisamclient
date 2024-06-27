@@ -62,6 +62,9 @@ npm run build
 npm install @mui/material @emotion/react @emotion/styled
 npm install @mui/x-data-grid
 
+//24.06.27 Scrollbar UI
+npm install react-scrollbars-custom
+
 
 서버쪽에서는 이 부분을 app.listen... 위에 추가
 

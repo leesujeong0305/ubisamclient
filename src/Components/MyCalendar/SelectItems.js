@@ -42,13 +42,13 @@ function SelectItems({ select, setSelect, isAdmin=false }) {
   }, [])
 
   return (
-    <div className="select-container">
+    <div className={`select-container${isAdmin ? '-admin' : ''}`}>
       <div className={`select-grid${isAdmin ? '-admin' : ''}`}>
       
         {selectsOptions.map((sel) => (
           <div
             key={sel.name}
-            className={`select-item ${select.has(sel.name) ? 'selected' : ''}`}
+            className={`select-item${isAdmin ? '-admin' : '' } ${select.has(sel.name) ? 'selected' : ''}`}
             style={{ backgroundColor: sel.color }}
             onClick={() => handleSelect(sel.name)}
           >

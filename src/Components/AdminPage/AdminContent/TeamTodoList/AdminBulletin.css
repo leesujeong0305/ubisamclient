@@ -1,0 +1,57 @@
+.nav-container {
+    background-color: #375A7F;
+    border-radius: 20px;
+    border: 1px solid #E0E6FF;
+    display: flex;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+    margin-top: 0.7rem;
+    max-width: 65rem;
+    overflow-x: auto;
+  }
+
+  /* 스크롤바 설정*/
+.nav-container::-webkit-scrollbar{
+  height: 10px;
+  overflow: hidden;
+}
+
+/* 스크롤바 막대 설정*/
+.nav-container::-webkit-scrollbar-thumb{
+  background-color: rgba(255,255,255,1);
+  /* 스크롤바 둥글게 설정    */
+  border-radius: 10px; 
+  border: 1px solid #375A7F;
+}
+
+  .nav-tab {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #F8F9FA;
+    white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 설정 */
+  }
+
+  .tab-button {
+    display: flex;
+    background: #3498DB;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin: auto;
+    color: #F8F9FA;
+    white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 설정 */
+  }
+  
+  .nav-tab:hover {
+    background-color: #2C81BA;
+    border-radius: 20px;
+    white-space: nowrap; /* 버튼 텍스트가 줄바꿈되지 않도록 설정 */
+  }
+
+  .nav-context {
+  }
+  .list-Title {
+    background-Color: #5090CC;
+  }
