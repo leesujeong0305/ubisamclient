@@ -1,0 +1,191 @@
+.project-table {
+    background-color: #f9f9f9;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* 테이블 헤더 및 데이터 셀 스타일 */
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* 테이블 헤더 스타일 */
+  th {
+    background-color: #444;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  /* 테이블 데이터 셀 스타일 */
+  td {
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  tr:nth-child(even) td {
+    background-color: #e0e0e0;
+  }
+  
+  tr:hover td {
+    background-color: #d0d0d0;
+  }
+  
+  .progress-bar {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .progress {
+    height: 10px;
+    background-color: #4caf50;
+    border-radius: 5px;
+  }
+  
+  td i {
+    cursor: pointer;
+    color: #007bff;
+  }
+  
+  .project-name {
+    font-weight: bold;
+  }
+  
+  .status-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+  }
+  
+  .status-button.start {
+    background-color: #4caf50;
+  }
+  
+  .status-button.in-progress {
+    background-color: #ff9800;
+  }
+  
+  .status-button.completed {
+    background-color: #8bc34a;
+  }
+  
+  .personnel-list {
+    max-width: 600px; /* 필요에 따라 너비 조정 */
+    white-space: nowrap;
+    overflow-x: auto;
+    padding-top: 10px; /* 스크롤바를 아래로 이동 */
+  }
+  
+  /* 토글 스위치 CSS */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #4caf50;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #4caf50;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(14px);
+  }
+  
+  /* 둥근 슬라이더 */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  
+  /* 수정 버튼 CSS */
+  .edit-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+  }
+  
+  .edit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* 테이블 헤더 스타일 */.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  /* 테이블 카운터 스타일 */.table-counter {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 20px; /* 좌우 여백 추가 */
+  }
+  
+  /* 프로젝트 생성 버튼 스타일 */.create-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    margin-left: auto; /* 오른쪽 정렬 */
+  }
+  
+  .create-button:hover {
+    background-color: #0056b3;
+  }
