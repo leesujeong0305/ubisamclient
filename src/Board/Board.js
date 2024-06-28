@@ -275,7 +275,10 @@ function Board() {
                     )
                     // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '이슈'로 변경
                 ) {
-                    item.Status = "알림";
+                    if (item.details)
+                        item.details[0].Status = "알림";
+                    else
+                        item.Status = "알림";
                     alertTitles.push({ title: item.Title, key: item.Key }); // 제목과 키를 alertTitles 배열에 추가
                 }
                 return item;

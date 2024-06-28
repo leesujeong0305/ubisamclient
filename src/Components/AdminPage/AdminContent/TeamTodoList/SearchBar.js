@@ -6,7 +6,7 @@ import './SearchBar.css';
 import ko from 'date-fns/locale/ko'; // 한국어 로케일을 임포트합니다.
 registerLocale('ko', ko); // datepicker에 로케일을 등록합니다.
 
-const SearchBar = ({handleData}) => {
+const SearchBar = ({handleData, tabs}) => {
   const today = new Date();
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
@@ -15,7 +15,7 @@ const SearchBar = ({handleData}) => {
   
 
   const handleSerch = () => {
-    handleData([true, startDate, endDate]);
+    handleData([true, startDate, endDate, selectedOption]);
   }
 
   return (
@@ -38,16 +38,18 @@ const SearchBar = ({handleData}) => {
         className="date-picker"
         dateFormat="yyyy-MM-dd"
       />
-      <div>Day</div>
+      <div>프로젝트</div>
       <select
         value={selectedOption}
         onChange={(e) => setSelectedOption(e.target.value)}
         className="dropdown"
       >
-        <option value="">선택</option>
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
+        {
+          tabs && tabs.map((tab, index) => (
+            <option key={index} value={tab}>{tab}</option>
+          ))
+        }
+        
       </select>
       <div>검색</div>
       <input type="text" placeholder="내용입력" className="input-field" />

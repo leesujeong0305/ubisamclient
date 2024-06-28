@@ -9,7 +9,7 @@ import './AdminBulletin.css'
 import SelectItems from '../../../MyCalendar/SelectItems';
 import { Scrollbar } from 'react-scrollbars-custom';
 
-const AdminBulletin = ({ allBoard, startDate, endDate, useSerch }) => {
+const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
   const isLogged = useSelector(state => state.auth.isLoggedIn);
   const [board, setBoard] = useState([]);
   const [filterdBoard, setFilteredBoard] = useState([]);
@@ -43,8 +43,8 @@ const AdminBulletin = ({ allBoard, startDate, endDate, useSerch }) => {
     const end = new Date(endDate);
     const filter = board.filter(item => {
       if (item.details === undefined) {
-        const targetDate = new Date(item.Date);
-        if (targetDate > start)
+        const targetDate = new Date(item.Date); //등록된 date
+        if (targetDate >= start)
           return targetDate >= start && targetDate <= end;
       } else {
         const targetDate = new Date(item.ChangeDate);
@@ -52,6 +52,16 @@ const AdminBulletin = ({ allBoard, startDate, endDate, useSerch }) => {
       }
     });
     return filter;
+  }
+
+  const filterProject = (item) => {
+    console.log('project', project);
+    if (project === undefined || project === null || project === "전체" || project === "") {
+      console.log('project item', project, item);
+      return item;
+    }
+    const res = item.filter(value => value.ProjectName === project);
+    return res;
   }
 
   const filterCategory = async (filter) => {
@@ -101,7 +111,7 @@ const AdminBulletin = ({ allBoard, startDate, endDate, useSerch }) => {
       if (allBoard) {
         await setBoard(allBoard);
       await setFilteredBoard(allBoard);
-      console.log('allBoard', allBoard);
+      // console.log('allBoard', allBoard);
       const total = allBoard.length / postsPerPage;
       setTotalPage(total);
       }
@@ -115,13 +125,15 @@ const AdminBulletin = ({ allBoard, startDate, endDate, useSerch }) => {
       let filter = filterBoard();
       if (filter === undefined)
         filter = [...board];
+       filter = filterProject(filter);
+       console.log('project', filter);
       await filterCategory(filter);
 
     }
 
 
     Filter();
-  }, [startDate, endDate, select])
+  }, [startDate, endDate, select, project])
 
   return (
     <div>
