@@ -38,6 +38,7 @@ const userInfInit = {
   authUserId : "",
   authUserName : "",
   authUserRank : "",
+  authUserTeam : "",
 };
 
 // userInfo 슬라이스 생성
@@ -47,6 +48,7 @@ const userInfoSlice = createSlice({
     authUserId : "",
     authUserName : "",
     authUserRank : "",
+    authUserTeam : "",
   },
   reducers: {
     resetUser(state) {
@@ -57,10 +59,12 @@ const userInfoSlice = createSlice({
         state.authUserId = action.payload.email;
         state.authUserName = action.payload.name;
         state.authUserRank = action.payload.rank;
+        state.authUserTeam = action.payload.team;
       } else {
         state.authUserId = "";
         state.authUserName = "";
         state.authUserRank = "";
+        state.authUserTeam = "";
       }
       
     }

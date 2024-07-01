@@ -18,7 +18,7 @@ const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
 
   //const [posts, setPosts] = useState([]) // 포스트 데이터 상태 관리
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
-  const [postsPerPage] = useState(20); // 페이지 당 포스트 수
+  const [postsPerPage] = useState(15); // 페이지 당 포스트 수
   const [totalPage, setTotalPage] = useState(0); //전체 Page 수
 
   //탭 추가 필요
@@ -39,6 +39,8 @@ const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
       return;
     if (useSerch === false)
       return;
+    if (startDate === undefined || endDate === undefined)
+      return;
     const start = new Date(startDate);
     const end = new Date(endDate);
     const filter = board.filter(item => {
@@ -55,9 +57,7 @@ const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
   }
 
   const filterProject = (item) => {
-    console.log('project', project);
     if (project === undefined || project === null || project === "전체" || project === "") {
-      console.log('project item', project, item);
       return item;
     }
     const res = item.filter(value => value.ProjectName === project);
@@ -74,28 +74,28 @@ const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
         // 'comp'와 'issue'가 중복 선택될 수 있도록 로직 변경
         if (select.has('대 기')) {
           filtered = [...filtered, ...filter.filter(event => {
-            return event.details === undefined ? event.Status === '대기' : event.details[0].Status === '대기';
+            return event.details === undefined ? event.Status === '대기' : event.details[event.details.length - 1].Status === '대기';
           })];
           console.log('대기 필터', filtered);
         }
         if (select.has('진행중')) {
           filtered = [...filtered, ...filter.filter(event => {
-            return event.details === undefined ? event.Status === '진행중' : event.details[0].Status === '진행중';
+            return event.details === undefined ? event.Status === '진행중' : event.details[event.details.length - 1].Status === '진행중';
           })];
         }
         if (select.has('완 료')) {
           filtered = [...filtered, ...filter.filter(event => {
-            return event.details === undefined ? event.Status === '완료' : event.details[0].Status === '완료';
+            return event.details === undefined ? event.Status === '완료' : event.details[event.details.length - 1].Status === '완료';
           })];
         }
         if (select.has('이 슈')) {
           filtered = [...filtered, ...filter.filter(event => {
-            return event.details === undefined ? event.Status === '이슈' : event.details[0].Status === '이슈';
+            return event.details === undefined ? event.Status === '이슈' : event.details[event.details.length - 1].Status === '이슈';
           })];
         }
         if (select.has('알 림')) {
           filtered = [...filtered, ...filter.filter(event => {
-            return event.details === undefined ? event.Status === '알림' : event.details[0].Status === '알림';
+            return event.details === undefined ? event.Status === '알림' : event.details[event.details.length - 1].Status === '알림';
           })];
         }
 
@@ -126,12 +126,10 @@ const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
       if (filter === undefined)
         filter = [...board];
        filter = filterProject(filter);
-       console.log('project', filter);
       await filterCategory(filter);
-
+      setCurrentPage(1);
+      setSelectedTab('전체');
     }
-
-
     Filter();
   }, [startDate, endDate, select, project])
 
@@ -159,8 +157,6 @@ const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
           postsPerPage={postsPerPage}
           totalPage={totalPage} // 페이지 당 포스트 수
           tab={selectedTab}
-        //handleData={handleData}
-
         />
       </div>
       <br></br>

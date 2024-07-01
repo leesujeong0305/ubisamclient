@@ -4,8 +4,8 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } fro
 import Pagination from '../../../../Board/Page/Pagination';
 import { AddProjectInfo } from '../../../../API/AddProjectInfo';
 
-const ProjectTable = ({ projects }) => {
-    const [viewStates, setViewStates] = useState(projects.map(() => true));
+const ProjectTable = ({ projects, site }) => {
+    const [viewStates, setViewStates] = useState(true);//projects.map(() => true));
     const [projectName, setProjectName] = useState("");
     const [projectPeriod, setProjectPeriod] = useState("");
     const [projectUsers, setProjectUsers] = useState("");
@@ -29,9 +29,9 @@ const ProjectTable = ({ projects }) => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber); // 페이지 번호를 받아 현재 페이지 상태를 업데이트
 
     const handleToggle = (index) => {
-        setViewStates((prevStates) =>
-            prevStates.map((state, i) => (i === index ? !state : state))
-        );
+        setViewStates(!index);//(prevStates) =>
+            //prevStates.map((state, i) => (i === index ? !state : state))
+        //);
     };
 
     const handleEdit = (project) => {
@@ -73,8 +73,7 @@ const ProjectTable = ({ projects }) => {
     };
 
     const handleAddRow = async () => {
-        //if (projectName && projectPeriod && projectUsers && projectSite) {
-        if (true) {
+        if (projectName && projectPeriod && projectUsers && projectSite) {
             const newRow = {
                 //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
                 Project: projectName,
@@ -83,7 +82,10 @@ const ProjectTable = ({ projects }) => {
                 Status: projectStatus,
                 PM: projectPM,
                 Site: projectSite,
+                Use: 1,
+
             };
+            console.log('newRow', newRow);
             //await AddProjectInfo(newRow);
 
 
@@ -99,6 +101,16 @@ const ProjectTable = ({ projects }) => {
     };
 
     const handleEditRow = () => {
+
+
+
+        setProjectName('');
+            setProjectPeriod('');
+            setProjectUsers('');
+            setProjectStatus('');
+            setProjectPM('');
+            setProjectSite('');
+            setProjectAdd(false);
         setProjectEdit(false);
     };
 
@@ -106,6 +118,7 @@ const ProjectTable = ({ projects }) => {
         if (projects) {
             const total = projects.length / postsPerPage;
             setTotalPage(total);
+            setProjectSite(site);
         }
     }, [projects])
 
@@ -157,16 +170,6 @@ const ProjectTable = ({ projects }) => {
                                 value={projectPM}
                                 onChange={(e) => setProjectPM(e.target.value)}
                             />
-                            <FormControl sx={{ minWidth: 150 }}>
-                                <InputLabel>Site</InputLabel>
-                                <Select
-                                    value={projectSite}
-                                    onChange={(e) => setProjectSite(e.target.value)}
-                                >
-                                    <MenuItem value="파주">파주</MenuItem>
-                                    <MenuItem value="구미">구미</MenuItem>
-                                </Select>
-                            </FormControl>
                             <Button variant="contained" onClick={handleAddRow}>
                                 Add Row
                             </Button>
@@ -212,16 +215,6 @@ const ProjectTable = ({ projects }) => {
                                 value={projectPM}
                                 onChange={(e) => setProjectPM(e.target.value)}
                             />
-                            <FormControl sx={{ minWidth: 150 }}>
-                                <InputLabel>Site</InputLabel>
-                                <Select
-                                    value={projectSite}
-                                    onChange={(e) => setProjectSite(e.target.value)}
-                                >
-                                    <MenuItem value="파주">파주</MenuItem>
-                                    <MenuItem value="구미">구미</MenuItem>
-                                </Select>
-                            </FormControl>
                             <Button variant="contained" onClick={handleEditRow}>
                                 Edit Row
                             </Button>
@@ -262,8 +255,8 @@ const ProjectTable = ({ projects }) => {
                                     <label className="switch">
                                         <input
                                             type="checkbox"
-                                            checked={viewStates[index]}
-                                            onChange={() => handleToggle(index)}
+                                            checked={project.Use}
+                                            onChange={() => handleToggle(project.Use)}
                                         />
                                         <span className="slider round"></span>
                                     </label>

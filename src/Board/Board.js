@@ -118,7 +118,7 @@ function Board() {
                     FieldNum: detail.FieldNum,
                     FieldSubNum: detail.FieldSubNum,
                 });
-                item.details[0].Status = item.details[item.details.length - 1].Status;
+                //item.details[0].Status = item.details[item.details.length - 1].Status;
             }
         });
         //console.log('loadBoards', loadBoards);
@@ -235,9 +235,9 @@ function Board() {
                 // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '알림'으로 변경
 
                 if (item.details) {
-                    if (item.details[0].Status === '완료') {
+                    if (item.details[item.details.length - 1].Status === '완료') {
                         item.Period = '👍';
-                    } else if (item.details[0].Status === '이슈') {
+                    } else if (item.details[item.details.length - 1].Status === '이슈') {
                         item.Period = '🚨';
                     }
                     else {
@@ -276,7 +276,7 @@ function Board() {
                     // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '이슈'로 변경
                 ) {
                     if (item.details)
-                        item.details[0].Status = "알림";
+                        item.details[item.details.length - 1].Status = "알림";
                     else
                         item.Status = "알림";
                     alertTitles.push({ title: item.Title, key: item.Key }); // 제목과 키를 alertTitles 배열에 추가

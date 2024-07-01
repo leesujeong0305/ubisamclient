@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { BsRss } from "react-icons/bs";
 import Logout from '../Components/Login/Logout';
-import CustomWaterMark from '../Components/Settings/CustomWaterMark';
 import { updateUser } from '../Redux/Store';
 import GetUserInfo from '../API/GetUserInfo';
 
@@ -13,9 +12,9 @@ const Header = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState('');
   const isLogged = useSelector(state => state.auth.isLoggedIn);
-  const {authUserId, authUserName, authUserRank} = useSelector(state => state.userInfo);
+  const {authUserId, authUserName, authUserRank, authUserTeam} = useSelector(state => state.userInfo);
 
-  const positions = ['사원', '대리', '과장', '차장', '부장', '상무'];
+  const positions = ['사원', '대리', '과장', '차장', '부장', '상무', '사장'];
   const position = (rank) => {
     return positions.indexOf(rank) > positions.indexOf('과장');
   }

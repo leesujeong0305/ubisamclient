@@ -5,15 +5,23 @@ import SelectItems from '../../MyCalendar/SelectItems';
 import { useSelector } from 'react-redux';
 import LoadBoard from '../../../Board/Page/LoadBoard';
 import GetSubLoadBoard from '../../../API/GetSubLoadBoard';
+import { GetProjectInfo } from '../../../API/GetProjectInfo';
 
 const TeamTodoList = () => {
     const isLogged = useSelector(state => state.auth.isLoggedIn);
+    const {authUserId, authUserName, authUserRank, authUserTeam} = useSelector(state => state.userInfo);
+
     const [allBoard, setAllBoard] = useState([])
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [project, setProject] = useState(null);
     const [useSerch, setUseSerch] = useState(false);
-    const [tabs, setTabs] = useState([])
+    //const [tabs, setTabs] = useState([]);
+
+    const Continents = [ /* 상태 색상 표기 */
+        { key: '자동화1팀', value: '파주' },
+        { key: '시스템사업팀', value: '구미' },
+    ];
 
     // 날짜를 "yyyy-MM-dd" 형식으로 변환하는 함수
     const formatDate = (dateString) => {
@@ -28,80 +36,28 @@ const TeamTodoList = () => {
 
         return [year, month, day].join('-');
     };
+    
+
+    const selectSite = () => {
+        if (authUserTeam === undefined)
+            return;
+        const found = Continents.find((item) => item.key === authUserTeam);
+        return found ? found.value : undefined;
+    }
+
+
+
 
     const LoadAllBoard = async () => {
-        const UpdateStatus = async (data) => {
-            if (data === undefined)
-                return;
-            let alertTitles = [];
-            const today = new Date(); // 기준 날짜는 오늘로 설정
-            data = data.map((item) => {
-                const itemDate = new Date(item.Date);
-                const diffTime = Math.abs(today - itemDate);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 단위로 차이를 계산
-
-
-                // item.details 배열이 존재하는지 확인 후 모든 항목의 Status를 확인
-                const setDay = parseInt(item.Period.replace(/[^0-9]/g, ''), 10);
-                const detailsStatuses = item.details ? item.details.map(detail => detail.Status) : [];
-
-                const difference = diffDays - setDay;
-                //console.log('itemDate', item.Title, itemDate);
-                //console.log('difference 계산 ', difference, diffDays, setDay);
-                // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '알림'으로 변경
-
-                if (item.details) {
-                    if (item.details[0].Status === '완료') {
-                        item.Period = '👍';
-                    } else if (item.details[0].Status === '이슈') {
-                        item.Period = '🚨';
-                    }
-                    else {
-                        if (difference > 0) {
-                            item.Period = `D-${Math.abs(difference)}`;
-                        } else if (difference < 0) {
-                            item.Period = `${Math.abs(difference)}일`;
-                        } else {
-                            item.Period = `D-Day`;
-                        }
-                    }
-                } else {
-                    if (item.Status === '완료') {
-                        item.Period = '👍';
-                    } else if (item.Status === '이슈') {
-                        item.Period = '🚨';
-                    } else {
-                        if (difference > 0) {
-                            item.Period = `D-${Math.abs(difference)}`;
-                        } else if (difference < 0) {
-                            item.Period = `${Math.abs(difference)}일`;
-                        } else {
-                            item.Period = `D-Day`;
-                        }
-                    }
-
-                }
-
-                if (
-                    diffDays > setDay &&
-                    item.Status !== "완료" &&
-                    item.Status !== "이슈" &&
-                    detailsStatuses.every(
-                        (status) => status !== "완료" && status !== "이슈"
-                    )
-                    // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '이슈'로 변경
-                ) {
-                    item.Status = "알림";
-                    alertTitles.push({ title: item.Title, key: item.Key }); // 제목과 키를 alertTitles 배열에 추가
-                }
-                return item;
-            });
-            return data;
+        const site = selectSite();
+        if (site === undefined) {
+            alert(`"${authUserTeam}"이름이 서버에 등록된 팀이름과 매칭되지 않아 데이터를 가져올 수 없습니다`);
+            return;
         }
-
-        const mainBoard = await LoadBoard("All");
+            
+        const mainBoard = await LoadBoard("All", site);
         //console.log('main', mainBoard);
-        const subBoard = await GetSubLoadBoard("All");
+        const subBoard = await GetSubLoadBoard("All", site);
         //console.log('sub', subBoard);
         const subData = subBoard.data;
         //console.log('sub', subData);
@@ -132,10 +88,10 @@ const TeamTodoList = () => {
                     FieldNum: detail.FieldNum,
                     FieldSubNum: detail.FieldSubNum,
                 });
-                item.details[0].Status = item.details[item.details.length - 1].Status;
+                //item.details[0].Status = item.details[item.details.length - 1].Status;
             }
         });
-        const data = await UpdateStatus(mainBoard);
+        //const data = await UpdateStatus(mainBoard);
         return mainBoard;
     }
 
@@ -160,9 +116,9 @@ const TeamTodoList = () => {
             // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '알림'으로 변경
 
             if (item.details) {
-                if (item.details[0].Status === '완료') {
+                if (item.details[item.details.length - 1].Status === '완료') {
                     item.Period = '👍';
-                } else if (item.details[0].Status === '이슈') {
+                } else if (item.details[item.details.length - 1].Status === '이슈') {
                     item.Period = '🚨';
                 }
                 else {
@@ -201,7 +157,7 @@ const TeamTodoList = () => {
                 // 15일 이상 차이가 나고 Status가 '완료' 및 '이슈'가 아닌 경우 '이슈'로 변경
             ) {
                 if (item.details)
-                    item.details[0].Status = "알림";
+                    item.details[item.details.length - 1].Status = "알림";
                 else
                     item.Status = "알림";
                 alertTitles.push({ title: item.Title, key: item.Key }); // 제목과 키를 alertTitles 배열에 추가
@@ -216,20 +172,27 @@ const TeamTodoList = () => {
         if (data === undefined)
             return;
         setUseSerch(data[0]);
-        setStartDate(formatDate(data[1]));
-        setEndDate(formatDate(data[2]));
-        setProject(data[3]);
+        if (data[1] !== undefined)
+            setStartDate(formatDate(data[1]));
+        else
+            setStartDate(undefined);
+        if (data[2] !== undefined)
+            setEndDate(formatDate(data[2]));
+        else
+            setEndDate(undefined);
+        if (data[3] !== undefined)
+            setProject(data[3]);
+        else
+            setProject(undefined);
     }
 
     useEffect(() => {
         const LoadAdminBoard = async () => {
-            // console.log('loadData');
-            //const loadData = await AdminBoard();
             const data = await LoadAllBoard();
             const updata = await UpdateStatus(data);
-            const tabs = ['전체', ...new Set(updata.map(item => item.ProjectName))]; // 중복 제거하여 탭 생성
-            setTabs(tabs);
-            // console.log('loadData', updata);
+            if (updata === undefined || updata.length <= 0) {
+                return;
+            }
             setAllBoard(updata);
         }
 
@@ -239,7 +202,7 @@ const TeamTodoList = () => {
 
     return (
         <div className="team-todo-list">
-            <SearchBar handleData={handleData} tabs={tabs} />
+            {false && <SearchBar handleData={handleData} useSerch={useSerch} />} 
             <AdminBulletin allBoard={allBoard} startDate={startDate} endDate={endDate} project={project} useSerch={useSerch} />
         </div>
     );

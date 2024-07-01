@@ -10,7 +10,7 @@ import { AddProjectInfo } from '../../API/AddProjectInfo';
 export default function AdminPage() {
   const dispatch = useDispatch();
   const isLogged = useSelector(state => state.auth.isLoggedIn);
-  const {authUserId, authUserName, authUserRank} = useSelector(state => state.userInfo);
+  const {authUserId, authUserName, authUserRank, authUserTeam} = useSelector(state => state.userInfo);
 
   const [rows, setRows] = useState([]);
   const [projectName, setProjectName] = useState("");

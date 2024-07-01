@@ -1,6 +1,6 @@
 import Axios from './AxiosApi';
 
-function GetSubLoadBoard(ProjectName) {
+function GetSubLoadBoard(ProjectName, site) {
     let project = ''
     const name = localStorage.getItem('userToken');
     const _ProjectName = ProjectName.replace(/ /g, '_');
@@ -14,6 +14,7 @@ function GetSubLoadBoard(ProjectName) {
     return Axios.post(`${ip}/subLoadBoard`, {
         ProjectName: ProjectName,
         _ProjectName: project,
+        Site: site,
     }, {
         headers: {
             "Content-Type": "application/json",

@@ -6,32 +6,26 @@ import { useSelector } from 'react-redux';
 
 const ProjectManager = () => {
   const isLogged = useSelector(state => state.auth.isLoggedIn);
+  const {authUserId, authUserName, authUserRank, authUserTeam} = useSelector(state => state.userInfo);
   const [projectData, setProjectData] = useState([]);
-  const projects = [
-    {
-      name: 'ELA',
-      type: '1파트',
-      pm: '홍길동',
-      personnel: ['홍길동', '이순신', '강감찬', '유관순', '세종대왕'],
-      status: '시작전',
-      startDate: '2018-09-21 ~ 2019-12-28',
-      View: true,
-      // progress: 100,
-    },
-    {
-      name: '패턴',
-      type: '2파트',
-      pm: 'sysadmin',
-      personnel: ['까치', '둘리', '루피'],
-      status: '시작전',
-      startDate: '2019-07-23 ~ 2021-03-08',
-      View: true,
-      // progress: 72,
-    },
+  const [site, setSite] = useState("");
+
+  const Continents = [ /* 상태 색상 표기 */
+    { key: '자동화1팀', value: '파주' },
+    { key: '시스템사업팀', value: '구미' },
   ];
 
+  const selectSite = () => {
+    if (authUserTeam === undefined)
+      return;
+    const found = Continents.find((item) => item.key === authUserTeam);
+    return found ? found.value : undefined;
+  }
+
   const LoadAllProjectInfo = async () => {
-    const data = await GetProjectInfo("All");
+    const val = selectSite();
+    setSite(val);
+    const data = await GetProjectInfo("All", val);
     if (data === undefined)
       return;
     const dataWithIds = data.map((item, index) => ({
@@ -44,12 +38,13 @@ const ProjectManager = () => {
   useEffect(() => {
     if (isLogged === true) {
     LoadAllProjectInfo();
+    
     }
   }, [isLogged])
 
   return (
     <div>
-      <ProjectTable projects={projectData} />
+      <ProjectTable projects={projectData} site={site} />
     </div>
   );
 };
