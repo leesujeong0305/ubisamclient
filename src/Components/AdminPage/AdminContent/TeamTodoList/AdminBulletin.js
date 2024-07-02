@@ -76,7 +76,6 @@ const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
           filtered = [...filtered, ...filter.filter(event => {
             return event.details === undefined ? event.Status === '대기' : event.details[event.details.length - 1].Status === '대기';
           })];
-          console.log('대기 필터', filtered);
         }
         if (select.has('진행중')) {
           filtered = [...filtered, ...filter.filter(event => {

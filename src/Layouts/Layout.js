@@ -15,7 +15,6 @@ import SignUp from '../SignUp/SignUp'
 import Board from '../Board/Board'
 import Today from '../Board/Today';
 import MainPlus from '../Components/MainView/MainPlus';
-import AdminPage from '../Components/AdminPage/AdminPage';
 
 import './Layout.css'; // 스타일 시트 임포트
 import MyCalenderApp from '../Components/MyCalendar/MyCalenderApp';
@@ -140,7 +139,6 @@ useEffect(() => {
           <Route path='/Board' element={isLogged ? <Board /> : <Main /> } />
           <Route path='/Today' element={isLogged ? <Today /> : <Main /> } />
           <Route path='/MainPlus' element={isLogged ? <MainPlus /> : <Main /> } />
-          <Route path='/AdminPage' element={isLogged ? <AdminPage /> : <Main /> } />
           <Route path='/AdminLayout' element={isLogged ? <AdminLayout /> : <Main /> } />
           <Route path='/FullCalendar' element={isLogged ? <MyCalenderApp /> : <Main /> } />
         </Routes>

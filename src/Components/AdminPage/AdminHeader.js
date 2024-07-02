@@ -4,7 +4,7 @@ import './AdminHeader.css';
 
 const AdminHeader = ({ title }) => {
   return (
-    <div className="header">
+    <div className="header fw-b" style={{fontSize: '10px'}}>
       <h1>{title}</h1>
     </div>
   );

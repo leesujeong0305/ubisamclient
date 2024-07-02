@@ -39,51 +39,49 @@ function Board() {
     const [pm, setPM] = useState('');
     const [selectedTitle, setSelectedTitle] = useState(null);
 
-    const dispatch = useDispatch();
-
     let today = new Date();
     let year = today.getFullYear();
     let month = ('0' + (today.getMonth() + 1)).slice(-2);
     let day = ('0' + today.getDate()).slice(-2);
     let dateString = year + '-' + month + '-' + day;
 
-    const setSubEdit = async (name, sub, subNum) => {
-        let project = ''
-        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-        const _ProjectName = sub.ProjectName.replace(/ /g, '_');
-        const index = _ProjectName.indexOf('(');
-        if (index !== -1) {
-            project = _ProjectName.substring(0, index);
-        }
-        else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
-        return await Axios.post(`${ip}/subAddBoard`, {
-            ProjectName: sub.ProjectName,
-            _ProjectName: project,
-            Date: dateString,
-            Name: name,
-            Title: sub.Title,
-            Content: sub.Content,
-            Status: '알림',
-            FieldNum: sub.Index,
-            FieldSubNum: subNum,
-        }, {
-            headers: {
-                "Content-Type": "application/json",
-            }
-        }).then(response => {
-            console.log({ response });
-            if (response.status === 200) {
-            } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
-                console.log("403");
+    // const setSubEdit = async (name, sub, subNum) => {
+    //     let project = ''
+    //     const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    //     const _ProjectName = sub.ProjectName.replace(/ /g, '_');
+    //     const index = _ProjectName.indexOf('(');
+    //     if (index !== -1) {
+    //         project = _ProjectName.substring(0, index);
+    //     }
+    //     else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
+    //     return await Axios.post(`${ip}/subAddBoard`, {
+    //         ProjectName: sub.ProjectName,
+    //         _ProjectName: project,
+    //         Date: dateString,
+    //         Name: name,
+    //         Title: sub.Title,
+    //         Content: sub.Content,
+    //         Status: '알림',
+    //         FieldNum: sub.Index,
+    //         FieldSubNum: subNum,
+    //     }, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         }
+    //     }).then(response => {
+    //         console.log({ response });
+    //         if (response.status === 200) {
+    //         } else if (response.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+    //             console.log("403");
 
-            }
-        }).catch(error => {
-            //console.log({error});
-            if (error.response.status === 403) {
-                alert(`${error.response.data.message}`);
-            }
-        });
-    }
+    //         }
+    //     }).catch(error => {
+    //         //console.log({error});
+    //         if (error.response.status === 403) {
+    //             alert(`${error.response.data.message}`);
+    //         }
+    //     });
+    // }
 
     const getProjectData = async (name) => {
         //return await LoadBoard(name);
@@ -344,7 +342,7 @@ function Board() {
                             <Card>
                                 <Card.Header className='card bg-info'>프로젝트 명</Card.Header>
                                 <div className="d-flex align-items-center">
-                                    <Dropdown onSelect={handleSelect} style={{ flexGrow: 1 }}>
+                                    <Dropdown onSelect={handleSelect} style={{ flexGrow: 1, width: '100%' }}>
                                         <Dropdown.Toggle variant="light" id="dropdown-basic" className="w-100 d-flex justify-content-between align-items-center">
                                             <span className="text-left"> {selectedProjectName}</span>
                                         </Dropdown.Toggle>

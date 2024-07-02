@@ -1,41 +1,41 @@
 /* src/components/AdminSider.css */
 .sider {
-    width: 100%;
-    height: 100%;
-    color: #222;
-    display: flex;
-    flex-direction: column;
-    transition: width 0.3s ease; /* Smooth transition for width */
-  }
-  
-  .sider.collapsed {
-    width: 60px; /* Width when collapsed */
-  }
-  
-  .sider-item {
-    padding: 10px 15px;
-    align-items: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    margin: 10px 0;
-    border-radius: 15px;
-    font-weight: bold; /* 폰트 두껍게 */
-  }
-  
-  .sider-item i {
-    margin-right: 1px;
-  }
-  
-  .sider-item:hover {
-    background-color: #1677ff; /* Change to sky blue on hover */
-    color: rgb(250, 246, 10);
-    width: 80%;
-  }
-  
-  .sider.collapsed .sider-item {
-    justify-content: center; /* 최소화 시 아이템 중앙 정렬 */
-  }
-  
-  .sider.collapsed .sider-item span {
-    display: none;  /* 최소화 시 텍스트 숨김 */
-  }
+  width: 100%;
+  height: 100%;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease; /* Smooth transition for width */
+}
+
+.sider.collapsed {
+  width: 60px; /* Width when collapsed */
+}
+
+.sider-item {
+  padding: 10px 15px;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 10px 0;
+  border-radius: 15px;
+  font-weight: bold; /* 폰트 두껍게 */
+}
+
+.sider-item i {
+  margin-right: 1px;
+}
+
+.sider-item:hover {
+  background-color: #1677ff; /* Change to sky blue on hover */
+  color: rgb(250, 246, 10);
+  width: 80%;
+}
+
+.sider.collapsed .sider-item {
+  justify-content: center; /* 최소화 시 아이템 중앙 정렬 */
+}
+
+.sider.collapsed .sider-item span {
+  display: none;  /* 최소화 시 텍스트 숨김 */
+}
 

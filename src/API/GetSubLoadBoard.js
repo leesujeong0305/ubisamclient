@@ -9,8 +9,8 @@ function GetSubLoadBoard(ProjectName, site) {
         project = _ProjectName.substring(0, index);
     }
     else project = _ProjectName; // '(' 기호가 없는 경우, 전체 텍스트 반환
-    //const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-    const ip = `http://localhost:8877`;
+    const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    //const ip = `http://localhost:8877`;
     return Axios.post(`${ip}/subLoadBoard`, {
         ProjectName: ProjectName,
         _ProjectName: project,

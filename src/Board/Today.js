@@ -121,10 +121,7 @@ function Today({ onClose, post, selectedProjectName }) {
     }
 
     const addKanBanList_DB = (index) => {
-        const ip =
-            process.env.REACT_APP_API_DEV === "true"
-                ? `http://localhost:8877`
-                : `http://14.58.108.70:8877`;
+        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
         return Axios.post(
             `${ip}/addKanBanList`,
             {

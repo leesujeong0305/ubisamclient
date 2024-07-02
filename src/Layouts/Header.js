@@ -12,7 +12,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState('');
   const isLogged = useSelector(state => state.auth.isLoggedIn);
-  const {authUserId, authUserName, authUserRank, authUserTeam} = useSelector(state => state.userInfo);
+  const { authUserId, authUserName, authUserRank, authUserTeam } = useSelector(state => state.userInfo);
 
   const positions = ['사원', '대리', '과장', '차장', '부장', '상무', '사장'];
   const position = (rank) => {
@@ -25,14 +25,13 @@ const Header = () => {
       dispatch(updateUser(data));
     };
 
-    if (isLogged)
-    {
+    if (isLogged) {
       setUser(localStorage.getItem('userToken'));
       updateUserInfo();
     } else {
       setUser('');
     }
-    
+
   }, [isLogged])
 
 
@@ -56,36 +55,28 @@ const Header = () => {
               <Nav.Item>
                 {isLogged ? <Nav.Link className='' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
               </Nav.Item>
-              <Nav.Item>
-                {isLogged && position(authUserRank) &&
+
+              {isLogged && position(authUserRank) &&
                 <>
-                
-                <Nav.Link className='' eventKey="link-1" href="/AdminPage">관리자</Nav.Link>
+                  <div className='divider'></div>
+                  <Nav.Item>
+                    <Nav.Link className='' eventKey="link-1" href="/AdminLayout">관리자 Board</Nav.Link>
+                  </Nav.Item>
                 </>
-                }
-                
-              </Nav.Item>
-              <Nav.Item>
-                {isLogged && position(authUserRank) &&
-                <>
-                
-                <Nav.Link className='' eventKey="link-1" href="/AdminLayout">관리자 Board</Nav.Link>
-                </>
-                }
-                
-              </Nav.Item>
+              }
+
             </Nav>
           </Navbar.Collapse>
 
           {isLogged ?
-         
+
             <div className="d-flex  header-profile-user">
               <span>{authUserName}</span>
               <div>
               </div>
             </div>
-          : <div></div> }
-          
+            : <div></div>}
+
           {isLogged ?
             <Nav.Link className='justify-content-end me-4 bs-auto'><Logout /></Nav.Link> : <div className='disabled me-5'></div>}
           <Navbar.Toggle />

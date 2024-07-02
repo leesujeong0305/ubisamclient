@@ -28,16 +28,8 @@ align-items: center;
 }
 
 .content {
-grid-row: 2 / 3;
+grid-row: 2 / 4;
 grid-column: 2 / 3;
 background-color: #eeeeee;
 }
 
-.footer {
-grid-row: 3 / 4;
-grid-column: 2 / 3; /* Only spans the content column */
-background-color: #6ca0dc;
-display: flex;
-justify-content: center;
-align-items: center;
-}

@@ -1,9 +1,8 @@
-// src/components/AdminLayout.js
-import React, { useState, Suspense, lazy } from 'react';
+// src/components/Layout.js
+import React, { useState, Suspense, lazy, useEffect } from 'react';
 import Header from './AdminHeader';
 import Sider from './AdminSider';
 import Content from './AdminContent';
-import Footer from './AdminFooter';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
@@ -44,6 +43,10 @@ const AdminLayout = () => {
     }
   };
 
+  useEffect(() => {
+    handleItemClick('TeamTodoList');
+  }, []);
+
 
   // react 컴포넌트를 동적으로 로드할 때, Suspense와 lazy를 사용하면서 발생하는 문제 중 하나는 동적으로 로드된 컴포넌트를 JSX에서 직접 사용하면 안 된다는 점입니다. 대신에, 동적으로 로드된 컴포넌트를 JSX에서 컴포넌트로 사용해야 합니다.
   // activeComponent를 JSX로 사용하려고 하면 컴포넌트로 인식되지 않기 때문에 화면에 아무것도 나타나지 않습니다. 대신, 컴포넌트를 변수로 사용하고 이를 JSX로 렌더링하는 방식으로 수정해야 합니다.
@@ -59,7 +62,6 @@ const AdminLayout = () => {
           {ActiveComponent && <ActiveComponent />}
         </Suspense>
       </Content>
-      <Footer />
     </div>
   );
 };
