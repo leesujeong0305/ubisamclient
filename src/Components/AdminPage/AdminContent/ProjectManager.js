@@ -9,6 +9,7 @@ const ProjectManager = () => {
   const {authUserId, authUserName, authUserRank, authUserTeam} = useSelector(state => state.userInfo);
   const [projectData, setProjectData] = useState([]);
   const [site, setSite] = useState("");
+  const [update, setUpdate] = useState("");
 
   const Continents = [ /* 상태 색상 표기 */
     { key: '자동화1팀', value: '파주' },
@@ -26,6 +27,7 @@ const ProjectManager = () => {
     const val = selectSite();
     setSite(val);
     const data = await GetProjectInfo("All", val);
+    //console.log('project data', data);
     if (data === undefined)
       return;
     const dataWithIds = data.map((item, index) => ({
@@ -33,6 +35,16 @@ const ProjectManager = () => {
       ...item
     }));
     setProjectData(dataWithIds);
+  }
+
+  const handleUpdate = (data) => {
+    if (data === undefined)
+      return;
+    console.log('setUpdate', data);
+    setUpdate(data);
+    if (data === true) {
+      LoadAllProjectInfo();
+    }
   }
 
   useEffect(() => {
@@ -44,7 +56,7 @@ const ProjectManager = () => {
 
   return (
     <div>
-      <ProjectTable projects={projectData} site={site} />
+      <ProjectTable projects={projectData} site={site} handleUpdate={handleUpdate} />
     </div>
   );
 };

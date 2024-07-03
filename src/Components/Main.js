@@ -28,7 +28,7 @@ export default function MainUI() {
       if (result.status === "success") {
         const { accessToken, refreshToken } = result.data;
         // 성공 시의 로직 처리  
-        console.log(`Login successful: ${result}`);
+        //console.log(`Login successful: ${result}`);
         try {
           if (!accessToken || (accessToken.match(/\./g) || []).length !== 2) {
             throw new Error("유효하지 않은 토큰입니다. 다시 로그인해 주세요.");
@@ -53,7 +53,7 @@ export default function MainUI() {
       }
     }).catch(error => {
       // 추가적인 네트워크 에러 처리
-      console.error("Login process error:", error);
+      //console.error("Login process error:", error);
       alert("로그인 프로세스 중 오류가 발생했습니다.");
       dispatch(logout());
     });

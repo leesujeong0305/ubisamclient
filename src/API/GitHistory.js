@@ -13,7 +13,7 @@ export const GitHistory = async (path) => {
       withCredentials: true,
     }
   }).then(response => {
-    console.log("Git 연결 완료", response);
+    //console.log("Git 연결 완료", response);
     return response.data;
   }).catch(error => {
     console.error("path 실패", error);

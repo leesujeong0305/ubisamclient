@@ -12,7 +12,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const [user, setUser] = useState('');
   const isLogged = useSelector(state => state.auth.isLoggedIn);
-  const { authUserId, authUserName, authUserRank, authUserTeam } = useSelector(state => state.userInfo);
+  const { authUserId, authUserName, authUserRank, authUserTeam, authManager } = useSelector(state => state.userInfo);
 
   const positions = ['사원', '대리', '과장', '차장', '부장', '상무', '사장'];
   const position = (rank) => {
@@ -56,7 +56,7 @@ const Header = () => {
                 {isLogged ? <Nav.Link className='' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
               </Nav.Item>
 
-              {isLogged && position(authUserRank) &&
+              {isLogged && authManager &&
                 <>
                   <div className='divider'></div>
                   <Nav.Item>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Form, Modal, Button } from 'react-bootstrap';
+import './TeamBoard.css'
 
 
 const TeamBoard = ({ posts }) => {
@@ -14,12 +15,11 @@ const TeamBoard = ({ posts }) => {
     ];
 
     const columns = [
-        { name: "#", width: "2%" },
-        { name: "프로젝트", width: "12%" },
-        { name: "등록 날짜", width: "7%" },
-        { name: "변경 날짜", width: "7%" },
+        { name: "#", width: "2.5%" },
+        { name: "프로젝트", width: "13%" },
+        { name: "날짜 / 최초등록날짜", width: "13%" },
         { name: "이 름", width: "5%" },
-        { name: "Title", width: "25%" },
+        { name: "Title", width: "23%" },
         { name: "To Do List", width: "" },
         { name: "목표일", width: "5%" },
         { name: "상태", width: "5%" },];
@@ -49,14 +49,26 @@ const TeamBoard = ({ posts }) => {
         setShow(true);
     };
 
+    const handleCreate = () => {
+        setBoard(posts);
+    }
+
+    const handleClear = () => {
+        setBoard([]);
+    }
+
     useEffect(() => {
+        console.log('포스트 갯수', posts.length);
         if (posts !== undefined) {
+            setBoard([]);
             setBoard(posts);
         }
     }, [posts])
 
     return (
         <div>
+            <button onClick={handleCreate}>생성</button>
+            <button onClick={handleClear}>삭제</button>
             <table className="table table-striped table-hover border-primary table-fixed">
                 <thead className="list-Title">
                     <tr>
@@ -75,15 +87,11 @@ const TeamBoard = ({ posts }) => {
                                 handleShow(row);
                             }}
                         >
-                            <td type="checkbox">
-                                {" "}
-                                {row.Index}
-                            </td>
-                            <td>{row.ProjectName}</td>
-                            <td>{row.Date}</td>
-                            <td>{row.ChangeDate}</td>
+                            <td>{row.Index}</td>
+                            <td className="truncate">{row.ProjectName}</td>
+                            <td>{row.ChangeDate ? row.ChangeDate === row.Date ? row.Date : `${row.ChangeDate} / ${row.Date}` : row.Date }</td>
                             <td>{row.Name}</td>
-                            <td>{row.Title}</td>
+                            <td className="truncate">{row.Title}</td>
                             <td className="truncate">
                                 <div className="preview-container">
                                     {row.Content}

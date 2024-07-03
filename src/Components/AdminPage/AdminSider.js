@@ -7,16 +7,16 @@ const AdminSider = ({ isCollapsed, onToggle, onItemClick }) => {
       <div className="sider-item" onClick={() => onItemClick('TeamTodoList')}>
         <i className="fas fa-desktop"></i> {!isCollapsed && 'Team TodoList'}
       </div>
-      {/* <div className="sider-item" onClick={() => onItemClick('ProjectManager')}>
+      <div className="sider-item" onClick={() => onItemClick('ProjectManager')}>
         <i className="fas fa-chart-pie"></i> {!isCollapsed && 'Project Manager'}
       </div>
-      <div className="sider-item" onClick={() => onItemClick('UserProfile')}>
+      {/* <div className="sider-item" onClick={() => onItemClick('UserProfile')}>
         <i className="fas fa-user"></i> {!isCollapsed && 'User'}
-      </div>
+      </div> */}
       <div className="sider-item" onClick={() => onItemClick('Team')}>
         <i className="fas fa-users"></i> {!isCollapsed && 'Team'}
       </div>
-      <div className="sider-item" onClick={() => onItemClick('Files')}>
+      {/*<div className="sider-item" onClick={() => onItemClick('Files')}>
         <i className="fas fa-file"></i> {!isCollapsed && 'Files'}
       </div> */}
       <div className="sider-item" onClick={onToggle}>

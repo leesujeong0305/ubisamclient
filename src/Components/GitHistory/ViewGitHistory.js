@@ -32,7 +32,7 @@ function ViewGitHistory({ selectedProjectName }) {
         const res = await GitHistory(path);
         if (res.result === 'SUCCESS') {
             setHistory(res.commitLog);
-        console.log('res', res);
+        //console.log('res', res);
         setTimeout(() => {
             if (res.commitLog.length > 0) {
                 setIsLoading(2);

@@ -4,7 +4,7 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } fro
 import Pagination from '../../../../Board/Page/Pagination';
 import { AddProjectInfo } from '../../../../API/AddProjectInfo';
 
-const ProjectTable = ({ projects, site }) => {
+const ProjectTable = ({ projects, site, handleUpdate }) => {
     const [viewStates, setViewStates] = useState(true);//projects.map(() => true));
     const [projectName, setProjectName] = useState("");
     const [projectPeriod, setProjectPeriod] = useState("");
@@ -12,12 +12,14 @@ const ProjectTable = ({ projects, site }) => {
     const [projectStatus, setProjectStatus] = useState("");
     const [projectPM, setProjectPM] = useState("");
     const [projectSite, setProjectSite] = useState("");
+    const [projectView, setProjectView] = useState("");
 
     const [projectAdd, setProjectAdd] = useState(false);
     const [projectEdit, setProjectEdit] = useState(false);
+    const [update, setUpdate] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
-    const [postsPerPage] = useState(15); // 페이지 당 포스트 수
+    const [postsPerPage] = useState(13); // 페이지 당 포스트 수
     const [totalPage, setTotalPage] = useState(0); //전체 Page 수
 
     // 현재 표시할 포스트 계산
@@ -47,6 +49,7 @@ const ProjectTable = ({ projects, site }) => {
         setProjectStatus(project.Status);
         setProjectPM(project.PM);
         setProjectSite(project.Site);
+        setProjectView(project.View);
     };
 
     const handleCreate = () => {
@@ -82,11 +85,11 @@ const ProjectTable = ({ projects, site }) => {
                 Status: projectStatus,
                 PM: projectPM,
                 Site: projectSite,
-                Use: 1,
+                View: projectView,
 
             };
-            console.log('newRow', newRow);
-            //await AddProjectInfo(newRow);
+            //console.log('newRow', newRow);
+            await AddProjectInfo(newRow);
 
 
             //setRows([...rows, newRow]);
@@ -97,22 +100,40 @@ const ProjectTable = ({ projects, site }) => {
             setProjectPM('');
             setProjectSite('');
             setProjectAdd(false);
-        }
+
+            const timer = setTimeout(() => { //이슈업로드 후 KanBanList불러오기위해 사용
+                handleUpdate(true);
+            }, 1); // 10초 대기 (10000밀리초)
+            return () => clearTimeout(timer);
+        } else
+            alert("입력하지 않은 항목이 존재합니다.");
     };
 
     const handleEditRow = () => {
+        if (projectName && projectPeriod && projectUsers && projectSite) {
+            const newRow = {
+                //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
+                Project: projectName,
+                Period: projectPeriod, // 나이를 숫자로 변환
+                Users: projectUsers,
+                Status: projectStatus,
+                PM: projectPM,
+                Site: projectSite,
+                View: projectView,
 
+            };
 
-
-        setProjectName('');
+            setProjectName('');
             setProjectPeriod('');
             setProjectUsers('');
             setProjectStatus('');
             setProjectPM('');
             setProjectSite('');
             setProjectAdd(false);
-        setProjectEdit(false);
+            setProjectEdit(false);
+        }
     };
+
 
     useEffect(() => {
         if (projects) {
@@ -215,6 +236,14 @@ const ProjectTable = ({ projects, site }) => {
                                 value={projectPM}
                                 onChange={(e) => setProjectPM(e.target.value)}
                             />
+                            <FormControl sx={{ minWidth: 150 }}>
+                                <InputLabel>View</InputLabel>
+                                <Select value={projectView} onChange={(e) => setProjectView(e.target.value)}
+                                    label="프로젝트 상태">
+                                    <MenuItem value="0">미사용</MenuItem>
+                                    <MenuItem value="1">사용</MenuItem>
+                                </Select>
+                            </FormControl>
                             <Button variant="contained" onClick={handleEditRow}>
                                 Edit Row
                             </Button>
@@ -227,6 +256,7 @@ const ProjectTable = ({ projects, site }) => {
                 <table>
                     <thead>
                         <tr>
+                            <th></th>
                             <th>프로젝트명</th>
                             {/* <th>유형</th> */}
                             <th>PM</th>
@@ -240,6 +270,7 @@ const ProjectTable = ({ projects, site }) => {
                     <tbody>
                         {currentPosts.map((project, index) => (
                             <tr key={index}>
+                                <td>{project.id}</td>
                                 <td>{project.ProjectName}</td>
                                 {/* <td>{project.type}</td> */}
                                 <td>{project.PM}</td>
@@ -255,8 +286,8 @@ const ProjectTable = ({ projects, site }) => {
                                     <label className="switch">
                                         <input
                                             type="checkbox"
-                                            checked={project.Use}
-                                            onChange={() => handleToggle(project.Use)}
+                                            checked={project.View}
+                                            onChange={() => handleToggle(project.View)}
                                         />
                                         <span className="slider round"></span>
                                     </label>

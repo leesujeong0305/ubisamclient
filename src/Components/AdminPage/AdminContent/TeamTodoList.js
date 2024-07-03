@@ -51,7 +51,7 @@ const TeamTodoList = () => {
     const LoadAllBoard = async () => {
         const site = selectSite();
         if (site === undefined) {
-            alert(`"${authUserTeam}"이름이 서버에 등록된 팀이름과 매칭되지 않아 데이터를 가져올 수 없습니다`);
+            alert(`"${authUserTeam}"이름이 서버에 등록된 팀이름과 매칭되지 않아 데이터를 가져올 수 없습니다`, authUserTeam);
             return;
         }
             
@@ -91,7 +91,6 @@ const TeamTodoList = () => {
                 //item.details[0].Status = item.details[item.details.length - 1].Status;
             }
         });
-        //const data = await UpdateStatus(mainBoard);
         return mainBoard;
     }
 

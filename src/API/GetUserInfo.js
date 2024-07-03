@@ -3,8 +3,8 @@ import Axios from './AxiosApi';
 function GetUserInfo(){
     const token = localStorage.getItem('userToken');
     const emailToken = localStorage.getItem('userEmailToken');
-    const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-    //const ip = `http://localhost:8877`;
+    //const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    const ip = `http://localhost:8877`;
     return Axios.get(`${ip}/getUserInfo?userEmail=${encodeURIComponent(emailToken)}&name=${encodeURIComponent(token)}`, { //get은 body없음
         headers: {
             "Content-Type": "application/json",

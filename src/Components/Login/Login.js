@@ -18,7 +18,7 @@ const Login = async (email, password) => {
     }).then(response => {
         if (response.status === 200) {
             Axios.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`;
-            console.log(response);
+            //console.log(response);
             //sessionStorage.setItem('accessToken', response.data.accessToken);
             //sessionStorage.setItem('refreshToken', response.data.refreshToken);
             //localStorage.setItem('userInfo', JSON.stringify({ mail:response.user.user_mail })); //한개 정도는 가지고 있어야 새로고침시에 사용가능
