@@ -5,88 +5,88 @@ const TeamProjectTable = () => {
 
     const data = [
         {
-          Index: 1,
-          ProjectName: "P8 ~ P8E ADR+ Development",
-          Part: 1,
-          State: "Setup",
-          Users: "Gildong",
-          StartMonth: 1,
-          EndMonth: 3,
-          Months: 2, // 진행률 바가 표시될 개월 수
-          Progress: 80, // 진행률 백분율
-          Desc: "2021년 3분기에 청구 예정"
+          index: 1,
+          projectName: "P8 ~ P8E ADR+ Development",
+          part: 1,
+          state: "Setup",
+          users: "Gildong",
+          startMonth: 1,
+          endMonth: 3,
+          months: 2, // 진행률 바가 표시될 개월 수
+          progress: 80, // 진행률 백분율
+          desc: "2021년 3분기에 청구 예정"
         },
         {
-          Index: 2,
-          ProjectName: "AP4 MTO setup and ADJ development",
-          Part: 1,
-          State: "Production Setup",
-          Users: "Hong Ki-dong",
-          StartMonth: 1,
-          EndMonth: 10,
-          Months: 8, // 진행률 바가 표시될 개월 수
-          Progress: 80, // 진행률 백분율
-          Desc: ""
+          index: 2,
+          projectName: "AP4 MTO setup and ADJ development",
+          part: 1,
+          state: "Production Setup",
+          users: "Hong Ki-dong",
+          startMonth: 1,
+          endMonth: 10,
+          months: 8, // 진행률 바가 표시될 개월 수
+          progress: 80, // 진행률 백분율
+          desc: ""
         },
         {
-          Index: 3,
-          ProjectName: "XYZ Project Phase 1",
-          Part: 2,
-          State: "Initiation",
-          Users: "Kim Yuna",
-          StartMonth: 1,
-          EndMonth: 5,
-          Months: 4, // 진행률 바가 표시될 개월 수
-          Progress: 60, // 진행률 백분율
-          Desc: "승인 대기 중"
+          index: 3,
+          projectName: "XYZ Project Phase 1",
+          part: 2,
+          state: "Initiation",
+          users: "Kim Yuna",
+          startMonth: 9,
+          endMonth: 11,
+          months: 2, // 진행률 바가 표시될 개월 수
+          progress: 60, // 진행률 백분율
+          desc: "승인 대기 중"
         },
         {
-          Index: 4,
-          ProjectName: "Alpha Beta Gamma Integration",
-          Part: 3,
-          State: "Development",
-          Users: "Lee Minho",
-          StartMonth: 1,
-          EndMonth: 7,
-          Months: 6, // 진행률 바가 표시될 개월 수
-          Progress: 50, // 진행률 백분율
-          Desc: "모듈 B에서 기술적 문제 발생"
+          index: 4,
+          projectName: "Alpha Beta Gamma Integration",
+          part: 3,
+          state: "Development",
+          users: "Lee Minho",
+          startMonth: 3,
+          endMonth: 6,
+          months: 1.5, // 진행률 바가 표시될 개월 수
+          progress: 50, // 진행률 백분율
+          desc: "모듈 B에서 기술적 문제 발생"
         },
         {
-          Index: 5,
-          ProjectName: "Data Migration for XYZ Corp",
-          Part: 1,
-          State: "Planning",
-          Users: "Park Jisoo",
-          StartMonth: 1,
-          EndMonth: 5,
-          Months: 4, // 진행률 바가 표시될 개월 수
-          Progress: 30, // 진행률 백분율
-          Desc: "자원 할당 필요"
+          index: 5,
+          projectName: "Data Migration for XYZ Corp",
+          part: 1,
+          state: "Planning",
+          users: "Park Jisoo",
+          startMonth: 1,
+          endMonth: 5,
+          months: 4, // 진행률 바가 표시될 개월 수
+          progress: 30, // 진행률 백분율
+          desc: "자원 할당 필요"
         },
         {
-          Index: 6,
-          ProjectName: "Mobile App Launch",
-          Part: 2,
-          State: "Testing",
-          Users: "Choi Sooyoung",
-          StartMonth: 1,
-          EndMonth: 7,
-          Months: 6, // 진행률 바가 표시될 개월 수
-          Progress: 90, // 진행률 백분율
-          Desc: "버그 수정 진행 중"
+          index: 6,
+          projectName: "Mobile App Launch",
+          part: 2,
+          state: "Testing",
+          users: "Choi Sooyoung",
+          startMonth: 1,
+          endMonth: 7,
+          months: 6, // 진행률 바가 표시될 개월 수
+          progress: 90, // 진행률 백분율
+          desc: "버그 수정 진행 중"
         },
         {
-          Index: 7,
-          ProjectName: "Cloud Infrastructure Setup",
-          Part: 3,
-          State: "Deployment",
-          Users: "Kim Taehyung",
-          StartMonth: 1,
-          EndMonth: 8,
-          Months: 6, // 진행률 바가 표시될 개월 수
-          Progress: 75, // 진행률 백분율
-          Desc: "보안 검토 대기 중"
+          index: 7,
+          projectName: "Cloud Infrastructure Setup",
+          part: 3,
+          state: "Deployment",
+          users: "Kim Taehyung",
+          startMonth: 1,
+          endMonth: 8,
+          months: 6, // 진행률 바가 표시될 개월 수
+          progress: 75, // 진행률 백분율
+          desc: "보안 검토 대기 중"
         }
       ];
 

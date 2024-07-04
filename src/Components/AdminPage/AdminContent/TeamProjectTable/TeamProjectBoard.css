@@ -1,84 +1,222 @@
 body {
-    font-family: Arial, sans-serif;
-  }
-  
-  .project-table-container {
-    overflow-x: auto;
-    padding: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.project-table-container {
+  overflow-x: auto;
+  padding: 10px;
+}
+
+.Teamtable-counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* 프로젝트 생성 버튼 스타일 */
+.create-button {
+padding: 5px 10px;
+border: none;
+border-radius: 5px;
+color: #fff;
+background-color: #007bff;
+cursor: pointer;
+margin-left: auto; /* 오른쪽 정렬 */
+margin-bottom: 10px;
+}
+
+.create-button:hover {
+background-color: #0056b3;
+}
+
+.Teamproject-table-header-cell,
+.Teamproject-table-cell {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
+}
+
+.Teamproject-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.Teamproject-table-header-cell,
+.Teamproject-table-cell {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+.Teamproject-table-header-cell {
+  background-color: #444;
+  color: #fff;
+}
+
+.Teamprogress-bar-container {
+  height: 20px;
+  background-color: #CAB5F8;
+  /* 진행률 바의 연한 배경색 */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.Teamprogress-bar {
+  height: 100%;
+  background-color: #8E44AD;
+  /* 진행률의 보라색 */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
+
+@media (max-width: 600px) {
+  .Teamproject-table {
+      display: block;
+      width: 100%;
   }
 
-  /* 프로젝트 생성 버튼 스타일 */.create-button {
+  .Teamproject-table-header-cell,
+  .Teamproject-table-cell {
+      display: inline-block;
+      width: 8%;
+      margin-bottom: 10px;
+  }
+
+  .Teamprogress-bar-container {
+      width: 100%;
+  }
+}
+
+  /* 수정 버튼 CSS */
+  .edit-button {
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
     color: #fff;
     background-color: #007bff;
     cursor: pointer;
-    margin-left: auto; /* 오른쪽 정렬 */
-    margin-bottom: 10px;
-  }
-  
-  .create-button:hover {
-    background-color: #0056b3;
   }
 
-.project-table-header-cell,
-.project-table-cell {
-  border: 1px solid black;
-  padding: 8px;
-  text-align: center; 
-  padding: 20px;
-}
+  .project-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+  }
+
+  .input-parrent {
+    margin: 0 auto;
+    display: flex;
+    margin-bottom: 5px;
+  }
+
+  .input-container {
+    position: relative;
+    width: 170px;
+    max-width: 170px;
+    margin-top: 10px;
+    margin-left: 10px;
+  }
   
-.project-table {
-width: 100%;
-border-collapse: collapse;
-text-align: center;
-}
-
-.project-table-header-cell,
-.project-table-cell {
-border: 1px solid black;
-padding: 8px;
-}
-
-.project-table-header-cell {
-background-color: #444; /* 헤더의 노란색 배경 */
-}
-
-.progress-bar-container {
-height: 20px;
-background-color: #CAB5F8; /* 진행률 바의 연한 배경색 */
-border-radius: 10px;
-overflow: hidden;
-}
-
-.progress-bar {
-height: 100%;
-background-color: #8E44AD; /* 진행률의 보라색 */
-color: white;
-display: flex;
-align-items: center;
-justify-content: center;
-white-space: nowrap;
-border-radius: 10px;
-transition: width 0.4s ease;
-}
-
-@media (max-width: 600px) {
-.project-table {
-    display: block;
+  .input-label {
+    position: absolute;
+    top: 0%;
+    left: 5px;
+    transform: translateY(-50%) scale(0.75);
+    background: #f0f0f0;
+    padding: 0 5px;
+    transition: all 0.3s;
+    pointer-events: none;
+    color: #222;
+  }
+  
+  .input-field {
     width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f0f0f0;
+    outline: none;
+    
+    transition: border-color 0.3s;
+     -webkit-appearance: none; /* Removes default dropdown arrow in Webkit browsers */
+   -moz-appearance: none; /* Removes default dropdown arrow in Mozilla browsers */
+   appearance: none; /* Removes default dropdown arrow in other browsers */
+  }
+  
+  .input-field:focus {
+    border-color: #007bff;
+  }
+
+  /* Custom styles for the select element */
+.custom-select {
+  position: relative;
+  font-size: 16px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.project-table-header-cell,
-.project-table-cell {
-    display: inline-block;
-    width: 8%;
-    margin-bottom: 10px;
+/* Additional styling for select dropdown */
+.dropdown-container::after {
+  content: '▼';
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
 }
 
-.progress-bar-container {
-    width: 100%;
+
+/* Additional styling for checkbox */
+.checkbox-container {
+  display: inline-block;
+  align-items: center;
+  width: auto;
 }
+
+.input-checkbox {
+  transform: scale(1.6); /* Increase checkbox size */
+  margin-right: 10px;
+  margin-left: 20px;
+  
+}
+
+.checkbox-label {
+  font-size: 18px; /* Increase label font size */
+  cursor: pointer; /* Add pointer cursor */
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.checkbox-label.focused {
+  color: #007bff;
+}
+
+.users-check {
+  width: auto;
+  align-self: center;
+}
+
+.users-check button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
