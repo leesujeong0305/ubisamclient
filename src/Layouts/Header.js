@@ -56,14 +56,14 @@ const Header = () => {
                 {isLogged ? <Nav.Link className='' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
               </Nav.Item>
 
-              {isLogged && authManager &&
+              {isLogged && authManager ? (
                 <>
-                  <div className='divider'></div>
-                  <Nav.Item>
-                    <Nav.Link className='' eventKey="link-1" href="/AdminLayout">관리자 Board</Nav.Link>
-                  </Nav.Item>
-                </>
-              }
+                <div className='divider'></div>
+                <Nav.Item>
+                  <Nav.Link className='' eventKey="link-1" href="/AdminLayout">관리자 Board</Nav.Link>
+                </Nav.Item>
+              </>
+              ) : <div className='disabled me-5'></div>}
 
             </Nav>
           </Navbar.Collapse>
