@@ -1,16 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AdminTeamBulletin from './TeamProjectTable/AdminTeamBulletin'
 import TeamProjectBoard from './TeamProjectTable/TeamProjectBoard';
+import GetTeamProject from '../../../API/GetTeamProject';
+import { useSelector } from 'react-redux';
 
 const TeamProjectTable = () => {
+  const { authUserId, authUserName, authUserRank, authUserTeam, authManager } = useSelector((state) => state.userInfo);
+  const [loadData, setLoadData] = useState([]);
 
+  const Continents = [
+    { key: '자동화1팀', value: '파주' },
+    { key: '시스템사업팀', value: '구미' },
+  ];
+
+  const selectSite = () => {
+    if (authUserTeam === undefined) return;
+    const found = Continents.find((item) => item.key === authUserTeam);
+    return found ? found.value : undefined;
+  };
     const data = [
         {
           index: 1,
           project: "P8 ~ P8E ADR+ Development",
           date: "2024-01-08",
           part: 1,
-          state: "Setup",
+          status: "Setup",
           manager: 'PRI 홍길동 연구원',
           users: "김철수, 이수정, 홍길동",
           startMonth: 1,
@@ -26,7 +40,7 @@ const TeamProjectTable = () => {
           project: "AP4 MTO setup and ADJ development",
           date: "2024-01-22",
           part: 1,
-          state: "Production Setup",
+          status: "Production Setup",
           manager: '김철수',
           users: "김철수, 홍길동",
           startMonth: 1,
@@ -42,7 +56,7 @@ const TeamProjectTable = () => {
           project: "XYZ Project Phase 1",
           date: "2024-09-14",
           part: 2,
-          state: "Initiation",
+          status: "Initiation",
           manager: '홍길동',
           users: "김철수, 이수정, 홍길동, 아무개",
           startMonth: 9,
@@ -58,7 +72,7 @@ const TeamProjectTable = () => {
           project: "Alpha Beta Gamma Integration",
           date: "2024-03-03",
           part: 3,
-          state: "Development",
+          status: "Development",
           manager: '김철수',
           users: "아무개",
           startMonth: 3,
@@ -74,7 +88,7 @@ const TeamProjectTable = () => {
           project: "Data Migration for XYZ Corp",
           date: "2024-01-01",
           part: 1,
-          state: "Planning",
+          status: "Planning",
           manager: '홍길동',
           users: "이수정, 홍길동",
           startMonth: 1,
@@ -106,7 +120,7 @@ const TeamProjectTable = () => {
           project: "Cloud Infrastructure Setup",
           date: "2024-01-15",
           part: 3,
-          state: "Deployment",
+          status: "Deployment",
           manager: '홍길동',
           users: "이수정, 홍길동",
           startMonth: 1,
@@ -122,7 +136,7 @@ const TeamProjectTable = () => {
           project: "2023 year test",
           date: "2023-02-15",
           part: 3,
-          state: "Deployment",
+          status: "Deployment",
           manager: '김철수',
           users: "김철수",
           startMonth: 1,
@@ -138,7 +152,7 @@ const TeamProjectTable = () => {
           project: "2023 year test2",
           date: "2023-01-15",
           part: 3,
-          state: "Deployment",
+          status: "Deployment",
           manager: '홍길동',
           users: "김철수, 이수정, 홍길동, 아무개",
           startMonth: 3,
@@ -154,7 +168,7 @@ const TeamProjectTable = () => {
           project: "2023 year Test3",
           date: "2023-09-20",
           part: 3,
-          state: "Deployment",
+          status: "Deployment",
           manager: '김철수',
           users: "김철수, 이수정, 홍길동, 아무개",
           startMonth: 6,
@@ -167,9 +181,17 @@ const TeamProjectTable = () => {
         }
       ];
 
+      useEffect(() => {
+        const LoadTimeProject = async () => {
+          const site = selectSite();
+          const data = await GetTeamProject(site);
+          setLoadData(data);
+        };
+        LoadTimeProject();
+      }, []);
   return (
     <div>
-        <TeamProjectBoard posts={data} />
+        <TeamProjectBoard posts={loadData} />
     </div>
   );
 };
