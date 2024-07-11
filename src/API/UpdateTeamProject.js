@@ -21,7 +21,7 @@ export const UpdateTeamProject = async (row, site) => {
       withCredentials: true,
     }
   }).then(response => {
-    console.log("프로젝트 추가 완료", response.data);
+    console.log("프로젝트 업데이트 완료", response.data);
     return response.data;
   }).catch(error => {
     console.error("추가 실패", error);

@@ -1,4 +1,4 @@
-.project-table {
+ .project-table {
     background-color: #f9f9f9;
   }
   
@@ -87,65 +87,8 @@
     overflow-x: auto;
     padding-top: 10px; /* 스크롤바를 아래로 이동 */
   }
-  
-  /* 토글 스위치 CSS */
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 34px;
-    height: 20px;
-  }
-  
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 14px;
-    width: 14px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #4caf50;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #4caf50;
-  }
-  
-  input:checked + .slider:before {
-    transform: translateX(14px);
-  }
-  
-  /* 둥근 슬라이더 */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
-  
-  /* 수정 버튼 CSS */
+
+  /* 수정 버튼 CSS
   .edit-button {
     padding: 5px 10px;
     border: none;
@@ -160,25 +103,40 @@
   }
   
 /* 테이블 헤더 스타일 */
-.table-header {
+/* .table-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-}
+} */
 
 /* 테이블 카운터 스타일 */
-.table-counter {
+/* .table-counter {
   font-size: 18px;
   font-weight: bold;
   text-align: left;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 20px; /* 좌우 여백 추가 */
-}
+  margin: 0 20px;
+} */
 
 /* 프로젝트 생성 버튼 스타일 */
+/* .create-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #007bff;
+  cursor: pointer;
+  margin-left: auto;
+} */
+  
+  /* .create-button:hover {
+    background-color: #0056b3;
+  }  */
+
+  /* 프로젝트 생성 버튼 스타일 */
 .create-button {
   padding: 5px 10px;
   border: none;
@@ -186,9 +144,250 @@
   color: #fff;
   background-color: #007bff;
   cursor: pointer;
-  margin-left: auto; /* 오른쪽 정렬 */
 }
-  
-  .create-button:hover {
-    background-color: #0056b3;
+
+.create-button:hover {
+  background-color: #0056b3;
+}
+
+.project-table-container {
+  overflow-x: auto;
+  padding: 10px;
+}
+
+.Teamproject-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.Teamproject-table-header-cell,
+.Teamproject-table-cell {
+  border: 1px solid black;
+  padding: 6px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.Teamproject-table-header-cell {
+  background-color: #444;
+  color: #fff;
+}
+
+.Teamprogress-bar-container {
+  height: 20px;
+  background-color: #CAB5F8;
+  /* 진행률 바의 연한 배경색 */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.Teamprogress-bar {
+  height: 100%;
+  background-color: #8E44AD;
+  /* 진행률의 보라색 */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+}
+
+.table-fixed th:nth-child(5), th:nth-child(6) {
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .Teamproject-table {
+    display: block;
+    width: 100%;
   }
+
+  .Teamproject-table-header-cell,
+  .Teamproject-table-cell {
+    display: inline-block;
+    width: 8%;
+    margin-bottom: 10px;
+  }
+
+  .Teamprogress-bar-container {
+    width: 100%;
+  }
+}
+
+.Table-cell-overflow {
+  max-width: 200px; /* 원하는 최대 너비로 설정 */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+/* 프로젝트 생성 버튼 스타일 */
+.create-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #005FCC;
+  cursor: pointer;
+  margin-left: auto;
+  /* 오른쪽 정렬 */
+}
+
+.create-button:hover {
+  background-color: #0056b3;
+}
+
+/* 수정 버튼 CSS */
+.edit-button {
+  padding: 2px 5px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #009570;
+  cursor: pointer;
+}
+
+.delete-button {
+  padding: 2px 5px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #FA3F19;
+  cursor: pointer;
+}
+
+.project-button {
+  padding: 8px 10px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #009570;
+  cursor: pointer;
+  margin-left: 50px;
+}
+
+.input-parrent {
+  margin: 0 auto;
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.input-container {
+  position: relative;
+  width: 90px;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.input-label {
+  position: absolute;
+  top: 0%;
+  left: 5px;
+  transform: translateY(-50%) scale(0.75);
+  background: #f0f0f0;
+  padding: 0 5px;
+  transition: all 0.3s;
+  pointer-events: none;
+  color: #222;
+}
+
+.input-field {
+  width: 90px;
+  padding: 7px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f0f0f0;
+  outline: none;
+
+  transition: border-color 0.3s;
+  -webkit-appearance: none;
+  /* Removes default dropdown arrow in Webkit browsers */
+  -moz-appearance: none;
+  /* Removes default dropdown arrow in Mozilla browsers */
+  appearance: none;
+  /* Removes default dropdown arrow in other browsers */
+}
+
+.input-field:focus {
+  border-color: #007bff;
+}
+
+/* Custom styles for the select element */
+.custom-select {
+  position: relative;
+  font-size: 14px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Additional styling for select dropdown */
+.dropdown-container::after {
+  content: '▼';
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+  background-color: #f0f0f0;
+}
+
+
+/* Additional styling for checkbox */
+.checkbox-container {
+  display: inline-block;
+  align-items: center;
+  width: auto;
+}
+
+.input-checkbox {
+  transform: scale(1);
+  /* Increase checkbox size */
+  margin-right: 5px;
+
+}
+
+.checkbox-label {
+  font-size: 14px;
+  /* Increase label font size */
+  cursor: pointer;
+  /* Add pointer cursor */
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.checkbox-label.focused {
+  color: #007bff;
+}
+
+.users-check {
+  width: auto;
+  align-self: center;
+  font-size: 13px;
+}
+
+.users-check button {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.before-btn,
+.after-btn {
+  border: none;
+  color: #afafaf;
+}
+
+.before-btn:hover,
+.after-btn:hover {
+  color: #222;
+}

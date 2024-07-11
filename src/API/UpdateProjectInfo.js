@@ -19,7 +19,7 @@ export const UpdateProjectInfo = async (row) => {
       withCredentials: true,
     }
   }).then(response => {
-    console.log("프로젝트 추가 완료", response);
+    console.log("프로젝트 업데이트 완료", response);
     return response.data;
   }).catch(error => {
     console.error("추가 실패", error);

@@ -21,163 +21,163 @@ const TeamProjectTable = () => {
     const data = [
         {
           index: 1,
-          project: "P8 ~ P8E ADR+ Development",
-          date: "2024-01-08",
-          part: 1,
-          status: "Setup",
-          manager: 'PRI 홍길동 연구원',
-          users: "김철수, 이수정, 홍길동",
-          startMonth: 1,
-          endMonth: 3,
-          months: 2, // 진행률 바가 표시될 개월 수
-          progress: 80, // 진행률 백분율
-          proopsMM: 1.2,
-          cost: 1,
-          desc: "2021년 3분기에 청구 예정"
+          ProjectName: "P8 ~ P8E ADR+ Development",
+          Date: "2024-01-08",
+          Part: 1,
+          Status: "Setup",
+          Manager: 'PRI 홍길동 연구원',
+          Users: "김철수, 이수정, 홍길동",
+          StartMonth: 1,
+          EndMonth: 3,
+          Months: 2, // 진행률 바가 표시될 개월 수
+          Progress: 80, // 진행률 백분율
+          ProopsMM: 1.2,
+          Cost: 1,
+          Desc: "2021년 3분기에 청구 예정"
         },
         {
           index: 2,
-          project: "AP4 MTO setup and ADJ development",
-          date: "2024-01-22",
-          part: 1,
-          status: "Production Setup",
-          manager: '김철수',
-          users: "김철수, 홍길동",
-          startMonth: 1,
-          endMonth: 10,
-          months: 8, // 진행률 바가 표시될 개월 수
-          proopsMM: 1.2,
-          cost: 2,
-          progress: 80, // 진행률 백분율
-          desc: ""
+          ProjectName: "AP4 MTO setup and ADJ development",
+          Date: "2024-01-22",
+          Part: 1,
+          Status: "Production Setup",
+          Manager: '김철수',
+          Users: "김철수, 홍길동",
+          StartMonth: 1,
+          EndMonth: 10,
+          Months: 8, // 진행률 바가 표시될 개월 수
+          ProopsMM: 1.2,
+          Post: 2,
+          Crogress: 80, // 진행률 백분율
+          Desc: ""
         },
         {
           index: 3,
-          project: "XYZ Project Phase 1",
-          date: "2024-09-14",
-          part: 2,
-          status: "Initiation",
-          manager: '홍길동',
-          users: "김철수, 이수정, 홍길동, 아무개",
-          startMonth: 9,
-          endMonth: 11,
-          months: 2, // 진행률 바가 표시될 개월 수
-          progress: 60, // 진행률 백분율
-          proopsMM: 1.2,
-          cost: 2,
-          desc: "승인 대기 중"
+          ProjectName: "XYZ Project Phase 1",
+          Date: "2024-09-14",
+          Part: 2,
+          Status: "Initiation",
+          Manager: '홍길동',
+          Users: "김철수, 이수정, 홍길동, 아무개",
+          StartMonth: 9,
+          EndMonth: 11,
+          Months: 2, // 진행률 바가 표시될 개월 수
+          Progress: 60, // 진행률 백분율
+          ProopsMM: 1.2,
+          Cost: 2,
+          Desc: "승인 대기 중"
         },
         {
           index: 4,
-          project: "Alpha Beta Gamma Integration",
-          date: "2024-03-03",
-          part: 3,
-          status: "Development",
-          manager: '김철수',
-          users: "아무개",
-          startMonth: 3,
-          endMonth: 6,
-          months: 1.5, // 진행률 바가 표시될 개월 수
-          progress: 50, // 진행률 백분율
-          proopsMM: 1.2,
-          cost: 1,
-          desc: "모듈 B에서 기술적 문제 발생"
+          ProjectName: "Alpha Beta Gamma Integration",
+          Date: "2024-03-03",
+          Part: 3,
+          Status: "Development",
+          Manager: '김철수',
+          Users: "아무개",
+          StartMonth: 3,
+          EndMonth: 6,
+          Months: 1.5, // 진행률 바가 표시될 개월 수
+          Progress: 50, // 진행률 백분율
+          ProopsMM: 1.2,
+          Cost: 1,
+          Desc: "모듈 B에서 기술적 문제 발생"
         },
         {
           index: 5,
-          project: "Data Migration for XYZ Corp",
-          date: "2024-01-01",
-          part: 1,
-          status: "Planning",
-          manager: '홍길동',
-          users: "이수정, 홍길동",
-          startMonth: 1,
-          endMonth: 5,
-          months: 4, // 진행률 바가 표시될 개월 수
-          progress: 30, // 진행률 백분율
-          proopsMM: 1.2,
-          cost: 2,
-          desc: "자원 할당 필요"
+          ProjectName: "Data Migration for XYZ Corp",
+          Date: "2024-01-01",
+          Part: 1,
+          Status: "Planning",
+          Manager: '홍길동',
+          Users: "이수정, 홍길동",
+          StartMonth: 1,
+          EndMonth: 5,
+          Months: 4, // 진행률 바가 표시될 개월 수
+          Progress: 30, // 진행률 백분율
+          ProopsMM: 1.2,
+          Cost: 2,
+          Desc: "자원 할당 필요"
         },
         {
           index: 6,
-          project: "Mobile App Launch",
-          date: "2024-01-10",
-          part: 2,
-          state: "Testing",
-          manager: '김철수',
-          users: "김철수, 홍길동, 아무개",
-          startMonth: 1,
-          endMonth: 7,
-          months: 6, // 진행률 바가 표시될 개월 수
-          progress: 90, // 진행률 백분율
-          proopsMM: 1.2,
-          cost: 1,
-          desc: "버그 수정 진행 중"
+          ProjectName: "Mobile App Launch",
+          Date: "2024-01-10",
+          Part: 2,
+          State: "Testing",
+          Manager: '김철수',
+          Users: "김철수, 홍길동, 아무개",
+          StartMonth: 1,
+          EndMonth: 7,
+          Months: 6, // 진행률 바가 표시될 개월 수
+          Progress: 90, // 진행률 백분율
+          ProopsMM: 1.2,
+          Cost: 1,
+          Desc: "버그 수정 진행 중"
         },
         {
           index: 7,
-          project: "Cloud Infrastructure Setup",
-          date: "2024-01-15",
-          part: 3,
-          status: "Deployment",
-          manager: '홍길동',
-          users: "이수정, 홍길동",
-          startMonth: 1,
-          endMonth: 8,
-          months: 6, // 진행률 바가 표시될 개월 수
-          progress: 75, // 진행률 백분율
-          proopsMM: 1.2,
-          cost: 3,
-          desc: "보안 검토 대기 중"
+          ProjectName: "Cloud Infrastructure Setup",
+          Date: "2024-01-15",
+          Part: 3,
+          Status: "Deployment",
+          Manager: '홍길동',
+          Users: "이수정, 홍길동",
+          StartMonth: 1,
+          EndMonth: 8,
+          Months: 6, // 진행률 바가 표시될 개월 수
+          Progress: 75, // 진행률 백분율
+          ProopsMM: 1.2,
+          Cost: 3,
+          Desc: "보안 검토 대기 중"
         },
         {
           index: 8,
-          project: "2023 year test",
-          date: "2023-02-15",
-          part: 3,
-          status: "Deployment",
-          manager: '김철수',
-          users: "김철수",
-          startMonth: 1,
-          endMonth: 7,
-          months: 6, // 진행률 바가 표시될 개월 수
-          progress: 75, // 진행률 백분율
-          proopsMM: 1.2,
-          cost: 2,
-          desc: "보안 검토 대기 중"
+          ProjectName: "2023 year test",
+          Date: "2023-02-15",
+          Part: 3,
+          Status: "Deployment",
+          Manager: '김철수',
+          Users: "김철수",
+          StartMonth: 1,
+          EndMonth: 7,
+          Months: 6, // 진행률 바가 표시될 개월 수
+          Progress: 75, // 진행률 백분율
+          ProopsMM: 1.2,
+          Cost: 2,
+          Desc: "보안 검토 대기 중"
         },
         {
           index: 9,
-          project: "2023 year test2",
-          date: "2023-01-15",
-          part: 3,
-          status: "Deployment",
-          manager: '홍길동',
-          users: "김철수, 이수정, 홍길동, 아무개",
-          startMonth: 3,
-          endMonth: 6,
-          months: 2, // 진행률 바가 표시될 개월 수
-          progress: 75, // 진행률 백분율
-          proopsMM: 1.2,
-          cost: 2,
-          desc: "보안 검토 대기 중"
+          ProjectName: "2023 year test2",
+          Date: "2023-01-15",
+          Part: 3,
+          Status: "Deployment",
+          Manager: '홍길동',
+          Users: "김철수, 이수정, 홍길동, 아무개",
+          StartMonth: 3,
+          EndMonth: 6,
+          Months: 2, // 진행률 바가 표시될 개월 수
+          Progress: 75, // 진행률 백분율
+          ProopsMM: 1.2,
+          Cost: 2,
+          Desc: "보안 검토 대기 중"
         },
         {
           index: 10,
-          project: "2023 year Test3",
-          date: "2023-09-20",
-          part: 3,
-          status: "Deployment",
-          manager: '김철수',
-          users: "김철수, 이수정, 홍길동, 아무개",
-          startMonth: 6,
-          endMonth: 12,
-          months: 4, // 진행률 바가 표시될 개월 수
-          progress: 75, // 진행률 백분율
-          proopsMM: 1.2,
-          cost: 3,
-          desc: "보안 검토 대기 중"
+          ProjectName: "2023 year Test3",
+          Date: "2023-09-20",
+          Part: 3,
+          Status: "Deployment",
+          Manager: '김철수',
+          Users: "김철수, 이수정, 홍길동, 아무개",
+          StartMonth: 6,
+          EndMonth: 12,
+          Months: 4, // 진행률 바가 표시될 개월 수
+          Progress: 75, // 진행률 백분율
+          ProopsMM: 1.2,
+          Cost: 3,
+          Desc: "보안 검토 대기 중"
         }
       ];
 

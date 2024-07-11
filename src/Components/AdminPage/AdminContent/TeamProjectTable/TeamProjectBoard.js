@@ -3,7 +3,7 @@ import './TeamProjectBoard.css';
 import GetUserInfo from '../../../../API/GetUserInfo';
 import { useSelector } from 'react-redux';
 import { AddTeamProject } from '../../../../API/AddTeamProject';
-import GetTeamProject from '../../../../API/GetTeamProject';
+import { UpdateTeamProject } from '../../../../API/UpdateTeamProject';
 
 const TeamProjectBoard = ({ posts }) => {
   const initialData = [
@@ -238,7 +238,7 @@ const TeamProjectBoard = ({ posts }) => {
       Manager: formValues.Manager,
     };
 
-    const result = await GetTeamProject(row, site);
+    const result = await UpdateTeamProject(row, site);
 
     setProjectAdd(false);
     setProjectEdit(false);
@@ -290,165 +290,6 @@ const TeamProjectBoard = ({ posts }) => {
     setSelectedYear(groupData[selectYear + 1]);
     setSelectYear(selectYear + 1);
   };
-
-
-  const getISOWeekNumber = (date) => {
-    const tempDate = new Date(year, date, 1);
-    const dayNum = tempDate.getUTCDay() || 7; // Get the day number, convert Sunday (0) to 7
-    tempDate.setUTCDate(tempDate.getUTCDate() + 4 - dayNum); // Set to nearest Thursday
-    const yearStart = new Date(Date.UTC(tempDate.getUTCFullYear(), 0, 1)); // Get first day of the year
-    const weekNumber = Math.ceil((((tempDate - yearStart) / 86400000) + 1) / 7); // Calculate full weeks to nearest Thursday
-    return weekNumber;
-  };
-
-
-  const getWeeksMonth = (month) => {
-    const year = new Date().getFullYear();
-    // const startDate = new Date(year, month, 1);
-    // const endDate = new Date(year, today.getMonth() + 1, today.getDate());
-
-    
-
-    const startDate = new Date(year, 7, 1);
-    const endDate = new Date(year, 8, 0);
-    //console.log('get date', today.getMonth() + 1, today.getDate(), month);
-    // const weeks = new Set();
-  
-    // for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-    //   weeks.add(getWeek(date, { weekStartsOn: 0 })); // 주차 계산 (일요일 시작)
-    // }
-    // return weeks.size;
-  
-  
-    const weeks = [];
-  
-    let currentWeek = [];
-    for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-      currentWeek.push(new Date(date));
-      if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
-        weeks.push(currentWeek);
-        currentWeek = [];
-      }
-    }
-
-    console.log('weeks', weeks);
-  
-    return weeks.length - 1;
-  };
-
-// 특정 달의 주차 수를 계산하는 함수
-const getWeeksInMonth = (month) => {
-  const year = new Date().getFullYear();
-  const startDate = new Date(year, month, 1);
-  const endDate = new Date(year, month + 1, 0);
-  // const weeks = new Set();
-
-  // for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-  //   weeks.add(getWeek(date, { weekStartsOn: 0 })); // 주차 계산 (일요일 시작)
-  // }
-  // return weeks.size;
-
-
-  const weeks = [];
-
-  let currentWeek = [];
-  for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-    currentWeek.push(new Date(date));
-    if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-    }
-  }
-
-  return weeks.length - 1;
-};
-
-// 특정 달의 주차 수를 계산하는 함수
-const getBlenkWeeksInMonth = (month) => {
-  const year = new Date().getFullYear();
-  const startDate = new Date(year, 0, 0);
-  const endDate = new Date(year, month, 0);
-
-  const weeks = [];
-
-  let currentWeek = [];
-  for (let date = startDate; date <= endDate; date.setDate(date.getDate())) {
-    currentWeek.push(new Date(date));
-    if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-    }
-  }
-  
-  const result = weeks.filter((item, index) => index !== weeks.length);
-  console.log('getBlenkWeeksInMonth', weeks, result);
-  return weeks;
-};
-
-// 특정 달의 주차 수를 계산하는 함수
-const getBetweenWeeksInMonth = (startMonth, endMonth) => {
-  const year = new Date().getFullYear();
-  const startDate = new Date(year, startMonth, 1);
-  const endDate = new Date(year, endMonth + 1, 0);
-
-  const weeks = [];
-
-  //console.log('date', startMonth, startDate, endMonth, endDate);
-  let currentWeek = [];
-  for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-    currentWeek.push(new Date(date));
-    if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-    }
-  }
-  const result = weeks.filter((item, index) => index !== weeks.length - 1);
-  console.log('getBlenkWeeksInMonth', weeks.length, result.length);
-  if (startMonth === endMonth)
-    return weeks;
-  else
-  return result;
-};
-
-const getBetweenWeeksInToday = (startMonth) => {
-  const year = new Date().getFullYear();
-  const startDate = new Date(year, startMonth, 1);
-  const endDate = new Date(year, today.getMonth(), today.getDate());
-
-  const weeks = [];
-
-  //console.log('date', startMonth, startDate, endMonth, endDate);
-  let currentWeek = [];
-  for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-    currentWeek.push(new Date(date));
-    if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-    }
-  }
-  //console.log('weeks', weeks);
-  return weeks;
-};
-
-// 특정 달의 주차 수를 계산하는 함수
-const getLastBlenkWeeksInMonth = (month) => {
-  const year = new Date().getFullYear();
-  const startDate = new Date(year, month + 1, 1);
-  const endDate = new Date(year, 12, 0);
-
-  const weeks = [];
-
-  let currentWeek = [];
-  for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-    currentWeek.push(new Date(date));
-    if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-    }
-  }
-  //console.log('weeks', weeks);
-  return weeks;
-};
 
   useEffect(() => {
     setSelectYear(currentYear);
