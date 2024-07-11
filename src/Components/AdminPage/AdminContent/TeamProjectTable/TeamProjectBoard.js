@@ -39,6 +39,9 @@ const TeamProjectBoard = ({ posts }) => {
   let day = ('0' + today.getDate()).slice(-2);
   let dateString = year + '-' + month + '-' + day;
 
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prevData) => ({
@@ -118,22 +121,53 @@ const TeamProjectBoard = ({ posts }) => {
   };
 
   const calculatePercentage = (startDate, endDate) => {
-    
+    const months = [1,3,5,7,8,10,12];
+    let percentage = 0;
     if (currentMonth > endDate)
       return 100;
     if (startDate > endDate)
       return 100;
     if (startDate === 1) {
       const ratio = currentMonth / endDate;
-      let percentage = ratio * 100;
-      percentage =percentage - 2; // 몇주차 체크 6: 1주차, 4: 2주차, 2: 3주차 
-      return percentage.toFixed(2);
+      percentage = ratio * 100;
     } else {
-      const ratio = currentMonth / (endDate - startDate + 1);
-      const percentage = ratio * 100;
-      return percentage.toFixed(2);
+      const ratio = currentMonth / (endDate);
+      percentage = ratio * 100;
     }
+
+    const cut = endDate - startDate + 1;
+    const per = percentage / cut;
+
+    let cnt = 0;
+    if (endDate === 2)
+      cnt = per/27;
+    else if (months.includes(endDate))
+      cnt = per/31;
+    else
+      cnt = per/30;
     
+    percentage = (per * (cut-1)) + (cnt * today.getDate()); // 몇주차 체크 6: 1주차, 4: 2주차, 2: 3주차 
+    if (startDate === 1) { //비율에 대한 보정값
+      if (endDate < 10 && today.getDate() < 15 ) {
+        percentage = percentage + (cnt * 10);
+        //console.log('percentage1', percentage, currentMonth);
+      }
+      else if (endDate < 10 && today.getDate() < 26) {
+        percentage = percentage + (cnt);
+        //console.log('percentage2', percentage);
+      }
+    } else {
+      if (currentMonth + 2 >= endDate && today.getDate() < 15 )
+        percentage = percentage + (cnt * 10);
+      else if (currentMonth + 2 >= endDate && today.getDate() < 15)
+        percentage = percentage + (cnt);
+      else if (currentMonth < endDate && today.getDate() < 26)
+        percentage = percentage - (cnt * 10);
+    }
+    // else
+    //console.log('percentage3', percentage);
+      
+    return percentage.toFixed(2);
   };
 
   const handleCreate = () => {
@@ -213,7 +247,7 @@ const TeamProjectBoard = ({ posts }) => {
   };
 
   const handleEdit = (row) => {
-    console.log('project', row);
+    //console.log('project', row);
     setFormValues(row);
     if (selectedRow === row.index) {
       setProjectEdit(false);
@@ -257,48 +291,64 @@ const TeamProjectBoard = ({ posts }) => {
     setSelectYear(selectYear + 1);
   };
 
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth() + 1;
 
-  // ISO 8601 주 번호를 계산하는 함수
-const getISOWeekNumber = (date) => {
-  const tempDate = new Date(date);
-  const dayNum = tempDate.getUTCDay() || 7; // 일요일(0)을 7로 변환
-  tempDate.setUTCDate(tempDate.getUTCDate() + 4 - dayNum); // 가장 가까운 목요일로 설정
-  const yearStart = new Date(Date.UTC(tempDate.getUTCFullYear(), 0, 1)); // 해당 연도의 첫 번째 날
-  const weekNumber = Math.ceil((((tempDate - yearStart) / 86400000) + 1) / 7); // 목요일까지의 전체 주 계산
-  return weekNumber;
-};
+  const getISOWeekNumber = (date) => {
+    const tempDate = new Date(year, date, 1);
+    const dayNum = tempDate.getUTCDay() || 7; // Get the day number, convert Sunday (0) to 7
+    tempDate.setUTCDate(tempDate.getUTCDate() + 4 - dayNum); // Set to nearest Thursday
+    const yearStart = new Date(Date.UTC(tempDate.getUTCFullYear(), 0, 1)); // Get first day of the year
+    const weekNumber = Math.ceil((((tempDate - yearStart) / 86400000) + 1) / 7); // Calculate full weeks to nearest Thursday
+    return weekNumber;
+  };
 
-// 두 날짜 간의 ISO 8601 기준 주차 계산 함수
-const getWeeksBetweenDates = (startDate, endDate) => {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
 
-  // 시작 날짜와 종료 날짜의 ISO 8601 주 번호 계산
-  const startWeek = getISOWeekNumber(start);
-  const endWeek = getISOWeekNumber(end);
+  const getWeeksMonth = (month) => {
+    const year = new Date().getFullYear();
+    // const startDate = new Date(year, month, 1);
+    // const endDate = new Date(year, today.getMonth() + 1, today.getDate());
 
-  // 연도가 다를 경우의 계산 보정
-  const startYear = start.getUTCFullYear();
-  const endYear = end.getUTCFullYear();
-  let weeksBetween;
+    
 
-  if (startYear === endYear) {
-    weeksBetween = endWeek - startWeek + 1;
-  } else {
-    const weeksInStartYear = getISOWeekNumber(new Date(Date.UTC(startYear, 11, 31)));
-    weeksBetween = (weeksInStartYear - startWeek + 1) + endWeek;
-  }
+    const startDate = new Date(year, 7, 1);
+    const endDate = new Date(year, 8, 0);
+    //console.log('get date', today.getMonth() + 1, today.getDate(), month);
+    // const weeks = new Set();
+  
+    // for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+    //   weeks.add(getWeek(date, { weekStartsOn: 0 })); // 주차 계산 (일요일 시작)
+    // }
+    // return weeks.size;
+  
+  
+    const weeks = [];
+  
+    let currentWeek = [];
+    for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+      currentWeek.push(new Date(date));
+      if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
+        weeks.push(currentWeek);
+        currentWeek = [];
+      }
+    }
 
-  return weeksBetween;
-};
+    console.log('weeks', weeks);
+  
+    return weeks.length - 1;
+  };
 
-// 주차 수를 계산하는 함수
+// 특정 달의 주차 수를 계산하는 함수
 const getWeeksInMonth = (month) => {
   const year = new Date().getFullYear();
   const startDate = new Date(year, month, 1);
   const endDate = new Date(year, month + 1, 0);
+  // const weeks = new Set();
+
+  // for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+  //   weeks.add(getWeek(date, { weekStartsOn: 0 })); // 주차 계산 (일요일 시작)
+  // }
+  // return weeks.size;
+
+
   const weeks = [];
 
   let currentWeek = [];
@@ -310,7 +360,94 @@ const getWeeksInMonth = (month) => {
     }
   }
 
-  return weeks.length;
+  return weeks.length - 1;
+};
+
+// 특정 달의 주차 수를 계산하는 함수
+const getBlenkWeeksInMonth = (month) => {
+  const year = new Date().getFullYear();
+  const startDate = new Date(year, 0, 0);
+  const endDate = new Date(year, month, 0);
+
+  const weeks = [];
+
+  let currentWeek = [];
+  for (let date = startDate; date <= endDate; date.setDate(date.getDate())) {
+    currentWeek.push(new Date(date));
+    if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  }
+  
+  const result = weeks.filter((item, index) => index !== weeks.length);
+  console.log('getBlenkWeeksInMonth', weeks, result);
+  return weeks;
+};
+
+// 특정 달의 주차 수를 계산하는 함수
+const getBetweenWeeksInMonth = (startMonth, endMonth) => {
+  const year = new Date().getFullYear();
+  const startDate = new Date(year, startMonth, 1);
+  const endDate = new Date(year, endMonth + 1, 0);
+
+  const weeks = [];
+
+  //console.log('date', startMonth, startDate, endMonth, endDate);
+  let currentWeek = [];
+  for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+    currentWeek.push(new Date(date));
+    if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  }
+  const result = weeks.filter((item, index) => index !== weeks.length - 1);
+  console.log('getBlenkWeeksInMonth', weeks.length, result.length);
+  if (startMonth === endMonth)
+    return weeks;
+  else
+  return result;
+};
+
+const getBetweenWeeksInToday = (startMonth) => {
+  const year = new Date().getFullYear();
+  const startDate = new Date(year, startMonth, 1);
+  const endDate = new Date(year, today.getMonth(), today.getDate());
+
+  const weeks = [];
+
+  //console.log('date', startMonth, startDate, endMonth, endDate);
+  let currentWeek = [];
+  for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+    currentWeek.push(new Date(date));
+    if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  }
+  //console.log('weeks', weeks);
+  return weeks;
+};
+
+// 특정 달의 주차 수를 계산하는 함수
+const getLastBlenkWeeksInMonth = (month) => {
+  const year = new Date().getFullYear();
+  const startDate = new Date(year, month + 1, 1);
+  const endDate = new Date(year, 12, 0);
+
+  const weeks = [];
+
+  let currentWeek = [];
+  for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
+    currentWeek.push(new Date(date));
+    if (date.getDay() === 6 || date.getDate() === endDate.getDate()) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  }
+  //console.log('weeks', weeks);
+  return weeks;
 };
 
   useEffect(() => {
@@ -612,7 +749,7 @@ const getWeeksInMonth = (month) => {
                 <td className="Teamproject-table-cell">{row.ProjectName}</td>
                 <td className="Teamproject-table-cell">{row.Status}</td>
 
-                <td className="Teamproject-table-cell">{row.Users}</td>
+                <td className="Teamproject-table-cell Table-cell-overflow" title={row.Users} style={{maxWidth: '100px'}}>{row.Users}</td>
                 <td className="Teamproject-table-cell">{`${row.ProopsMM}MM`}</td>
                 { row.StartMonth && [...Array(row.StartMonth - 1)].map((_, idx) => (
                   <td key={idx} className="Teamproject-table-cell"></td>
@@ -622,28 +759,19 @@ const getWeeksInMonth = (month) => {
                    className="Teamproject-table-cell"
                    colSpan={
                      row.StartMonth === 1
-                       ? row.EndMonth
+                    ? row.EndMonth
                        : row.EndMonth - row.StartMonth + 1
                    }
                  >
                 
-                  <div className="Teamprogress-bar-container">
+                 <div className="Teamprogress-bar-container">
                     <div
                       className="Teamprogress-bar"
                       style={{
-                        width: `${calculatePercentage(
-                          row.StartMonth,
-                          row.StartMonth === 1
-                            ? row.EndMonth
-                            : row?.EndMonth - row.StartMonth + 1
-                        )}%`,
+                        width: `${calculatePercentage( row.StartMonth, row.EndMonth )}%`,
                       }}
                     >
-                      { currentMonth < row.StartMonth ? <div></div>: calculatePercentage(
-                        row.StartMonth,
-                        row.EndMonth
-                      )}
-                      %
+                      { currentMonth < row.StartMonth ? <div></div> : calculatePercentage( row.StartMonth, row.EndMonth ) === 100 ? '완료' : <div>{calculatePercentage( row.StartMonth, row.EndMonth )}%</div> }
                     </div>
                   </div>
                 </td>

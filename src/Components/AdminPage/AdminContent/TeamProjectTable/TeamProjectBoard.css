@@ -98,6 +98,14 @@ body {
   }
 }
 
+.Table-cell-overflow {
+  max-width: 150px; /* 원하는 최대 너비로 설정 */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
 /* 프로젝트 생성 버튼 스타일 */
 .create-button {
   padding: 5px 10px;
