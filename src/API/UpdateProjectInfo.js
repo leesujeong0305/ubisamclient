@@ -44,4 +44,5 @@ export const UpdateProjectInfo = async (row, site, view) => {
       console.error("추가 실패", error);
       return {result: 'FAIL', error};
     });
-}
+  }
+};
