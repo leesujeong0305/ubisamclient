@@ -6,16 +6,16 @@ import GetUserInfo from '../../../../API/GetUserInfo';
 import { useSelector } from 'react-redux';
 import { UpdateProjectInfo } from '../../../../API/UpdateProjectInfo';
 
-const ProjectTable = ({ projects }) => {
+const ProjectTable = ({ projects, handleUpdate }) => {
     const initialData = [
         {
-            ProjectName: '',
+            Project: '',
             Date: '',
             PM: '',
             Users: '',
             Status: 0,
             Period: '',
-            View: false,
+            View: 0,
         },
     ];
     const Continents = [
@@ -66,7 +66,7 @@ const ProjectTable = ({ projects }) => {
 
     const { authUserId, authUserName, authUserRank, authUserTeam, authManager } = useSelector((state) => state.userInfo);
 
-    const [viewStates, setViewStates] = useState(projects.map(() => false));
+    const [viewStates, setViewStates] = useState([]);//projects.map(() => false));
 
     const [projectAdd, setProjectAdd] = useState(false);
     const [projectEdit, setProjectEdit] = useState(false);
@@ -103,23 +103,16 @@ const ProjectTable = ({ projects }) => {
     // 페이지 변경 함수
     const paginate = (pageNumber) => setCurrentPage(pageNumber); // 페이지 번호를 받아 현재 페이지 상태를 업데이트
 
-    // const handleToggle = (index) => {
-    //     setViewStates((prevStates) => 
-    //     prevStates.map((state, i) => (i === index ? !state : state))
-    //     );
-    // };
-    const handleToggle = (id) => {
-        const newData = viewStates.map((item) => {
-            if (item.id === id) {
-                return { ...item, View: !item.View };
-            }
-            return item;
-        });
-        setViewStates(newData);
+    const handleToggle = async (row) => {
+        setViewStates((prevStates) =>
+            prevStates.map((state, i) => (i === (row.id - 1) ? !state : state))
+        );
+
+        const site = selectSite();
+        const result = await UpdateProjectInfo(row, site, true);
     };
 
     const handleEdit = (row) => {
-        //console.log('project', row);
         setFormValues(row);
         if (selectedRow === row.id) {
             setProjectEdit(false);
@@ -129,6 +122,7 @@ const ProjectTable = ({ projects }) => {
             setProjectAdd(false);
             setProjectEdit(true);
             setSelectedRow(row.id);
+            setShowCheckboxes(false);
         }
     };
 
@@ -148,31 +142,27 @@ const ProjectTable = ({ projects }) => {
       .map((checkbox) => checkbox.label)
       .join(', ');
 
-        if (formValues.ProjectName || formValues.Period || selectedUsers === '' || formValues.PM === undefined || formValues.Status === undefined) {
+        if (formValues.Project || formValues.Period || selectedUsers === '' || formValues.PM === undefined || formValues.Status === undefined) {
             const site = selectSite();
             const row = {
                 //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
-                Project: formValues.ProjectName,
+                Project: formValues.Project,
                 Period: formValues.Period, // 나이를 숫자로 변환
                 Users: selectedUsers,
                 Status: formValues.Status,
                 PM: formValues.PM,
-                Site: site,
-                View: formValues.View,
+                View: 1,
 
             };
             //console.log('newRow', newRow);
-            await AddProjectInfo(row);
+            await AddProjectInfo(row, site);
 
             setFormValues(initialData);
             setProjectAdd(false);
             setShowCheckboxes(false);
             setCheckboxes(initCheckbox);
 
-            // const timer = setTimeout(() => { //이슈업로드 후 KanBanList불러오기위해 사용
-            //     handleUpdate(true);
-            // }, 1); // 10초 대기 (10000밀리초)
-            // return () => clearTimeout(timer);
+            handleUpdate(true);
         } else
             alert("입력하지 않은 항목이 존재합니다.");
     };
@@ -190,7 +180,7 @@ const ProjectTable = ({ projects }) => {
             .join(', ');
         const row = {
                 //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
-                Project: formValues.ProjectName,
+                Project: formValues.Project,
                 Period: formValues.Period, // 나이를 숫자로 변환
                 Users: selectedUsers,
                 Status: formValues.Status,
@@ -198,10 +188,16 @@ const ProjectTable = ({ projects }) => {
                 View: formValues.View,
 
         };
-        const result = await UpdateProjectInfo(row, site);
+        const result = await UpdateProjectInfo(row, site, false);
 
             setProjectAdd(false);
             setProjectEdit(false);
+            setShowCheckboxes(false);
+            setCheckboxes(initCheckbox);
+            setFormValues(initialData);
+            setSelectedRow(null);
+
+            handleUpdate(true);
     };
 
     const handleRowClick = (users) => {
@@ -227,10 +223,10 @@ const ProjectTable = ({ projects }) => {
         if (projects) {
             const total = projects.length / postsPerPage;
             setTotalPage(total);
+            setViewStates(projects.map(project => project.View));
         }
         LoadTeamUsers();
     }, [projects])
-
 
     return (
         <div className="project-container">
@@ -255,7 +251,7 @@ const ProjectTable = ({ projects }) => {
                                 type="text"
                                 name="Project"
                                 className="input-field"
-                                value={formValues.ProjectName}
+                                value={formValues.Project}
                                 onChange={handleInputChange}
                                 style={{ width: '300px' }}
                             />
@@ -326,7 +322,7 @@ const ProjectTable = ({ projects }) => {
                                 type="text"
                                 name="Project"
                                 className="input-field"
-                                value={formValues.ProjectName}
+                                value={formValues.Project}
                                 onChange={handleInputChange}
                                 style={{ width: '300px' }}
                             />
@@ -372,11 +368,6 @@ const ProjectTable = ({ projects }) => {
                                 value={formValues.PM}
                                 onChange={handleInputChange}
                             />
-                        </div>
-                        <div className="input-container users-check">
-                            <button onClick={() => handleToggle(formValues.View)}>
-                                {viewStates === true ? '사용' : '미사용'}
-                            </button>
                         </div>
                         <div className="input-container">
                             <button
@@ -452,12 +443,22 @@ const ProjectTable = ({ projects }) => {
                                 <td className="Teamproject-table-cell">{row.Status}</td>
                                 <td className="Teamproject-table-cell">{row.Period}</td>
                                 <td className="Teamproject-table-cell">
-                                    <label className="switch" >
+                                    {/* <label className="switch" >
                                         <input
                                             style={{ width: '20px', height: '20px', }}
                                             type="checkbox"
                                             checked={row.View}
+                                            onClick={() => {handleToggle(row.View)}}
                                         />
+                                    </label> */}
+                                    <label className="switch">
+                                        <input
+                                        style={{ width: '20px', height: '20px', }}
+                                            type="checkbox"
+                                            checked={viewStates[row.id-1]}
+                                            onChange={() => handleToggle(row)}
+                                        />
+                                        <span className="slider round"></span>
                                     </label>
                                 </td>
                                 <td className="Teamproject-table-cell">

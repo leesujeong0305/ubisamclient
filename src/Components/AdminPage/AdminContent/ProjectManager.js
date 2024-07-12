@@ -32,8 +32,11 @@ const ProjectManager = () => {
       return;
     const dataWithIds = data.map((item, index) => ({
       id: index + 1, // id 필드 추가, 1부터 시작하는 고유한 값
+      Project: item.ProjectName,
       ...item
+      
     }));
+    //console.log('dataWithIds', dataWithIds);
     setProjectData(dataWithIds);
   }
 

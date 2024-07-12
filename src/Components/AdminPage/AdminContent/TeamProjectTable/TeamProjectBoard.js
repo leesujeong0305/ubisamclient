@@ -4,11 +4,12 @@ import GetUserInfo from '../../../../API/GetUserInfo';
 import { useSelector } from 'react-redux';
 import { AddTeamProject } from '../../../../API/AddTeamProject';
 import { UpdateTeamProject } from '../../../../API/UpdateTeamProject';
+import { DeleteTeamProject } from '../../../../API/DeleteTeamProject';
 
-const TeamProjectBoard = ({ posts }) => {
+const TeamProjectBoard = ({ posts, handleUpdate }) => {
   const initialData = [
     {
-      ProjectName: '',
+      Project: '',
       Date: '',
       Status: 0,
       StartMonth: 0,
@@ -30,6 +31,7 @@ const TeamProjectBoard = ({ posts }) => {
   const [projectEdit, setProjectEdit] = useState(false);
   const [selectYear, setSelectYear] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
+  
 
   const [formValues, setFormValues] = useState(initialData);
 
@@ -171,10 +173,14 @@ const TeamProjectBoard = ({ posts }) => {
   };
 
   const handleCreate = () => {
+    if (projectAdd === true) {
     setProjectAdd(!projectAdd);
     setProjectEdit(false);
     setFormValues(initialData);
     setSelectedRow(null);
+  } else {
+    setProjectAdd(true);
+  }
   };
 
   const handleAddRow = async () => {
@@ -183,7 +189,7 @@ const TeamProjectBoard = ({ posts }) => {
       .map((checkbox) => checkbox.label)
       .join(', ');
     if (
-      formValues.ProjectName === undefined ||
+      formValues.Project === undefined ||
       formValues.Status === undefined ||
       formValues.StartMonth === undefined ||
       formValues.EndMonth === undefined ||
@@ -195,7 +201,7 @@ const TeamProjectBoard = ({ posts }) => {
     } else {
       const site = selectSite();
       const row = {
-        Project: formValues.ProjectName,
+        Project: formValues.Project,
         Date: dateString,
         Status: formValues.Status,
         StartMonth: formValues.StartMonth,
@@ -211,13 +217,15 @@ const TeamProjectBoard = ({ posts }) => {
       setProjectAdd(false);
       setShowCheckboxes(false);
       setCheckboxes(initCheckbox);
+
+      handleUpdate(true);
     }
   };
 
   const handleEditRow = async () => {
     if (!window.confirm('수정시겠습니까?')) {
       // 사용자가 Cancel을 클릭한 경우
-      console.log('프로젝트 수정이 취소되었습니다.');
+      //console.log('프로젝트 수정이 취소되었습니다.');
       return;
     }
 
@@ -228,7 +236,7 @@ const TeamProjectBoard = ({ posts }) => {
 
     const site = selectSite();
     const row = {
-      Project: formValues.ProjectName,
+      Project: formValues.Project,
       Date: dateString,
       Status: formValues.Status,
       StartMonth: formValues.StartMonth,
@@ -244,23 +252,57 @@ const TeamProjectBoard = ({ posts }) => {
     setProjectEdit(false);
     setShowCheckboxes(false);
     setCheckboxes(initCheckbox);
+    setSelectedRow(null);
+
+    handleUpdate(true);
   };
 
   const handleEdit = (row) => {
     //console.log('project', row);
     setFormValues(row);
-    if (selectedRow === row.index) {
+    if (selectedRow === row.id) {
       setProjectEdit(false);
       setSelectedRow(null);
       setShowCheckboxes(false);
     } else {
       setProjectAdd(false);
       setProjectEdit(true);
-      setSelectedRow(row.index);
+      setSelectedRow(row.id);
+      setShowCheckboxes(false);
     }
   };
 
-  const handleDelete = (row) => {};
+  const handleDelete = async (row) => {
+    if (!window.confirm('삭제하시겠습니까?')) {
+      // 사용자가 Cancel을 클릭한 경우
+      //console.log('프로젝트 수정이 취소되었습니다.');
+      return;
+    }
+
+    const site = selectSite();
+    // const row = {
+    //   Project: formValues.Project,
+    //   Date: dateString,
+    //   Status: formValues.Status,
+    //   StartMonth: formValues.StartMonth,
+    //   EndMonth: formValues.EndMonth,
+    //   Users: selectedUsers,
+    //   ProopsMM: formValues.ProopsMM,
+    //   Manager: formValues.Manager,
+    // };
+
+    const rowData = row.Project;
+
+    const result = await DeleteTeamProject(rowData, site);
+
+    setProjectAdd(false);
+    setProjectEdit(false);
+    setShowCheckboxes(false);
+    setCheckboxes(initCheckbox);
+    setSelectedRow(null);
+
+    handleUpdate(true);
+  };
 
   const groupDataByYear = (data) => {
     return data.reduce((acc, item) => {
@@ -304,12 +346,12 @@ const TeamProjectBoard = ({ posts }) => {
     const filterYear = () => {
       const groupedData = groupDataByYear(posts);
       setGroupData(groupedData);
-      console.log('groupedData', groupedData);
+      //console.log('groupedData', groupedData);
       setSelectedYear(groupedData);
       
     };
     LoadTeamUsers();
-    console.log('posts', posts);
+    //console.log('posts', posts);
     filterYear();
   }, [posts]);
 
@@ -338,9 +380,9 @@ const TeamProjectBoard = ({ posts }) => {
             <label className="input-label">Project</label>
             <input
               type="text"
-              name="project"
+              name="Project"
               className="input-field"
-              value={formValues.ProjectName}
+              value={formValues.Project}
               onChange={handleInputChange}
               style={{ width: '300px' }}
             />
@@ -348,14 +390,14 @@ const TeamProjectBoard = ({ posts }) => {
           <div className="input-container dropdown-container">
             <label className={`input-label`}>상태</label>
             <select
-              name="status"
+              name="Status"
               className="input-field"
               value={formValues.Status}
               onChange={handleInputChange}
             >
               <option value="0">Select</option>
-              {states.map((state, index) => (
-                <option value={index + 1}>{state}</option>
+              {states.map((status, index) => (
+                <option value={index + 1}>{status}</option>
               ))}
             </select>
           </div>
@@ -370,7 +412,7 @@ const TeamProjectBoard = ({ posts }) => {
             <label className="input-label">제안MM</label>
             <input
               type="text"
-              name="proopsMM"
+              name="ProopsMM"
               className="input-field"
               value={formValues.ProopsMM}
               onChange={handleInputChange}
@@ -380,7 +422,7 @@ const TeamProjectBoard = ({ posts }) => {
           <div className="input-container dropdown-container">
             <label className={`input-label`}>시작</label>
             <select
-              name="startMonth"
+              name="StartMonth"
               className="input-field"
               value={formValues.StartMonth}
               onChange={handleInputChange}
@@ -397,7 +439,7 @@ const TeamProjectBoard = ({ posts }) => {
           <div className="input-container dropdown-container">
             <label className={`input-label`}>끝</label>
             <select
-              name="endMonth"
+              name="EndMonth"
               className="input-field"
               value={formValues.EndMonth}
               onChange={handleInputChange}
@@ -414,7 +456,7 @@ const TeamProjectBoard = ({ posts }) => {
             <label className="input-label">담당자</label>
             <input
               type="text"
-              name="manager"
+              name="Manager"
               className="input-field"
               value={formValues.Manager}
               onChange={handleInputChange}
@@ -440,24 +482,24 @@ const TeamProjectBoard = ({ posts }) => {
             <input
               disabled
               type="text"
-              name="project"
+              name="Project"
               className="input-field"
-              value={formValues.ProjectName}
+              value={formValues.Project}
               onChange={handleInputChange}
               style={{ width: '300px' }}
             />
           </div>
           <div className="input-container dropdown-container">
-            <label className={`input-label`}>상태</label>
+            <label className={`input-label`}>Status</label>
             <select
-              name="status"
+              name="Status"
               className="input-field"
               value={formValues.Status}
               onChange={handleInputChange}
             >
               <option value="0">Select</option>
-              {states.map((state, index) => (
-                <option value={index}>{state}</option>
+              {states.map((status, index) => (
+                <option value={index + 1}>{status}</option>
               ))}
             </select>
           </div>
@@ -472,7 +514,7 @@ const TeamProjectBoard = ({ posts }) => {
             <label className="input-label">제안MM</label>
             <input
               type="text"
-              name="proopsMM"
+              name="ProopsMM"
               className="input-field"
               value={formValues.ProopsMM}
               onChange={handleInputChange}
@@ -482,7 +524,7 @@ const TeamProjectBoard = ({ posts }) => {
           <div className="input-container dropdown-container">
             <label className={`input-label`}>시작</label>
             <select
-              name="startMonth"
+              name="StartMonth"
               className="input-field"
               value={formValues.StartMonth}
               onChange={handleInputChange}
@@ -499,7 +541,7 @@ const TeamProjectBoard = ({ posts }) => {
           <div className="input-container dropdown-container">
             <label className={`input-label`}>끝</label>
             <select
-              name="endMonth"
+              name="EndMonth"
               className="input-field"
               value={formValues.EndMonth}
               onChange={handleInputChange}
@@ -516,7 +558,7 @@ const TeamProjectBoard = ({ posts }) => {
             <label className="input-label">담당자</label>
             <input
               type="text"
-              name="manager"
+              name="Manager"
               className="input-field"
               value={formValues.Manager}
               onChange={handleInputChange}
@@ -586,9 +628,9 @@ const TeamProjectBoard = ({ posts }) => {
           {(selectedYear && selectYear) && selectedYear[selectYear] &&
             selectedYear[selectYear]?.map((row, index) => (
               <tr key={index} className="Teamproject-table-row">
-                <td className="Teamproject-table-cell">{index + 1}</td>
-                <td className="Teamproject-table-cell">{row.ProjectName}</td>
-                <td className="Teamproject-table-cell">{row.Status}</td>
+                <td className="Teamproject-table-cell">{row.id}</td>
+                <td className="Teamproject-table-cell">{row.Project}</td>
+                <td className="Teamproject-table-cell">{states[row.Status - 1] || 'Unknown Status'}</td>
 
                 <td className="Teamproject-table-cell Table-cell-overflow" title={row.Users} style={{maxWidth: '100px'}}>{row.Users}</td>
                 <td className="Teamproject-table-cell">{`${row.ProopsMM}MM`}</td>
@@ -636,7 +678,7 @@ const TeamProjectBoard = ({ posts }) => {
                       handleRowClick(row.Users);
                     }}
                   >
-                    {selectedRow === row.index ? '접기' : '수정'}
+                    {selectedRow === row.id ? '접기' : '수정'}
                   </button>
                   <span className="ms-1 me-1"> / </span>
                   <button
