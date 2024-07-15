@@ -13,7 +13,9 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       Date: '',
       Status: 0,
       StartMonth: 0,
+      StartWeek: 0,
       EndMonth: 0,
+      EndWeek: 0,
       Users: '',
       ProopsMM: 0,
       Manager: '',
@@ -48,7 +50,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     const { name, value } = e.target;
     setFormValues((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: (name === 'StartWeek') || (name === 'EndWeek') ? parseInt(value, 10) : value,
     }));
   };
 
@@ -89,6 +91,13 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     'Testing',
   ];
 
+  const weeks = [
+    '1주',
+    '2주',
+    '3주',
+    '4주',
+  ]
+
   const selectSite = () => {
     if (authUserTeam === undefined) return;
     const found = Continents.find((item) => item.key === authUserTeam);
@@ -122,33 +131,49 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     );
   };
 
-  const calculatePercentage = (startDate, endDate) => {
+  const calculatePercentage = (startDate, endDate, startWeek, endWeek) => {
     const months = [1,3,5,7,8,10,12];
+
+    const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
+
     let percentage = 0;
     let cut = 0;
     if (currentMonth > endDate)
       return 100;
     if (startDate > endDate)
       return 100;
+    
     if (startDate === 1) {
-      const ratio = currentMonth / endDate;
-      percentage = ratio * 100;
-      cut = endDate - (startDate + 1);
-    } else {
-      const ratio = currentMonth / (endDate );
-      percentage = ratio * 100;
-      cut = endDate - (startDate);
+      // const ratio = ((endDate - startDate - 1) * 4) - startWeek - 1 + endWeek - 1; // 총기간
+      // const period = ((currentMonth - startDate) * 4) - startWeek - 1 + day;
+      const ratio = ((endDate - startDate) * 4) - ((4 - startWeek - 1) + (endWeek - 1)); // 총기간  24 - (4 - 3 -1) + ()
+      const period = ((currentMonth - startDate) * 4) - startWeek - 1 + day; // 24 
+      console.log('총기간 ', ratio, '실제기간 ', period, 'day', day);
+      percentage = period / ratio;
     }
+    
+    
+    
+    
+    // if (startDate === 1) {
+    //   const ratio = currentMonth / endDate;
+    //   percentage = ratio * 100;
+    //   cut = endDate - (startDate + 1);
+    // } else {
+    //   const ratio = currentMonth / (endDate );
+    //   percentage = ratio * 100;
+    //   cut = endDate - (startDate);
+    // }
 
-    const per = percentage / cut;
+    // const per = percentage / cut;
 
-    let cnt = 0;
-    if (endDate === 2)
-      cnt = per/27;
-    else if (months.includes(endDate))
-      cnt = per/31;
-    else
-      cnt = per/30;
+    // let cnt = 0;
+    // if (endDate === 2)
+    //   cnt = per/27;
+    // else if (months.includes(endDate))
+    //   cnt = per/31;
+    // else
+    //   cnt = per/30;
     
     //percentage = (per * (cut-1)) + (cnt * today.getDate()); // 몇주차 체크 6: 1주차, 4: 2주차, 2: 3주차 
     // if (startDate === 1) { //비율에 대한 보정값
@@ -191,13 +216,11 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       .map((checkbox) => checkbox.label)
       .join(', ');
     if (
-      formValues.Project === undefined ||
-      formValues.Status === undefined ||
-      formValues.StartMonth === undefined ||
-      formValues.EndMonth === undefined ||
-      selectedUsers === '' ||
-      formValues.ProopsMM === undefined ||
-      formValues.Manager === undefined
+      formValues.Project === undefined || formValues.Status === undefined ||
+      formValues.StartMonth === undefined || formValues.EndMonth === undefined ||
+      selectedUsers === '' || formValues.ProopsMM === undefined ||
+      formValues.Manager === undefined || formValues.StartWeek === undefined ||
+      formValues.EndWeek
     ) {
       alert('입력하지 않은 항목이 존재합니다.');
     } else {
@@ -207,7 +230,9 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
         Date: dateString,
         Status: formValues.Status,
         StartMonth: formValues.StartMonth,
+        StartWeek: formValues.StartWeek,
         EndMonth: formValues.EndMonth,
+        EndWeek: formValues.EndWeek,
         Users: selectedUsers,
         ProopsMM: formValues.ProopsMM,
         Manager: formValues.Manager,
@@ -242,7 +267,9 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       Date: dateString,
       Status: formValues.Status,
       StartMonth: formValues.StartMonth,
+      StartWeek: formValues.StartWeek,
       EndMonth: formValues.EndMonth,
+      EndWeek: formValues.EndWeek,
       Users: selectedUsers,
       ProopsMM: formValues.ProopsMM,
       Manager: formValues.Manager,
@@ -323,6 +350,40 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     setSelectedYear(groupData[selectYear + 1]);
     setSelectYear(selectYear + 1);
   };
+
+  const blankWeekBefore = (month, week) => {
+    if (month === 1) { // 시작 달이 1월달일때
+      if (week === 1)
+        return 0;
+      else
+        return week - 1;
+    } else {
+      return ((month - 1) * 4) + (week-1);
+    }
+  }
+
+  const sumWeek = (startMonth, endMonth, startWeek, endWeek) => {
+    if (startMonth === 1) { // 시작 달이 1월달일때
+      if (startWeek === 1)
+        return ((endMonth - 1) * 4) + (endWeek);
+      else
+        return ((endMonth - 1) * 4) + endWeek - (startWeek - 1);
+
+    } else if (startWeek === 1) {
+      return ((endMonth - startMonth) * 4) + (endWeek);
+    } else if (startWeek !== 1) {
+      return ((endMonth - startMonth) * 4) + endWeek - (startWeek - 1);
+    }
+  }
+
+  const blankWeekAfter = (month, week) => {
+    if (month === 12) {
+      if (week === 4)
+        return 0;
+    } else {
+      return 48 - ((month) * 4) + (4 - week);
+    }
+  }
 
   useEffect(() => {
     setSelectYear(currentYear);
@@ -428,6 +489,23 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
           </div>
 
           <div className="input-container dropdown-container">
+            <label className={`input-label`}>시작 주</label>
+            <select
+              name="StartWeek"
+              className="input-field"
+              value={formValues.StartWeek}
+              onChange={handleInputChange}
+            >
+              <option value="0">Select</option>
+              {weeks.map((week, index) => (
+                <option key={index} value={index + 1}>
+                  {week}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="input-container dropdown-container">
             <label className={`input-label`}>끝</label>
             <select
               name="EndMonth"
@@ -443,6 +521,24 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               ))}
             </select>
           </div>
+          
+          <div className="input-container dropdown-container">
+            <label className={`input-label`}>끝 주</label>
+            <select
+              name="StartWeek"
+              className="input-field"
+              value={formValues.EndWeek}
+              onChange={handleInputChange}
+            >
+              <option value="0">Select</option>
+              {weeks.map((week, index) => (
+                <option key={index} value={index + 1}>
+                  {week}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <div className="input-container">
             <label className="input-label">담당자</label>
             <input
@@ -530,6 +626,23 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
           </div>
 
           <div className="input-container dropdown-container">
+            <label className={`input-label`}>시작 주</label>
+            <select
+              name="StartWeek"
+              className="input-field"
+              value={formValues.StartWeek}
+              onChange={handleInputChange}
+            >
+              <option value="0">Select</option>
+              {weeks.map((week, index) => (
+                <option key={index} value={index + 1}>
+                  {week}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="input-container dropdown-container">
             <label className={`input-label`}>끝</label>
             <select
               name="EndMonth"
@@ -545,6 +658,24 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               ))}
             </select>
           </div>
+
+          <div className="input-container dropdown-container">
+            <label className={`input-label`}>끝 주</label>
+            <select
+              name="EndWeek"
+              className="input-field"
+              value={formValues.EndWeek}
+              onChange={handleInputChange}
+            >
+              <option value="0">Select</option>
+              {weeks.map((week, index) => (
+                <option key={index} value={index + 1}>
+                  {week}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <div className="input-container">
             <label className="input-label">담당자</label>
             <input
@@ -609,22 +740,22 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
         <thead className="Teamproject-head">
           <tr className="Teamproject-table-header">
             {headers.map((header, index) => (
-              <th key={index} className="Teamproject-table-header-cell">
+              <th key={index} className="Teamproject-table-header-cell" colSpan={header.includes('월') ? 4 : 1}>
                 {header}
               </th>
             ))}
           </tr>
-          {/* <tr>
-          {headers.map((header, index) => (
-                <th key={index} className="Teamproject-table-header-cell">
-                    {header.includes('월') ? (
-                        Array.from({ length: 4 }, (_, idx) => (
-                            <th key={idx}>{idx + 1}</th>
-                        ))
-                    ) : ''}
-                </th>
-            ))}
-          </tr> */}
+          <tr className="Teamproject-table-subheader">
+          {headers.map((header) => (
+            header.includes('월') ? (
+              Array.from({ length: 4 }, (_, idx) => (
+                <th key={`${header}-${idx}`} className="Teamproject-table-header-cell">{`${idx + 1}`}</th>
+              ))
+            ) : (
+              <th key={header} className="Teamproject-table-header-cell"></th>
+            )
+          ))}
+        </tr>
         </thead>
         <tbody>
           {(selectedYear && selectYear) && selectedYear[selectYear] &&
@@ -636,19 +767,20 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
 
                 <td className="Teamproject-table-cell Table-cell-overflow" title={row.Users} style={{maxWidth: '100px'}}>{row.Users}</td>
                 <td className="Teamproject-table-cell">{`${row.ProopsMM}MM`}</td>
-                { row.StartMonth && [...Array(row.StartMonth - 1)].map((_, idx) => (
+                { row.StartMonth && blankWeekBefore(row.StartMonth, row.StartWeek) !== 0 && [...Array(blankWeekBefore(row.StartMonth, row.StartWeek))]?.map((_, idx) => (
                   <td key={idx} className="Teamproject-table-cell"></td>
                 ))}
                   
                     <td
                    className="Teamproject-table-cell"
                    colSpan={
-                     row.StartMonth === 1
-                    ? row.EndMonth
-                       : row.EndMonth - row.StartMonth + 1
+                    //  row.StartMonth === 1
+                    // ? row.EndMonth
+                    //    : row.EndMonth - row.StartMonth + 1
+                    sumWeek(row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek)
+                    
                    }
                  >
-                
                  <div className="Teamprogress-bar-container">
                     <div
                       className="Teamprogress-bar"
@@ -656,17 +788,13 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                         width: `${calculatePercentage( row.StartMonth, row.EndMonth )}%`,
                       }}
                     >
-                      { currentMonth < row.StartMonth ? <div></div> : calculatePercentage( row.StartMonth, row.EndMonth ) === 100 ? '완료' : <div>{calculatePercentage( row.StartMonth, row.EndMonth )}%</div> }
+                      { currentMonth < row.StartMonth ? <div></div> : calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === 100 ? '완료' : <div>{calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek )}%</div> }
                     </div>
                   </div>
                 </td>
-                {[
-                  ...Array(
-                     12 -
-                      (row.StartMonth === 1
-                        ? row?.EndMonth + row.StartMonth - 1
-                        : row?.EndMonth)
-                  ),
+                { row.EndMonth && blankWeekAfter(row.EndMonth, row.EndWeek) !== 0 &&
+                [
+                  ...Array(blankWeekAfter(row.EndMonth, row.EndWeek)),
                 ].map((_, idx) => (
                   <td key={idx} className="Teamproject-table-cell"></td>
                 ))}
