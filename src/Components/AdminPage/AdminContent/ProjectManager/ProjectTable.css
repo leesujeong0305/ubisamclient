@@ -30,12 +30,12 @@
     color: #333;
   }
   
-  tr:nth-child(even) td {
+  .pre-line-project tr:nth-child(even) td {
     background-color: #e0e0e0;
   }
   
   tr:hover td {
-    background-color: #d0d0d0;
+    background-color: #eee;
   }
   
   .progress-bar {
@@ -60,27 +60,6 @@
     font-weight: bold;
   }
   
-  .status-button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    background-color: #007bff;
-    cursor: pointer;
-  }
-  
-  .status-button.start {
-    background-color: #4caf50;
-  }
-  
-  .status-button.in-progress {
-    background-color: #ff9800;
-  }
-  
-  .status-button.completed {
-    background-color: #8bc34a;
-  }
-  
   .personnel-list {
     max-width: 600px; /* 필요에 따라 너비 조정 */
     white-space: nowrap;
@@ -88,7 +67,7 @@
     padding-top: 10px; /* 스크롤바를 아래로 이동 */
   }
 
-  /* 수정 버튼 CSS
+  /* 수정 버튼 CSS */
   .edit-button {
     padding: 5px 10px;
     border: none;
@@ -97,7 +76,18 @@
     background-color: #007bff;
     cursor: pointer;
   }
-  
+
+
+.edit-button-click {
+  padding: 2px 5px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #FF7777;
+  cursor: pointer;
+}
+
+  /*
   .edit-button:hover {
     background-color: #0056b3;
   }
@@ -111,7 +101,7 @@
 } */
 
 /* 테이블 카운터 스타일 */
-/* .table-counter {
+ .table-counter {
   font-size: 18px;
   font-weight: bold;
   text-align: left;
@@ -119,10 +109,10 @@
   align-items: center;
   justify-content: space-between;
   margin: 0 20px;
-} */
+} 
 
 /* 프로젝트 생성 버튼 스타일 */
-/* .create-button {
+ .create-button {
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
@@ -130,11 +120,11 @@
   background-color: #007bff;
   cursor: pointer;
   margin-left: auto;
-} */
+} 
   
-  /* .create-button:hover {
+   .create-button:hover {
     background-color: #0056b3;
-  }  */
+  } 
 
   /* 프로젝트 생성 버튼 스타일 */
 .create-button {

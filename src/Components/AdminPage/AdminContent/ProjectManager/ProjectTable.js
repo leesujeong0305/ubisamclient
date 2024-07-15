@@ -16,6 +16,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             Status: 0,
             Period: '',
             View: 0,
+            Field: 0,
         },
     ];
     const Continents = [
@@ -30,6 +31,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         '인 원',
         '상태',
         '기간',
+        // '진행 상태',
         'View',
         '수정',
     ];
@@ -40,6 +42,8 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         '완료',
         'none',
     ];
+
+    const fields = [ '대기', '진행', '완료', ];
 
     const selectSite = () => {
         if (authUserTeam === undefined) return;
@@ -72,7 +76,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
     const [projectEdit, setProjectEdit] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
-    const [postsPerPage] = useState(13); // 페이지 당 포스트 수
+    const [postsPerPage] = useState(15); // 페이지 당 포스트 수
     const [totalPage, setTotalPage] = useState(0); //전체 Page 수
 
 
@@ -90,7 +94,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         const { name, value } = e.target;
         setFormValues((prevData) => ({
             ...prevData,
-            [name]: value,
+            [name]: name === 'Field' ? parseInt(value, 10) : value,
         }));
     };
 
@@ -142,7 +146,8 @@ const ProjectTable = ({ projects, handleUpdate }) => {
       .map((checkbox) => checkbox.label)
       .join(', ');
 
-        if (formValues.Project || formValues.Period || selectedUsers === '' || formValues.PM === undefined || formValues.Status === undefined) {
+        if (formValues.Project || formValues.Period || selectedUsers === '' || formValues.PM === undefined
+            || formValues.Status === undefined || formValues.Field === undefined) {
             const site = selectSite();
             const row = {
                 //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
@@ -152,7 +157,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                 Status: formValues.Status,
                 PM: formValues.PM,
                 View: 1,
-
+                Field: formValues.Field,
             };
             //console.log('newRow', newRow);
             await AddProjectInfo(row, site);
@@ -186,6 +191,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                 Status: formValues.Status,
                 PM: formValues.PM,
                 View: formValues.View,
+                Field: formValues.Field,
 
         };
         const result = await UpdateProjectInfo(row, site, false);
@@ -298,6 +304,21 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                             />
                         </div>
 
+                        {/* <div className="input-container dropdown-container">
+                            <label className="input-label">Field</label>
+                            <select
+                                name="Field"
+                                className="input-field"
+                                value={formValues.Field}
+                                onChange={handleInputChange}
+                            >
+                                <option value="0">Select</option>
+                                {fields.map((field, index) => (
+                                    <option value={index + 1}>{field}</option>
+                                ))}
+                            </select>
+                        </div> */}
+
                         <div className="input-container">
                             <button
                                 className="project-button"
@@ -369,6 +390,20 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 onChange={handleInputChange}
                             />
                         </div>
+                        {/* <div className="input-container dropdown-container">
+                            <label className="input-label">Field</label>
+                            <select
+                                name="Field"
+                                className="input-field"
+                                value={formValues.Field}
+                                onChange={handleInputChange}
+                            >
+                                <option value={0}>Select</option>
+                                {fields.map((field, index) => (
+                                    <option value={index + 1}>{field}</option>
+                                ))}
+                            </select>
+                        </div> */}
                         <div className="input-container">
                             <button
                                 className="project-button"
@@ -422,7 +457,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                 )}
             </div>
 
-            <div className="project-table">
+            <div className="project-table mb-4 pre-line-project">
                 <table className="Teamproject-table">
                     <thead className="Teamproject-head">
                         <tr className="Teamproject-table-header">
@@ -440,8 +475,9 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 <td className="Teamproject-table-cell">{row.ProjectName}</td>
                                 <td className="Teamproject-table-cell">{row.PM}</td>
                                 <td className="Teamproject-table-cell Table-cell-overflow" title={row.Users} style={{ maxWidth: '100px' }}>{row.Users}</td>
-                                <td className="Teamproject-table-cell">{row.Status}</td>
+                                <td className="Teamproject-table-cell">{states[row.Status - 1] || 'Unknown Status'}</td>
                                 <td className="Teamproject-table-cell">{row.Period}</td>
+                                {/* <td className="Teamproject-table-cell">{fields[row.Field - 1] || 'Unknown Status'}</td> */}
                                 <td className="Teamproject-table-cell">
                                     {/* <label className="switch" >
                                         <input
@@ -463,7 +499,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 </td>
                                 <td className="Teamproject-table-cell">
                                     <button
-                                        className="edit-button"
+                                        className={selectedRow === row.id ? 'edit-button-click' : 'edit-button'}
                                         onClick={() => {
                                             handleEdit(row);
                                             handleRowClick(row.Users);

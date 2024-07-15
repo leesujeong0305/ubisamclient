@@ -12,6 +12,7 @@ export const AddProjectInfo = async (row, site) => {
     Status: row.Status,
     PM: row.PM,
     Site: site,
+    Field: row.Field,
   }, {
     headers: {
       "Content-Type": "application/json",

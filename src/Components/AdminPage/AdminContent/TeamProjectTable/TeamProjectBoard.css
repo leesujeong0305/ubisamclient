@@ -132,6 +132,15 @@ body {
   cursor: pointer;
 }
 
+.edit-button-click {
+  padding: 2px 5px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #FF7777;
+  cursor: pointer;
+}
+
 .delete-button {
   padding: 2px 5px;
   border: none;

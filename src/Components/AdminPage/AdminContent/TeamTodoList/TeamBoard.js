@@ -49,14 +49,6 @@ const TeamBoard = ({ posts }) => {
         setShow(true);
     };
 
-    const handleCreate = () => {
-        setBoard(posts);
-    }
-
-    const handleClear = () => {
-        setBoard([]);
-    }
-
     useEffect(() => {
         console.log('포스트 갯수', posts.length);
         if (posts !== undefined) {
@@ -67,9 +59,7 @@ const TeamBoard = ({ posts }) => {
 
     return (
         <div>
-            <button onClick={handleCreate}>생성</button>
-            <button onClick={handleClear}>삭제</button>
-            <table className="table table-striped table-hover border-primary table-fixed">
+            <table className="table table-striped table-hover table-fixed">
                 <thead className="list-Title">
                     <tr>
                         {columns.map((col, index) => (

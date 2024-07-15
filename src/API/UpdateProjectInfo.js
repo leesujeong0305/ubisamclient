@@ -32,6 +32,7 @@ export const UpdateProjectInfo = async (row, site, view) => {
       PM: row.PM,
       Site: site,
       //View: row.View,
+      Field: row.Field,
     }, {
       headers: {
         "Content-Type": "application/json",

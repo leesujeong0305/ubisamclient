@@ -158,7 +158,6 @@ const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
           tab={selectedTab}
         />
       </div>
-      <br></br>
       <div>
         <Pagination
           postsPerPage={postsPerPage} // 페이지 당 포스트 수

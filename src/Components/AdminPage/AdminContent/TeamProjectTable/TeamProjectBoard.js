@@ -125,6 +125,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
   const calculatePercentage = (startDate, endDate) => {
     const months = [1,3,5,7,8,10,12];
     let percentage = 0;
+    let cut = 0;
     if (currentMonth > endDate)
       return 100;
     if (startDate > endDate)
@@ -132,12 +133,13 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     if (startDate === 1) {
       const ratio = currentMonth / endDate;
       percentage = ratio * 100;
+      cut = endDate - (startDate + 1);
     } else {
-      const ratio = currentMonth / (endDate);
+      const ratio = currentMonth / (endDate );
       percentage = ratio * 100;
+      cut = endDate - (startDate);
     }
 
-    const cut = endDate - startDate + 1;
     const per = percentage / cut;
 
     let cnt = 0;
@@ -148,27 +150,27 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     else
       cnt = per/30;
     
-    percentage = (per * (cut-1)) + (cnt * today.getDate()); // 몇주차 체크 6: 1주차, 4: 2주차, 2: 3주차 
-    if (startDate === 1) { //비율에 대한 보정값
-      if (endDate < 10 && today.getDate() < 15 ) {
-        percentage = percentage + (cnt * 10);
-        //console.log('percentage1', percentage, currentMonth);
-      }
-      else if (endDate < 10 && today.getDate() < 26) {
-        percentage = percentage + (cnt);
-        //console.log('percentage2', percentage);
-      }
-    } else {
-      if (currentMonth + 2 >= endDate && today.getDate() < 15 )
-        percentage = percentage + (cnt * 10);
-      else if (currentMonth + 2 >= endDate && today.getDate() < 15)
-        percentage = percentage + (cnt);
-      else if (currentMonth < endDate && today.getDate() < 26)
-        percentage = percentage - (cnt * 10);
-    }
+    //percentage = (per * (cut-1)) + (cnt * today.getDate()); // 몇주차 체크 6: 1주차, 4: 2주차, 2: 3주차 
+    // if (startDate === 1) { //비율에 대한 보정값
+    //   if (endDate < 10 && today.getDate() < 15 ) {
+    //     percentage = percentage + (cnt * 10);
+    //     //console.log('percentage1', percentage, currentMonth);
+    //   }
+    //   else if (endDate < 10 && today.getDate() < 26) {
+    //     percentage = percentage + (cnt);
+    //     //console.log('percentage2', percentage);
+    //   }
+    // } else {
+    //   if (currentMonth + 2 >= endDate && today.getDate() < 15 )
+    //     percentage = percentage + (cnt * 10);
+    //   else if (currentMonth + 2 >= endDate && today.getDate() < 15)
+    //     percentage = percentage + (cnt);
+    //   else if (currentMonth < endDate && today.getDate() < 26)
+    //     percentage = percentage - (cnt * 10);
+    // }
     // else
     //console.log('percentage3', percentage);
-      
+    //percentage = percentage + (cut/2);
     return percentage.toFixed(2);
   };
 
@@ -280,17 +282,6 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     }
 
     const site = selectSite();
-    // const row = {
-    //   Project: formValues.Project,
-    //   Date: dateString,
-    //   Status: formValues.Status,
-    //   StartMonth: formValues.StartMonth,
-    //   EndMonth: formValues.EndMonth,
-    //   Users: selectedUsers,
-    //   ProopsMM: formValues.ProopsMM,
-    //   Manager: formValues.Manager,
-    // };
-
     const rowData = row.Project;
 
     const result = await DeleteTeamProject(rowData, site);
@@ -614,7 +605,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
         )}
       </div>
 
-      <table className="Teamproject-table">
+      <table className="Teamproject-table pre-line-project">
         <thead className="Teamproject-head">
           <tr className="Teamproject-table-header">
             {headers.map((header, index) => (
@@ -623,6 +614,17 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               </th>
             ))}
           </tr>
+          {/* <tr>
+          {headers.map((header, index) => (
+                <th key={index} className="Teamproject-table-header-cell">
+                    {header.includes('월') ? (
+                        Array.from({ length: 4 }, (_, idx) => (
+                            <th key={idx}>{idx + 1}</th>
+                        ))
+                    ) : ''}
+                </th>
+            ))}
+          </tr> */}
         </thead>
         <tbody>
           {(selectedYear && selectYear) && selectedYear[selectYear] &&
@@ -672,7 +674,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                 <td className="Teamproject-table-cell">{row.Manager}</td>
                 <td className="Teamproject-table-cell">
                   <button
-                    className="edit-button"
+                    className={selectedRow === row.id ? `edit-button-click` : `edit-button`}
                     onClick={() => {
                       handleEdit(row);
                       handleRowClick(row.Users);

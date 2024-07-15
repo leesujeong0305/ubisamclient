@@ -22,8 +22,9 @@
 
   .table-fixed th,
 .table-fixed td {
-  text-align: center;
   vertical-align: middle;
+  font-size: 13px;
+  border-bottom: #89C0AE 1px solid;
 }
 
 .table-fixed th:nth-child(5), th:nth-child(6) {
