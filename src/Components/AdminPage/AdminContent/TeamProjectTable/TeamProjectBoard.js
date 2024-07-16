@@ -188,7 +188,6 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
         return;
       }
 
-
       console.log('formVal', formValues);
     if (
       formValues.Project === undefined || formValues.Status === undefined ||

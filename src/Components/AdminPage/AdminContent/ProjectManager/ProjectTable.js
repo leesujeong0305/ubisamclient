@@ -5,6 +5,7 @@ import { AddProjectInfo } from '../../../../API/AddProjectInfo';
 import GetUserInfo from '../../../../API/GetUserInfo';
 import { useSelector } from 'react-redux';
 import { UpdateProjectInfo } from '../../../../API/UpdateProjectInfo';
+import { GetProjectInfo } from '../../../../API/GetProjectInfo';
 
 const ProjectTable = ({ projects, handleUpdate }) => {
     const initialData = [
@@ -42,7 +43,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         '완료',
     ];
 
-    const fields = [ '대기', '진행', '완료', ];
+    const fields = ['대기', '진행', '완료',];
 
     const selectSite = () => {
         if (authUserTeam === undefined) return;
@@ -141,13 +142,21 @@ const ProjectTable = ({ projects, handleUpdate }) => {
 
     const handleAddRow = async () => {
         const selectedUsers = checkboxes
-      .filter((checkbox) => checkbox.checked)
-      .map((checkbox) => checkbox.label)
-      .join(', ');
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.label)
+            .join(', ');
+        const site = selectSite();
+        const data = await GetProjectInfo("All", site);
+        const projectExists = data.some(item => item.ProjectName === formValues.Project);
+        if (projectExists) {
+            alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요');
+            return;
+        }
 
         if (formValues.Project || formValues.Period || selectedUsers === '' || formValues.PM === undefined
             || formValues.Status === undefined || formValues.Field === undefined) {
-            const site = selectSite();
+            alert("입력하지 않은 항목이 존재합니다.");
+        } else {
             const row = {
                 //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
                 Project: formValues.Project,
@@ -167,8 +176,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             setCheckboxes(initCheckbox);
 
             handleUpdate(true);
-        } else
-            alert("입력하지 않은 항목이 존재합니다.");
+        }
     };
 
     const handleEditRow = async () => {
@@ -176,33 +184,33 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             // 사용자가 Cancel을 클릭한 경우
             console.log('프로젝트 수정이 취소되었습니다.');
             return;
-          }
-          const site = selectSite();
-          const selectedUsers = checkboxes
+        }
+        const site = selectSite();
+        const selectedUsers = checkboxes
             .filter((checkbox) => checkbox.checked)
             .map((checkbox) => checkbox.label)
             .join(', ');
         const row = {
-                //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
-                Project: formValues.Project,
-                Period: formValues.Period, // 나이를 숫자로 변환
-                Users: selectedUsers,
-                Status: formValues.Status,
-                PM: formValues.PM,
-                View: formValues.View,
-                Field: formValues.Field,
+            //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
+            Project: formValues.Project,
+            Period: formValues.Period, // 나이를 숫자로 변환
+            Users: selectedUsers,
+            Status: formValues.Status,
+            PM: formValues.PM,
+            View: formValues.View,
+            Field: formValues.Field,
 
         };
         const result = await UpdateProjectInfo(row, site, false);
 
-            setProjectAdd(false);
-            setProjectEdit(false);
-            setShowCheckboxes(false);
-            setCheckboxes(initCheckbox);
-            setFormValues(initialData);
-            setSelectedRow(null);
+        setProjectAdd(false);
+        setProjectEdit(false);
+        setShowCheckboxes(false);
+        setCheckboxes(initCheckbox);
+        setFormValues(initialData);
+        setSelectedRow(null);
 
-            handleUpdate(true);
+        handleUpdate(true);
     };
 
     const handleRowClick = (users) => {
@@ -476,14 +484,14 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                     <tbody>
                         {currentPosts?.map((row, index) => (
                             <tr key={index} className="project-table-row" >
-                                <td className="project-table-cell" style={{textAlign:'center', width:'50px'}}>{row.id}</td>
-                                <td className="project-table-cell" style={{textAlign:'center', width:'500px'}}>{row.ProjectName}</td>
-                                <td className="project-table-cell" style={{textAlign:'center', width:'70px'}}>{row.PM}</td>
+                                <td className="project-table-cell" style={{ textAlign: 'center', width: '50px' }}>{row.id}</td>
+                                <td className="project-table-cell" style={{ textAlign: 'center', width: '500px' }}>{row.ProjectName}</td>
+                                <td className="project-table-cell" style={{ textAlign: 'center', width: '70px' }}>{row.PM}</td>
                                 <td className="project-table-cell Table-cell-overflow" title={row.Users} style={{ maxWidth: '100px' }}>{row.Users}</td>
-                                <td className="project-table-cell" style={{textAlign:'center', width:'70px'}}>{states[row.Status - 1] || 'Unknown Status'}</td>
-                                <td className="project-table-cell" style={{textAlign:'center', width:'200px'}}>{row.Period}</td>
+                                <td className="project-table-cell" style={{ textAlign: 'center', width: '70px' }}>{states[row.Status - 1] || 'Unknown Status'}</td>
+                                <td className="project-table-cell" style={{ textAlign: 'center', width: '200px' }}>{row.Period}</td>
                                 {/* <td className="project-table-cell">{fields[row.Field - 1] || 'Unknown Status'}</td> */}
-                                <td className="project-table-cell" style={{textAlign:'center', width:'70px'}}>
+                                <td className="project-table-cell" style={{ textAlign: 'center', width: '70px' }}>
                                     {/* <label className="switch" >
                                         <input
                                             style={{ width: '20px', height: '20px', }}
@@ -494,15 +502,15 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                     </label> */}
                                     <label className="switch">
                                         <input
-                                        style={{ width: '20px', height: '20px', }}
+                                            style={{ width: '20px', height: '20px', }}
                                             type="checkbox"
-                                            checked={viewStates[row.id-1]}
+                                            checked={viewStates[row.id - 1]}
                                             onChange={() => handleToggle(row)}
                                         />
                                         <span className="slider round"></span>
                                     </label>
                                 </td>
-                                <td className="project-table-cell" style={{textAlign:'center', width:'70px'}}>
+                                <td className="project-table-cell" style={{ textAlign: 'center', width: '70px' }}>
                                     <button
                                         className={selectedRow === row.id ? 'edit-button-click' : 'edit-button'}
                                         onClick={() => {
