@@ -146,56 +146,28 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     if (startDate === 1) {
       // const ratio = ((endDate - startDate - 1) * 4) - startWeek - 1 + endWeek - 1; // 총기간
       // const period = ((currentMonth - startDate) * 4) - startWeek - 1 + day;
-      const ratio = ((endDate - startDate) * 4) - ((4 - startWeek - 1) + (endWeek - 1)); // 총기간  24 - (4 - 3 -1) + ()
-      const period = ((currentMonth - startDate) * 4) - startWeek - 1 + day; // 24 
-      console.log('총기간 ', ratio, '실제기간 ', period, 'day', day);
-      percentage = period / ratio;
+        if (startWeek === 1) {
+          const ratio = ((endDate) * 4) - (4 - endWeek); // 총기간  24 - (4 - 3 -1) + () //29
+        const period = ((currentMonth) * 4) - (4 - day); // 25
+        console.log('총기간 ', ratio, '실제기간 ', period, 'day', day);
+        percentage = period / ratio * 100;
+        } else {
+          const ratio = ((endDate) * 4) - (startWeek === 4 ? startWeek - 1 : (4- (startWeek-1))) - (4 - endWeek); // 총기간  8 * 4 - (4- (4-1)) - (4-(1))    26
+          const period = ((currentMonth) * 4) - (startWeek === 4 ? startWeek - 1 : (4- (startWeek-1))) - (4 - day); // 20 + 2    28 - 3 -
+          console.log('총기간 ', ratio, '실제기간 ', period, 'day', day);
+          percentage = period / ratio * 100;
+        }
+    } else {
+      const ratio = ((endDate - (startDate - 1)) * 4) - (4 - endWeek); // 8*4 = 32 + 3
+        const period = ((currentMonth) * 4) - (4 - day); // 25
+        console.log('총기간 ', ratio, '실제기간 ', period, 'day', day);
+        percentage = period / ratio * 100;
+      if (startWeek === 1) {
+
+      }
+      
     }
-    
-    
-    
-    
-    // if (startDate === 1) {
-    //   const ratio = currentMonth / endDate;
-    //   percentage = ratio * 100;
-    //   cut = endDate - (startDate + 1);
-    // } else {
-    //   const ratio = currentMonth / (endDate );
-    //   percentage = ratio * 100;
-    //   cut = endDate - (startDate);
-    // }
 
-    // const per = percentage / cut;
-
-    // let cnt = 0;
-    // if (endDate === 2)
-    //   cnt = per/27;
-    // else if (months.includes(endDate))
-    //   cnt = per/31;
-    // else
-    //   cnt = per/30;
-    
-    //percentage = (per * (cut-1)) + (cnt * today.getDate()); // 몇주차 체크 6: 1주차, 4: 2주차, 2: 3주차 
-    // if (startDate === 1) { //비율에 대한 보정값
-    //   if (endDate < 10 && today.getDate() < 15 ) {
-    //     percentage = percentage + (cnt * 10);
-    //     //console.log('percentage1', percentage, currentMonth);
-    //   }
-    //   else if (endDate < 10 && today.getDate() < 26) {
-    //     percentage = percentage + (cnt);
-    //     //console.log('percentage2', percentage);
-    //   }
-    // } else {
-    //   if (currentMonth + 2 >= endDate && today.getDate() < 15 )
-    //     percentage = percentage + (cnt * 10);
-    //   else if (currentMonth + 2 >= endDate && today.getDate() < 15)
-    //     percentage = percentage + (cnt);
-    //   else if (currentMonth < endDate && today.getDate() < 26)
-    //     percentage = percentage - (cnt * 10);
-    // }
-    // else
-    //console.log('percentage3', percentage);
-    //percentage = percentage + (cut/2);
     return percentage.toFixed(2);
   };
 
@@ -785,7 +757,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                     <div
                       className="Teamprogress-bar"
                       style={{
-                        width: `${calculatePercentage( row.StartMonth, row.EndMonth )}%`,
+                        width: `${calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek )}%`,
                       }}
                     >
                       { currentMonth < row.StartMonth ? <div></div> : calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === 100 ? '완료' : <div>{calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek )}%</div> }
