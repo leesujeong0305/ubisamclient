@@ -133,21 +133,21 @@
   padding: 10px;
 }
 
-.Teamproject-table {
+.project-table {
   width: 100%;
   border-collapse: collapse;
   text-align: center;
 }
 
-.Teamproject-table-header-cell,
-.Teamproject-table-cell {
+.project-table-header-cell,
+.project-table-cell {
   border: 1px solid black;
   padding: 6px;
   text-align: center;
   font-size: 14px;
 }
 
-.Teamproject-table-header-cell {
+.project-table-header-cell {
   background-color: #444;
   color: #fff;
 }
@@ -178,13 +178,13 @@
 }
 
 @media (max-width: 600px) {
-  .Teamproject-table {
+  .project-table {
     display: block;
     width: 100%;
   }
 
-  .Teamproject-table-header-cell,
-  .Teamproject-table-cell {
+  .project-table-header-cell,
+  .project-table-cell {
     display: inline-block;
     width: 8%;
     margin-bottom: 10px;

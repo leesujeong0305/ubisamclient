@@ -462,11 +462,11 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             </div>
 
             <div className="project-table mb-4 pre-line-project">
-                <table className="Teamproject-table">
-                    <thead className="Teamproject-head">
-                        <tr className="Teamproject-table-header">
+                <table className="project-table">
+                    <thead className="project-head">
+                        <tr className="project-table-header">
                             {headers.map((header, index) => (
-                                <th key={index} className="Teamproject-table-header-cell">
+                                <th key={index} className="project-table-header-cell">
                                     {header}
                                 </th>
                             ))}
@@ -474,15 +474,15 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                     </thead>
                     <tbody>
                         {currentPosts?.map((row, index) => (
-                            <tr key={index} className="Teamproject-table-row" >
-                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'50px'}}>{row.id}</td>
-                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'500px'}}>{row.ProjectName}</td>
-                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'70px'}}>{row.PM}</td>
-                                <td className="Teamproject-table-cell Table-cell-overflow" title={row.Users} style={{ maxWidth: '100px' }}>{row.Users}</td>
-                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'70px'}}>{states[row.Status - 1] || 'Unknown Status'}</td>
-                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'200px'}}>{row.Period}</td>
-                                {/* <td className="Teamproject-table-cell">{fields[row.Field - 1] || 'Unknown Status'}</td> */}
-                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'70px'}}>
+                            <tr key={index} className="project-table-row" >
+                                <td className="project-table-cell" style={{textAlign:'center', width:'50px'}}>{row.id}</td>
+                                <td className="project-table-cell" style={{textAlign:'center', width:'500px'}}>{row.ProjectName}</td>
+                                <td className="project-table-cell" style={{textAlign:'center', width:'70px'}}>{row.PM}</td>
+                                <td className="project-table-cell Table-cell-overflow" title={row.Users} style={{ maxWidth: '100px' }}>{row.Users}</td>
+                                <td className="project-table-cell" style={{textAlign:'center', width:'70px'}}>{states[row.Status - 1] || 'Unknown Status'}</td>
+                                <td className="project-table-cell" style={{textAlign:'center', width:'200px'}}>{row.Period}</td>
+                                {/* <td className="project-table-cell">{fields[row.Field - 1] || 'Unknown Status'}</td> */}
+                                <td className="project-table-cell" style={{textAlign:'center', width:'70px'}}>
                                     {/* <label className="switch" >
                                         <input
                                             style={{ width: '20px', height: '20px', }}
@@ -501,7 +501,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                         <span className="slider round"></span>
                                     </label>
                                 </td>
-                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'70px'}}>
+                                <td className="project-table-cell" style={{textAlign:'center', width:'70px'}}>
                                     <button
                                         className={selectedRow === row.id ? 'edit-button-click' : 'edit-button'}
                                         onClick={() => {

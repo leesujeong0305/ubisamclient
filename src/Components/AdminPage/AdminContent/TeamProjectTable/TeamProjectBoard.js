@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { AddTeamProject } from '../../../../API/AddTeamProject';
 import { UpdateTeamProject } from '../../../../API/UpdateTeamProject';
 import { DeleteTeamProject } from '../../../../API/DeleteTeamProject';
+import GetTeamProject from '../../../../API/GetTeamProject';
 
 const TeamProjectBoard = ({ posts, handleUpdate }) => {
   const initialData = [
@@ -179,6 +180,14 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       .filter((checkbox) => checkbox.checked)
       .map((checkbox) => checkbox.label)
       .join(', ');
+      const site = selectSite();
+      const data = await GetTeamProject(site);
+      const projectExists = data.some(item => item.ProjectName === formValues.Project);
+      if (projectExists) {
+        alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요');
+        return;
+      }
+
 
       console.log('formVal', formValues);
     if (
@@ -190,7 +199,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     ) {
       alert('입력하지 않은 항목이 존재합니다.');
     } else {
-      const site = selectSite();
+      
       const row = {
         Project: formValues.Project,
         Date: dateString,
@@ -377,9 +386,14 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     <div className="team-table-container">
       <div className="Team-table-counter">
         <div className="year">
-          <button className="before-btn" onClick={handleBeforeYear}>
+          { selectedYear[selectYear - 1] && (
+            <button className="before-btn" onClick={handleBeforeYear}>
             ◀️
           </button>
+          )
+            
+          }
+          
           <span>{selectYear}년</span>
           <button className="after-btn" onClick={handleAfterYear}>
             ▶️
@@ -737,7 +751,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
             selectedYear[selectYear]?.map((row, index) => (
               <tr key={index} className="Teamproject-table-row">
                 <td className="Teamproject-table-cell">{row.id}</td>
-                <td className="Teamproject-table-cell">{row.Project}</td>
+                <td className="Teamproject-table-cell project-cell-overflow" title={row.Project}>{row.Project}</td>
                 <td className="Teamproject-table-cell" style={{backgroundColor: calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00'  ? '#009570' : row.Status - 1 === 3 ? '#e9d819' : '' }}>
                   { calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00' ? '완료' : states[row.Status - 1] }</td>
 

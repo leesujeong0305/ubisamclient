@@ -2,6 +2,7 @@
 .team-table-container {
   overflow-x: auto;
   padding: 10px;
+  font-size: 10px;
 }
 
 .Team-table-counter {
@@ -13,6 +14,7 @@
   background-color: #f0f0f0;
   border: 1px solid #ddd;
   border-radius: 5px;
+  font-size: 17px;
 }
 
 .year {
@@ -96,6 +98,14 @@
 
 .users-cell-overflow {
   max-width: 60px; /* 원하는 최대 너비로 설정 */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+.project-cell-overflow {
+  max-width: 160px; /* 원하는 최대 너비로 설정 */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -310,7 +320,7 @@
 }
 
 .col-project {
-  width: 200px; 
+  width: 160px; 
 }
 
 .col-status {
