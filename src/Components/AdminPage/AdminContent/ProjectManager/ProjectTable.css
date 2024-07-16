@@ -113,32 +113,20 @@
 
 /* 프로젝트 생성 버튼 스타일 */
  .create-button {
-  padding: 5px 10px;
   border: none;
   border-radius: 5px;
   color: #fff;
   background-color: #007bff;
   cursor: pointer;
   margin-left: auto;
+  font-size: 14px;
+  margin-top: 5px;
 } 
   
    .create-button:hover {
     background-color: #0056b3;
   } 
 
-  /* 프로젝트 생성 버튼 스타일 */
-.create-button {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  background-color: #007bff;
-  cursor: pointer;
-}
-
-.create-button:hover {
-  background-color: #0056b3;
-}
 
 .project-table-container {
   overflow-x: auto;
@@ -185,7 +173,7 @@
   transition: width 0.4s ease;
 }
 
-.table-fixed th:nth-child(5), th:nth-child(6) {
+.table-fixed th:nth-child(4), th:nth-child(5) {
   text-align: center;
 }
 
@@ -257,7 +245,7 @@
   color: #fff;
   background-color: #009570;
   cursor: pointer;
-  margin-left: 50px;
+  margin-left: 5px;
 }
 
 .input-parrent {
@@ -268,7 +256,7 @@
 
 .input-container {
   position: relative;
-  width: 90px;
+  width: 120px;
   margin-top: 10px;
   margin-left: 5px;
   margin-right: 5px;
@@ -288,7 +276,7 @@
 }
 
 .input-field {
-  width: 90px;
+  width: 120px;
   padding: 7px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -380,4 +368,58 @@
 .before-btn:hover,
 .after-btn:hover {
   color: #222;
+}
+
+/* 토글 스위치 CSS */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(14px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

@@ -28,7 +28,6 @@
 .sider-item:hover {
   background-color: #1677ff; /* Change to sky blue on hover */
   color: rgb(250, 246, 10);
-  width: 80%;
 }
 
 .sider.collapsed .sider-item {

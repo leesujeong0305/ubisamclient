@@ -1,7 +1,7 @@
 .layout {
   display: grid;
   grid-template-rows: 1fr 10fr 1fr; /* Equal heights */
-  grid-template-columns: 15% 1fr; /* Sider and content columns */
+  grid-template-columns: 12% 1fr; /* Sider and content columns */
   height: 100vh;
   width: 100%;
   background-color: #7C9DBC;

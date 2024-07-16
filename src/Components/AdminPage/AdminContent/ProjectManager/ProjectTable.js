@@ -40,7 +40,6 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         '제작',
         '셋업',
         '완료',
-        'none',
     ];
 
     const fields = [ '대기', '진행', '완료', ];
@@ -241,8 +240,8 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                 {
                     !projectEdit && (
                         <button className="create-button" onClick={handleCreate}>
-                            프로젝트 생성
-                            <i>{projectAdd ? '➖' : '➕'}</i>
+                            프로젝트 생성&nbsp;&nbsp;
+                            <i>{projectAdd ? ' ㆒' : ' ✚'}</i>
                         </button>
                     )
                 }
@@ -251,7 +250,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             {
                 projectAdd && (
                     <div className="input-parrent">
-                        <div className="input-container" style={{ width: '300px' }}>
+                        <div className="input-container" style={{ width: '400px' }}>
                             <label className="input-label">Project</label>
                             <input
                                 type="text"
@@ -259,10 +258,10 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 className="input-field"
                                 value={formValues.Project}
                                 onChange={handleInputChange}
-                                style={{ width: '300px' }}
+                                style={{ width: '400px' }}
                             />
                         </div>
-                        <div className="input-container">
+                        <div className="input-container" style={{ width: '200px' }}>
                             <label className="input-label">Period</label>
                             <input
                                 type="text"
@@ -270,6 +269,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 className="input-field"
                                 value={formValues.Period}
                                 onChange={handleInputChange}
+                                style={{ width: '200px' }}
                             />
                         </div>
                         <div className="input-container dropdown-container">
@@ -293,7 +293,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                             </button>
                         </div>
 
-                        <div className="input-container">
+                        <div className="input-container" style={{ width: '200px' }}>
                             <label className="input-label">PM</label>
                             <input
                                 type="text"
@@ -301,6 +301,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 className="input-field"
                                 value={formValues.PM}
                                 onChange={handleInputChange}
+                                style={{ width: '200px' }}
                             />
                         </div>
 
@@ -336,7 +337,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             {
                 projectEdit && (
                     <div className="input-parrent">
-                        <div className="input-container" style={{ width: '300px' }}>
+                        <div className="input-container" style={{ width: '400px' }}>
                             <label className="input-label">Project</label>
                             <input
                                 disabled
@@ -345,10 +346,10 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 className="input-field"
                                 value={formValues.Project}
                                 onChange={handleInputChange}
-                                style={{ width: '300px' }}
+                                style={{ width: '400px' }}
                             />
                         </div>
-                        <div className="input-container" style={{ width: '300px' }}>
+                        <div className="input-container" style={{ width: '200px' }}>
                             <label className="input-label">Period</label>
                             <input
                                 type="text"
@@ -356,7 +357,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 className="input-field"
                                 value={formValues.Period}
                                 onChange={handleInputChange}
-                                style={{ width: '300px' }}
+                                style={{ width: '200px' }}
                             />
                         </div>
                         <div className="input-container dropdown-container">
@@ -380,7 +381,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                             </button>
                         </div>
 
-                        <div className="input-container">
+                        <div className="input-container" style={{ width: '200px' }}>
                             <label className="input-label">PM</label>
                             <input
                                 type="text"
@@ -388,8 +389,10 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 className="input-field"
                                 value={formValues.PM}
                                 onChange={handleInputChange}
+                                style={{ width: '200px' }}
                             />
                         </div>
+
                         {/* <div className="input-container dropdown-container">
                             <label className="input-label">Field</label>
                             <select
@@ -398,19 +401,20 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 value={formValues.Field}
                                 onChange={handleInputChange}
                             >
-                                <option value={0}>Select</option>
+                                <option value="0">Select</option>
                                 {fields.map((field, index) => (
                                     <option value={index + 1}>{field}</option>
                                 ))}
                             </select>
                         </div> */}
+
                         <div className="input-container">
                             <button
                                 className="project-button"
                                 style={{ backgroundColor: '#005FCC' }}
                                 onClick={handleEditRow}
                             >
-                                Edit
+                                EDIT
                             </button>
                         </div>
                     </div>
@@ -470,15 +474,15 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                     </thead>
                     <tbody>
                         {currentPosts?.map((row, index) => (
-                            <tr key={index} className="Teamproject-table-row">
-                                <td className="Teamproject-table-cell">{row.id}</td>
-                                <td className="Teamproject-table-cell">{row.ProjectName}</td>
-                                <td className="Teamproject-table-cell">{row.PM}</td>
+                            <tr key={index} className="Teamproject-table-row" >
+                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'50px'}}>{row.id}</td>
+                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'500px'}}>{row.ProjectName}</td>
+                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'70px'}}>{row.PM}</td>
                                 <td className="Teamproject-table-cell Table-cell-overflow" title={row.Users} style={{ maxWidth: '100px' }}>{row.Users}</td>
-                                <td className="Teamproject-table-cell">{states[row.Status - 1] || 'Unknown Status'}</td>
-                                <td className="Teamproject-table-cell">{row.Period}</td>
+                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'70px'}}>{states[row.Status - 1] || 'Unknown Status'}</td>
+                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'200px'}}>{row.Period}</td>
                                 {/* <td className="Teamproject-table-cell">{fields[row.Field - 1] || 'Unknown Status'}</td> */}
-                                <td className="Teamproject-table-cell">
+                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'70px'}}>
                                     {/* <label className="switch" >
                                         <input
                                             style={{ width: '20px', height: '20px', }}
@@ -497,7 +501,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                         <span className="slider round"></span>
                                     </label>
                                 </td>
-                                <td className="Teamproject-table-cell">
+                                <td className="Teamproject-table-cell" style={{textAlign:'center', width:'70px'}}>
                                     <button
                                         className={selectedRow === row.id ? 'edit-button-click' : 'edit-button'}
                                         onClick={() => {
