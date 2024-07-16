@@ -367,8 +367,10 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       const initCheckboxes = users.map((val, index) => {
         return { id: index + 1, label: val.name, checked: false };
       });
-      setCheckboxes(initCheckboxes);
-      setInitCheckboxes(initCheckboxes);
+      const initUsers = [...initCheckboxes, { id: initCheckboxes.length + 1, label: '미정', checked: false }]
+      setCheckboxes(initUsers);
+      setInitCheckboxes(initUsers);
+      console.log('initUsers', initUsers);
     };
     const filterYear = () => {
       const groupedData = groupDataByYear(posts);

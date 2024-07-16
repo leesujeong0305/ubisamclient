@@ -222,8 +222,9 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             const initCheckboxes = users.map((val, index) => {
                 return { id: index + 1, label: val.name, checked: false };
             });
-            setCheckboxes(initCheckboxes);
-            setInitCheckboxes(initCheckboxes);
+            const initUsers = [...initCheckboxes, { id: initCheckboxes.length + 1, label: '미정', checked: false }]
+            setCheckboxes(initUsers);
+            setInitCheckboxes(initUsers);
         };
         if (projects) {
             const total = projects.length / postsPerPage;
