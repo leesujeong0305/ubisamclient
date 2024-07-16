@@ -1,13 +1,10 @@
-body {
-  font-family: Arial, sans-serif;
-}
 
-.project-table-container {
+.team-table-container {
   overflow-x: auto;
   padding: 10px;
 }
 
-.Teamtable-counter {
+.Team-table-counter {
   display: flex;
 
   align-items: center;
@@ -47,7 +44,6 @@ body {
   border: 1px solid black;
   padding: 6px;
   text-align: center;
-  font-size: 11px;
 }
 
 .Teamproject-table-header-cell {
@@ -98,8 +94,15 @@ body {
   }
 }
 
-.Table-cell-overflow {
-  max-width: 150px; /* 원하는 최대 너비로 설정 */
+.users-cell-overflow {
+  max-width: 60px; /* 원하는 최대 너비로 설정 */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.manager-cell-overflow {
+  max-width: 95px; /* 원하는 최대 너비로 설정 */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -120,6 +123,26 @@ body {
 
 .create-button:hover {
   background-color: #0056b3;
+}
+
+.team-add-button {
+  padding: 8px 10px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #009570;
+  cursor: pointer;
+  margin-left: 50px;
+}
+
+.team-project-button {
+  padding: 8px 10px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #009570;
+  cursor: pointer;
+  margin-left: 50px;
 }
 
 /* 수정 버튼 CSS */
@@ -160,22 +183,22 @@ body {
   margin-left: 50px;
 }
 
-.input-parrent {
+.team-input-parrent {
   margin: 0 auto;
   display: flex;
   margin-bottom: 5px;
 }
 
-.input-container {
+.team-input-container {
   position: relative;
   width: 90px;
   margin-top: 10px;
   margin-left: 5px;
   margin-right: 5px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
-.input-label {
+.team-input-label {
   position: absolute;
   top: 0%;
   left: 5px;
@@ -187,7 +210,7 @@ body {
   color: #222;
 }
 
-.input-field {
+.team-input-field {
   width: 90px;
   padding: 7px;
   border: 1px solid #ccc;
@@ -204,7 +227,7 @@ body {
   /* Removes default dropdown arrow in other browsers */
 }
 
-.input-field:focus {
+.team-input-field:focus {
   border-color: #007bff;
 }
 
@@ -220,7 +243,7 @@ body {
 }
 
 /* Additional styling for select dropdown */
-.dropdown-container::after {
+.team-dropdown-container::after {
   content: '▼';
   position: absolute;
   top: 50%;
@@ -233,13 +256,13 @@ body {
 
 
 /* Additional styling for checkbox */
-.checkbox-container {
+.team-checkbox-container {
   display: inline-block;
   align-items: center;
   width: auto;
 }
 
-.input-checkbox {
+.team-input-checkbox {
   transform: scale(1);
   /* Increase checkbox size */
   margin-right: 5px;
@@ -259,15 +282,14 @@ body {
   color: #007bff;
 }
 
-.users-check {
+.team-users-check {
   width: auto;
   align-self: center;
   font-size: 10px;
-  bottom: 2px;
 }
 
-.users-check button {
-  padding: 8px;
+.team-users-check button {
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
@@ -281,4 +303,28 @@ body {
 .before-btn:hover,
 .after-btn:hover {
   color: #222;
+}
+
+.col-id {
+  width: 40px; 
+}
+
+.col-project {
+  width: 200px; 
+}
+
+.col-status {
+  width: 50px; 
+}
+
+.col-users {
+  width: 50px; 
+}
+
+.col-suggest-mm {
+  width: 40px; 
+}
+
+.col-month {
+  width: 50px; 
 }
