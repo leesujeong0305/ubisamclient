@@ -346,14 +346,14 @@ function Board() {
                                         <Dropdown.Toggle variant="light" id="dropdown-basic" className="w-100 d-flex justify-content-between align-items-center">
                                             <span className="text-left"> {selectedProjectName}</span>
                                         </Dropdown.Toggle>
-                                        <Dropdown.Menu className="w-100">
+                                        <Dropdown.Menu className="w-100 dropdown-style">
                                             {selectedActionText.map((action) => (
                                                 <Dropdown.Item key={action.id} eventKey={action.text} className="d-flex align-items-center justify-content-between">
                                                     {action.text}
                                                     {selectedProjectName === action.text ? (
-                                                        <span className="text-warning  ms-2 fs-3">★</span> // Star for selected item
+                                                        <span className="text-warning ms-2 fs-5">★</span> // Star for selected item
                                                     ) : (
-                                                        <span className=" ms-2 fs-3">☆</span> // Grey star for unselected items
+                                                        <span className=" ms-2 fs-5">☆</span> // Grey star for unselected items
                                                     )}
                                                 </Dropdown.Item>
                                             ))}

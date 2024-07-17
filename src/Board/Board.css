@@ -27,6 +27,13 @@ body {
     background-color: #F5CF8C !important;
   }
 
+  .dropdown-style {
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: 0.9rem !important;
+  }
+
   @media (min-width: 576px) { /* Adjust this breakpoint as needed */
     .custom-modal-size {
       width: 90vw; /* Adjust the width to what is considered double size in your application */

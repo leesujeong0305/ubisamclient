@@ -137,7 +137,7 @@ const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
       <div className="nav-context">
       {select && <SelectItems select={select} setSelect={setSelect} isAdmin={true} />} {/* 검색기능과 개별로 동작되게  */}
       
-        <div className="nav-container scroll">
+        <div className="nav-container">
           {tabs.map((tab) => (
             <button
               className={selectedTab === tab ? "tab-button" : "nav-tab"}

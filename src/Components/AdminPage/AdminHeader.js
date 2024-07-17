@@ -4,8 +4,8 @@ import './AdminHeader.css';
 
 const AdminHeader = ({ title }) => {
   return (
-    <div className="header fw-b" style={{fontSize: '10px'}}>
-      <h1>{title}</h1>
+    <div className="header fw-b">
+      <h5>{title}</h5>
     </div>
   );
 };

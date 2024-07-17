@@ -136,8 +136,10 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             setSelectedRow(null);
         }
         else
+        {
             setProjectAdd(true);
-
+            setFormValues(initialData);
+        }
     };
 
     const handleAddRow = async () => {
@@ -153,8 +155,8 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             return;
         }
 
-        if (formValues.Project || formValues.Period || selectedUsers === '' || formValues.PM === undefined
-            || formValues.Status === undefined || formValues.Field === undefined) {
+        if (formValues.Project || formValues.Period || selectedUsers === '' 
+            || formValues.Status === undefined ) { //|| formValues.PM === undefined || formValues.Field === undefined
             alert("입력하지 않은 항목이 존재합니다.");
         } else {
             const row = {

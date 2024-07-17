@@ -1,6 +1,6 @@
 .layout {
   display: grid;
-  grid-template-rows: 1fr 10fr 1fr; /* Equal heights */
+  grid-template-rows: 1fr 15fr 1fr; /* Equal heights */
   grid-template-columns: 12% 1fr; /* Sider and content columns */
   height: 100vh;
   width: 100%;

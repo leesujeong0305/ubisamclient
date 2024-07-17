@@ -86,8 +86,10 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
   const states = [
     '셋업',
     '제작',
-    '제조',
-    '진행중',
+    '개발',
+    '예상',
+    '메인트',
+    'CS',
     '완료',
   ];
 
@@ -164,6 +166,39 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     return percentage.toFixed(2);
   };
 
+  const calculatePercentage2 = (row) => {
+    const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
+    const hundred = 100;
+    let percentage = 0;
+    if (currentMonth > row.EndDate)
+      return hundred.toFixed(2);
+    if (row.StartDate > row.EndDate)
+      return hundred.toFixed(2);
+    if (row.StartDate > currentMonth)
+      return 0;
+    
+    if (row.StartDate === 1) {
+        if (row.StartWeek === 1) {
+          const ratio = (row.EndDate * 4) - (4 - row.EndWeek);
+        const period = (currentMonth * 4) - (4 - day);
+        percentage = period / ratio * 100;
+        } else {
+          const ratio = (row.EndDate * 4) - (row.StartWeek-1) - (4 - row.EndWeek); // (startWeek === 4 ? (startWeek - 1) : (4- (startWeek-1)))
+          const period = (currentMonth * 4) - (row.StartWeek-1) - (4 - day); //28 - 1 - 3    20 + 4
+          //console.log('ratio', ratio, 'period', period);
+          percentage = period / ratio * 100;
+        }
+    } else {
+      //const ratio = ((endDate - (startDate - 1)) * 4) - (4 - endWeek);
+      //const period = ((currentMonth - (startDate - 1)) * 4) - (4 - day);
+      const ratio = ((row.EndDate - row.StartDate - 1) * 4) + (4 - (row.StartWeek - 1)) + row.EndWeek;
+      const period = ((currentMonth - row.StartDate - 1) * 4) + (4 - (row.StartWeek - 1)) + day;
+      percentage = period / ratio * 100;
+    }
+
+    return percentage.toFixed(2);
+  };
+
   const handleCreate = () => {
     if (projectAdd === true) {
     setProjectAdd(!projectAdd);
@@ -172,6 +207,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     setSelectedRow(null);
   } else {
     setProjectAdd(true);
+    setFormValues(initialData);
   }
   };
 
@@ -457,7 +493,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
           </div>
 
           <div className="team-input-container team-dropdown-container">
-            <label className={`input-label`}>시작</label>
+            <label className="team-input-label">시작</label>
             <select
               name="StartMonth"
               className="team-input-field"
@@ -474,7 +510,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
           </div>
 
           <div className="team-input-container team-dropdown-container">
-            <label className={`team-input-label`}>시작 주차</label>
+            <label className="team-input-label">시작 주차</label>
             <select
               name="StartWeek"
               className="team-input-field"
@@ -491,7 +527,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
           </div>
 
           <div className="team-input-container team-dropdown-container">
-            <label className={`team-input-label`}>끝</label>
+            <label className="team-input-label">끝</label>
             <select
               name="EndMonth"
               className="team-input-field"
@@ -508,7 +544,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
           </div>
           
           <div className="team-input-container team-dropdown-container">
-            <label className={`team-input-label`}>끝 주차</label>
+            <label className="team-input-label">끝 주차</label>
             <select
               name="EndWeek"
               className="team-input-field"
@@ -562,7 +598,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
             />
           </div>
           <div className="team-input-container team-dropdown-container">
-            <label className={`input-label`}>상태</label>
+            <label className={`team-input-label`}>상태</label>
             <select
               name="Status"
               className="team-input-field"
@@ -753,9 +789,9 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <tr key={index} className="Teamproject-table-row">
                 <td className="Teamproject-table-cell">{row.id}</td>
                 <td className="Teamproject-table-cell project-cell-overflow" title={row.Project}>{row.Project}</td>
-                <td className="Teamproject-table-cell" style={{backgroundColor: calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00'  ? '#009570' : row.Status - 1 === 3 ? '#e9d819' : '' }}>
-                  { calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00' ? '완료' : states[row.Status - 1] }</td>
-
+                <td className="Teamproject-table-cell" style={{backgroundColor: (calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00' && row.Status - 1 === 6) ? '#009570'
+                    : (calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00' && row.Status - 1 !== 6) ? '#EB5B00' : row.Status - 1 === 3 ? '#e9d819' : '' }}>
+                  {states[row.Status - 1] }</td>
                 <td className="Teamproject-table-cell users-cell-overflow" title={row.Users}>{row.Users}</td>
                 <td className="Teamproject-table-cell">{`${row.ProopsMM}`}</td>
                 { row.StartMonth && blankWeekBefore(row.StartMonth, row.StartWeek) !== 0 && [...Array(blankWeekBefore(row.StartMonth, row.StartWeek))]?.map((_, idx) => (
@@ -773,11 +809,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                       className="Teamprogress-bar"
                       style={{
                         width: `${calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek )}%`,
-                        backgroundColor: calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00' ? '#009570' : row.Status - 1 === 3 ? '#e9d819' : '',
+                        backgroundColor: (calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00' && row.Status - 1 === 6) ? '#009570' :
+                          (calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00' && row.Status - 1 !== 6) ? '#EB5B00' : row.Status - 1 === 3 ? '#e9d819' : '',
                         color: row.Status - 1 === 3 && '#222',
                       }}
                     >
-                      { currentMonth < row.StartMonth ? <div></div> : calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00' ? '완료' : <div>{calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek )}%</div> }
+                      { currentMonth < row.StartMonth ? <div></div> : (calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00' && row.Status - 1 === 6) ? '완료' : (calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek ) === '100.00' && row.Status - 1 !== 6) ? '지연' : <div>{calculatePercentage( row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek )}%</div> }
                     </div>
                   </div>
                 </td>
