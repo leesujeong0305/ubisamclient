@@ -7,6 +7,7 @@ export const UpdateTeamProject = async (row, site) => {
   //const ip = `http://localhost:8877`;
   return await Axios.post(`${ip}/updateTeamProject`, {
     ProjectName: row.Project,
+    OldProjectName: row.OldProjectName,
     //Date: row.Date,
     Status: row.Status,
     StartMonth: row.StartMonth,

@@ -2,7 +2,7 @@
 .team-table-container {
   overflow-x: auto;
   padding: 10px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .Team-table-counter {
@@ -44,7 +44,7 @@
 .Teamproject-table-header-cell,
 .Teamproject-table-cell {
   border: 1px solid black;
-  padding: 6px;
+  padding: 4px;
   text-align: center;
 }
 
@@ -72,11 +72,21 @@
   white-space: nowrap;
   border-radius: 10px;
   transition: width 0.4s ease;
+  font-size: 12px;
 }
 
 .table-fixed th:nth-child(5), th:nth-child(6) {
   text-align: center;
 }
+
+.table-fixed td:nth-child(1), td:nth-child(2) {
+  text-align: left;
+}
+
+.table-fixed td:nth-child(3), td:nth-child(4) {
+  text-align: left;
+}
+
 
 @media (max-width: 600px) {
   .Teamproject-table {
@@ -316,11 +326,11 @@
 }
 
 .col-id {
-  width: 40px; 
+  width: 30px; 
 }
 
 .col-project {
-  width: 160px; 
+  width: 180px; 
 }
 
 .col-status {
@@ -328,7 +338,7 @@
 }
 
 .col-users {
-  width: 50px; 
+  width: 101px; 
 }
 
 .col-suggest-mm {
@@ -336,5 +346,19 @@
 }
 
 .col-month {
-  width: 50px; 
+  width: 40px; 
+}
+
+.col-company-mm {
+  width: 10px;
+}
+
+.col-edit-delete {
+  width: 100px;
+}
+
+.circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
 }
