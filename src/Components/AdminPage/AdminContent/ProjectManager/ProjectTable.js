@@ -88,7 +88,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
 
 
 
-    const [formValues, setFormValues] = useState(initialData);
+    const [formValues, setFormValues] = useState([]); //initialData
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -138,7 +138,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         else
         {
             setProjectAdd(true);
-            setFormValues(initialData);
+            setFormValues([]); //initialData
         }
     };
 
@@ -148,16 +148,16 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             .map((checkbox) => checkbox.label)
             .join(', ');
         const site = selectSite();
-        const data = await GetProjectInfo("All", site);
+        const data = await GetProjectInfo("All", "All");
         const projectExists = data.some(item => item.ProjectName === formValues.Project);
         if (projectExists) {
-            alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요');
+            alert(`같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주십시오.\n(타 사이트에서 이미 사용 중인 이름은 사용 불가)`);
             return;
         }
 
-        if (formValues.Project || formValues.Period || selectedUsers === '' 
-            || formValues.Status === undefined ) { //|| formValues.PM === undefined || formValues.Field === undefined
+        if (formValues.Project === undefined || formValues.Period === undefined || selectedUsers === '' || formValues.Status === undefined ) { //|| formValues.PM === undefined || formValues.Field === undefined
             alert("입력하지 않은 항목이 존재합니다.");
+            
         } else {
             const row = {
                 //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
@@ -172,7 +172,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             //console.log('newRow', newRow);
             await AddProjectInfo(row, site);
 
-            setFormValues(initialData);
+            setFormValues([]); //initialData
             setProjectAdd(false);
             setShowCheckboxes(false);
             setCheckboxes(initCheckbox);
@@ -192,6 +192,14 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             .filter((checkbox) => checkbox.checked)
             .map((checkbox) => checkbox.label)
             .join(', ');
+        
+        const data = await GetProjectInfo("All", "All");
+        const projectExists = data.some(item => item.ProjectName === formValues.Project);
+        if (projectExists) {
+            alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요');
+            return;
+        }
+
         const row = {
             //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
             Project: formValues.Project,
@@ -209,7 +217,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         setProjectEdit(false);
         setShowCheckboxes(false);
         setCheckboxes(initCheckbox);
-        setFormValues(initialData);
+        setFormValues([]); //initialData
         setSelectedRow(null);
 
         handleUpdate(true);
