@@ -20,3 +20,26 @@
     background-color: #EEEEEE;
   }
   
+.user-profile-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  .user-info-section {
+    flex: 3;
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+  }
+  
+  .user-unit-info-section {
+    flex: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #EEEEEE;
+    margin-top: 50px;
+  }
+  

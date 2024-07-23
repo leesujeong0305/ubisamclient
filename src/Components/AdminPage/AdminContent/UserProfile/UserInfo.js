@@ -3,7 +3,7 @@ import './UserInfo.css';
 
 const UserInfo = ({ rows, onRowClick }) => {
   const [page, setPage] = useState(0);
-  const rowsPerPage = 7;
+  const rowsPerPage = 15;
 
   const handleChangePage = (newPage) => {
     setPage(newPage);
@@ -20,7 +20,8 @@ const UserInfo = ({ rows, onRowClick }) => {
           <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Password</th>
+            <th>직급</th>
+            <th>입사일</th>
             <th className="edit-header">Edit</th>
           </tr>
         </thead>
@@ -29,6 +30,7 @@ const UserInfo = ({ rows, onRowClick }) => {
             <tr key={index} onClick={() => onRowClick(row)}>
               <td>{row.name}</td>
               <td>{row.email}</td>
+              <td>{row.rank}</td>
               <td>{row.password}</td>
               <td>
                 <i className="fas fa-edit edit-icon"></i>

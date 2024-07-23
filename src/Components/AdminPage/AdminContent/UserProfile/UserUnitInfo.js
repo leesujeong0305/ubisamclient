@@ -26,12 +26,20 @@ const UserUnitInfo = ({ user }) => {
               <td>{user.email || '-'}</td>
             </tr>
             <tr>
-              <td>계급</td>
+              <td>직급</td>
+              <td>{user.rank || '-'}</td>
+            </tr>
+            <tr>
+              <td>부서</td>
               <td>{user.rank || '-'}</td>
             </tr>
             <tr>
               <td>가입년도</td>
               <td>{user.yearOfJoining || '-'}</td>
+            </tr>
+            <tr>
+              <td>생일</td>
+              <td>{user.birthday || '-'}</td>
             </tr>
             <tr>
               <td>활성화</td>
@@ -51,10 +59,10 @@ const UserUnitInfo = ({ user }) => {
               <td>
                 <div className="checkbox-group">
                   <label>
-                    <input type="checkbox" checked={true} readOnly /> 관리자
+                    <input type="radio" checked={true} readOnly /> 관리자
                   </label>
                   <label>
-                    <input type="checkbox" /> 사용자
+                    <input type="radio" /> 사용자
                   </label>
                 </div>
               </td>
