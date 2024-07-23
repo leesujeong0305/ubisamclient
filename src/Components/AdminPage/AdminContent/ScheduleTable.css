@@ -1,0 +1,38 @@
+.main-container {
+    padding: 5px;
+  }
+  
+  .project-selection {
+      display: flex;
+      align-items: center;
+  }
+  
+  .project-selection h1 {
+      font-size: 24px;
+  }
+  
+  .project-selection label {
+      margin-right: 10px;
+  }
+  
+  .project-selection select {
+      padding: 5px;
+      font-size: 16px;
+  }
+  
+  .export-button {
+      margin-left: auto;
+      padding: 5px 10px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+  
+  .export-button:hover {
+      background-color: #45a049;
+  }
+  
+  

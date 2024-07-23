@@ -13,12 +13,12 @@ const AdminSider = ({ isCollapsed, onToggle, onItemClick }) => {
       <div className="sider-item" onClick={() => onItemClick('TeamProject')}>
         <i className="fas fa-users"></i> {!isCollapsed && 'Team Project'}
       </div>
+      <div className="sider-item" onClick={() => onItemClick('Schedule')}>
+        <i className="fas fa-file"></i> {!isCollapsed && 'Schedule'}
+      </div>
       <div className="sider-item" onClick={() => onItemClick('UserProfile')}>
         <i className="fas fa-user"></i> {!isCollapsed && 'User'}
       </div>
-      {/*<div className="sider-item" onClick={() => onItemClick('Files')}>
-        <i className="fas fa-file"></i> {!isCollapsed && 'Files'}
-      </div> */}
       <div className="sider-item" onClick={onToggle}>
         <i className={`fas fa-arrow-${isCollapsed ? 'right' : 'left'}`}></i> {!isCollapsed && '최소화'}
       </div>

@@ -1,0 +1,66 @@
+/* Gantt 차트의 최상위 컨테이너 스타일 */
+.gantt-chart {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 300px); /* 화면 높이에서 상단과 하단의 여백을 뺀 높이 */
+  }
+  
+  /* Gantt 컨테이너 스타일 */
+  .gantt-container {
+    flex: 1; /* 부모 컨테이너의 남은 공간을 채우기 위해 flex-grow 설정 */
+  }
+  
+  /* Gantt 차트의 헤더 스타일 */
+  .gantt-header {
+    display: flex;
+    font-weight: bold;
+    background-color: #d0eaff;
+  }
+  
+  /* 헤더 셀 스타일 */
+  .gantt-header-cell {
+    flex: 1;
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #000;
+  }
+  
+  /* Gantt 차트의 행 스타일 */
+  .gantt-row {
+    display: flex;
+    position: relative;
+    height: 25px; /* 행 높이 줄임 */
+    align-items: center; /* 세로 정렬 중앙 맞춤 */
+  }
+  
+  /* 셀 스타일 */
+  .gantt-cell {
+    flex: 1;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .gantt-bar {
+    position: absolute;
+    background-color: rgba(0, 128, 0, 0.5);
+    text-align: center;
+    border: 1px solid rgba(0, 128, 0, 0.7);
+    border-radius: 15px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 8px;
+  }
+  
+  .gantt-scale-cell-weekend {
+    color: black !important; /* 주말 셀 폰트 색상 */
+  }
+  
+  .week-end {
+    background-color: #9e5969 !important; /* 주말 셀 배경색 */
+    color: #ffffff !important; /* 주말 셀 폰트 색상 */
+  }
+  
+  .week-day {
+    color: #222 !important;/* 평일 셀 폰트 색상 */
+  }

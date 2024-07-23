@@ -27,6 +27,8 @@ const AdminLayout = () => {
         return lazy(() => import('./AdminContent/UserProfile'));
       case 'TeamProject':
         return lazy(() => import('./AdminContent/TeamProjectTable'));
+        case 'Schedule':
+        return lazy(() => import('./AdminContent/ScheduleTable'));
       default:
         console.log('알 수 없는 컴포넌트:', componentName);
         return null;

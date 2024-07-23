@@ -7,7 +7,6 @@ import TeamBoard from './TeamBoard';
 import Pagination from '../../../../Board/Page/Pagination';
 import './AdminBulletin.css'
 import SelectItems from '../../../MyCalendar/SelectItems';
-import { Scrollbar } from 'react-scrollbars-custom';
 
 const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
   const isLogged = useSelector(state => state.auth.isLoggedIn);

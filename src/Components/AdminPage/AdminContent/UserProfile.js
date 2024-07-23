@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import UserInfo from './UserInfo';
-import UserUnitInfo from './UserUnitInfo';
+import UserInfo from './UserProfile/UserInfo';
+import UserUnitInfo from './UserProfile/UserUnitInfo';
 import './UserProfile.css';
 
 const createData = (name, email, password, rank, yearOfJoining) => {
