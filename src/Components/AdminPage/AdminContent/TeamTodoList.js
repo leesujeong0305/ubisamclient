@@ -190,7 +190,7 @@ const TeamTodoList = () => {
     }
 
     const handleData = (data) => {
-        console.log('data', data, data[3]);
+        //console.log('data', data, data[3]);
         if (data === undefined)
             return;
         setUseSerch(data[0]);
@@ -211,7 +211,7 @@ const TeamTodoList = () => {
     useEffect(() => {
         const LoadAdminBoard = async () => {
             const data = await LoadAllBoard();
-            console.log('data', data);
+            //console.log('data', data);
             const updata = await UpdateStatus(data);
             if (updata === undefined || updata.length <= 0) {
                 return;

@@ -23,7 +23,7 @@ const Header = () => {
     const updateUserInfo = async () => {
       const data = await GetUserInfo();
       dispatch(updateUser(data));
-      console.log('data', data);
+      //console.log('data', data);
     };
 
     if (isLogged) {

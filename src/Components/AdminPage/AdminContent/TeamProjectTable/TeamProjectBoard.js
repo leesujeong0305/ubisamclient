@@ -146,7 +146,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       return hundred.toFixed(0);
     if (row.StartMonth > currentMonth || ((currentMonth === row.StartMonth) && day < row.StartWeek))
       return 0;
-    
+
     if (row.StartMonth === 1) {
         if (row.StartWeek === 1) {
           const ratio = (row.EndMonth * 4) - (4 - row.EndWeek);
@@ -162,8 +162,36 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       const period = ((currentMonth - row.StartMonth - 1) * 4) + (4 - (row.StartWeek - 1)) + day;
       percentage = (period / ratio) * 100;
     }
+    //console.log('날짜 계산', percentage);
     return percentage.toFixed(0);
   };
+
+  const delayWeek = (row) => {
+    const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
+    const per = ((currentMonth - row.EndMonth) * 4) - (row.EndWeek - day);
+    return per;
+  }
+
+  const delayWork = (row) => {
+    let percentage = 0;
+    
+    if (row.StartMonth === 1) {
+      if (row.StartWeek === 1) {
+        const ratio = (row.EndMonth * 4) - (4 - row.EndWeek) + delayWeek(row);
+        const period = (row.EndMonth * 4) - (4 - row.EndWeek);
+        percentage = period / ratio * 100;
+      } else {
+        const ratio = (row.EndMonth * 4) - (row.StartWeek-1) - (4 - row.EndWeek) + delayWeek(row);
+        const period = (row.EndMonth * 4) - (row.StartWeek-1) - (4 - row.EndWeek);
+        percentage = period / ratio * 100;
+      }
+    } else {
+      const ratio = ((row.EndMonth - row.StartMonth - 1) * 4) + (4 - (row.StartWeek - 1)) + row.EndWeek + delayWeek(row);
+      const period = ((row.EndMonth - row.StartMonth - 1) * 4) + (4 - (row.StartWeek - 1)) + row.EndWeek;
+      percentage = (period / ratio) * 100;
+    }
+      return percentage.toFixed(0);
+  }
 
   const handleCreate = () => {
     if (projectAdd === true) {
@@ -392,7 +420,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       const initUsers = [...initCheckboxes, { id: initCheckboxes.length + 1, label: '미정', checked: false }]
       setCheckboxes(initUsers);
       setInitCheckboxes(initUsers);
-      console.log('initUsers', initUsers);
+      //console.log('initUsers', initUsers);
     };
     const filterYear = () => {
       const groupedData = groupDataByYear(posts);
@@ -804,31 +832,39 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                     <td
                    className="Teamproject-table-cell"
                    colSpan={
-                    sumWeek(row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek)
+                    sumWeek(row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek) + ((calculatePercentage( row ) === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) ? delayWeek(row) : 0)
                    }
                  >
-                 <div className="Teamprogress-bar-container" style={{width: ((row.StartMonth === row.EndMonth) && (row.StartWeek === row.EndWeek)) && '20px',
+                  <div className="Teamprogress-bar-container" 
+                   style={{width: ((row.StartMonth === row.EndMonth) && (row.StartWeek === row.EndWeek)) && '20px',
                    marginRight: ((row.StartMonth === row.EndMonth) && (row.StartWeek === row.EndWeek)) && '-12px',
-                   marginLeft:  ((row.StartMonth === row.EndMonth) && (row.StartWeek === row.EndWeek)) && '-3px',
-                 }}>
+                   marginLeft:  ((row.StartMonth === row.EndMonth) && (row.StartWeek === row.EndWeek)) && '-3px', 
+                   background: (calculatePercentage( row ) === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) && '#FC5C9C' //F73859
+                  }}
+                 >
                     <div
                       className="Teamprogress-bar"
                       style={{
-                        width: `${calculatePercentage( row )}%`,
-                        backgroundColor: row.Status - 1 === 7 ? '#3FA2F6' : (calculatePercentage( row ) === '100' && row.Status - 1 === 6) ? '#009570' :
-                          (calculatePercentage( row ) === '100' && row.Status - 1 !== 6) ? '#EB5B00' : row.Status - 1 === 3 ? '#e9d819' : '',
-                        color: row.Status - 1 === 3 && '#222',
+                        width: `${(calculatePercentage( row ) === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) ? delayWork(row) : calculatePercentage( row ) }%`,
+                         backgroundColor: row.Status - 1 === 7 ? '#3FA2F6' : (calculatePercentage( row ) === '100' && row.Status - 1 === 6) ? '#009570' :
+                          row.Status - 1 === 3 ? '#e9d819' : '', //(calculatePercentage( row ) === '100' && row.Status - 1 !== 6) ? '#EB5B00' :
+                        color: row.Status - 1 === 3 ? '#222' : (calculatePercentage( row ) === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) && '#FFCEF3' , //FDFDC4
+                        justifyContent: (calculatePercentage( row ) === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) && 'right',
+                        whiteSpace : 'pre-wrap',
                       }}
                     >
-                      { ((currentMonth < row.StartMonth) || (row.StartMonth === row.EndMonth && row.StartWeek === row.EndWeek)) ? <div></div> : 
-                      ((calculatePercentage( row ) === '100' && row.Status - 1 === 6) || (calculatePercentage( row ) === '100' && row.Status - 1 === 7)) ? '완료' 
-                      : ((calculatePercentage( row ) === '100' && row.Status - 1 !== 6)) ? '지연' : <div>{calculatePercentage( row ) === 0 ? '' : `${calculatePercentage( row )}%`}</div> }
+                      {
+                       ((currentMonth < row.StartMonth) || (row.StartMonth === row.EndMonth && row.StartWeek === row.EndWeek)) ? <div></div> : 
+                       ((calculatePercentage( row ) === '100' && row.Status - 1 === 6) || (calculatePercentage( row ) === '100' && row.Status - 1 === 7)) ? '완료' 
+                       : ((calculatePercentage( row ) === '100' && row.Status - 1 !== 6)) ? '지연  ' : <div>{calculatePercentage( row ) === 0 ? '' : `${calculatePercentage( row )}%`}</div>
+                      }
                     </div>
+                    
                   </div>
                 </td>
                 { row.EndMonth && blankWeekAfter(row.EndMonth, row.EndWeek) !== 0 &&
                 [
-                  ...Array(blankWeekAfter(row.EndMonth, row.EndWeek)),
+                  ...Array(blankWeekAfter(row.EndMonth, row.EndWeek) - ((calculatePercentage( row ) === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) ? delayWeek(row) : 0)),
                 ].map((_, idx) => (
                   <td key={idx} className="Teamproject-table-cell"></td>
                 ))}

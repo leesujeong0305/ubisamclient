@@ -31,7 +31,7 @@ function GetUserInfo(userEmail ,authUserTeam){
             }
         }).then((res) => {
             if (res.data) {
-                console.log('userdata',res.data.user);
+                //console.log('userdata',res.data.user);
                 const rankOrder = ["상무", "팀장", "부장", "차장", "과장", "대리", "사원"];
                 const data = res.data.user;
                 const sortedData = data.sort((a, b) => {

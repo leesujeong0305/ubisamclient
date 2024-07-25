@@ -193,13 +193,13 @@ const TeamProjectTable = () => {
 
     }));
     setLoadData(dataWithIds);
-    console.log('dataWithIds', dataWithIds);
+    //console.log('dataWithIds', dataWithIds);
   };
 
   const handleUpdate = (data) => {
     if (data === undefined)
       return;
-    console.log('setUpdate', data);
+    //console.log('setUpdate', data);
     setUpdate(data);
     if (data === true) {
       LoadTeameProject();
