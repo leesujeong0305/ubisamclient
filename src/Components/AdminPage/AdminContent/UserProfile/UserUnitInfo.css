@@ -82,3 +82,43 @@
     display: flex;
     align-items: center;
   }
+
+  .button-container {
+    justify-content: right;
+  }
+
+  .user-edit-button {
+    background-color: #007bff; /* 배경색 설정 */
+    color: #fff; /* 글자색 설정 */
+    border: none; /* 테두리 제거 */
+    padding: 8px 15px; /* 패딩 설정 */
+    border-radius: 3px; /* 모서리 둥글게 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    justify-content: right;
+    margin-top: 15px;
+  }
+
+  .user-input-field {
+    padding: 2px;
+    border: none;
+    outline: none;
+    border: 1px solid #fff;
+  }
+
+  .user-input-field:focus {
+    border-bottom: 1px solid #007bff;
+    transition: border-color 0.4s;
+    
+  }
+
+  .user-input-field-disable {
+    padding: 2px;
+    border: none;
+    outline: none;
+    background-color: #fff;
+  }
+
+  .user-dropdown::after {
+    background-color: #fff;
+  }
+  

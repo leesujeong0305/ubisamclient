@@ -50,8 +50,10 @@ const TeamBoard = ({ posts }) => {
     };
 
     useEffect(() => {
-        console.log('포스트 갯수', posts.length);
-        if (posts !== undefined) {
+        //console.log('포스트 갯수', posts.length);
+        if (posts === undefined) {
+            setBoard([]);
+        } else {
             setBoard([]);
             setBoard(posts);
         }

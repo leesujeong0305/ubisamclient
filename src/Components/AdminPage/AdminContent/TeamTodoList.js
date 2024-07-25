@@ -25,6 +25,7 @@ const TeamTodoList = () => {
     const Continents = [ /* 상태 색상 표기 */
         { key: '자동화1팀', value: '파주' },
         { key: '시스템사업팀', value: '구미' },
+        { key: '장비사업팀', value: '서울' },
     ];
 
     // 날짜를 "yyyy-MM-dd" 형식으로 변환하는 함수
@@ -75,6 +76,9 @@ const TeamTodoList = () => {
 
 
         const mainBoard = await LoadBoard("All", site);
+        if (mainBoard === undefined || mainBoard === '403') {
+            return [];
+        }
         //console.log('main', mainBoard);
         const subBoard = await GetSubLoadBoard("All", site);
         //console.log('sub', subBoard);
@@ -207,6 +211,7 @@ const TeamTodoList = () => {
     useEffect(() => {
         const LoadAdminBoard = async () => {
             const data = await LoadAllBoard();
+            console.log('data', data);
             const updata = await UpdateStatus(data);
             if (updata === undefined || updata.length <= 0) {
                 return;

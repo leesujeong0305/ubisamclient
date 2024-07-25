@@ -25,6 +25,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
   const Continents = [
     { key: '자동화1팀', value: '파주' },
     { key: '시스템사업팀', value: '구미' },
+    { key: '장비사업팀', value: '서울' },
   ];
 
   const { authUserId, authUserName, authUserRank, authUserTeam, authManager } = useSelector((state) => state.userInfo);
@@ -135,7 +136,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
   };
 
   const calculatePercentage = (row) => {
-    const day = today.getDate() > 23 ? 4 : today.getDate() > 16 ? 3 : today.getDate() > 9 ? 2 : 1;
+    const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
     const hundred = 100;
     let percentage = 0;
 
@@ -383,7 +384,8 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
   useEffect(() => {
     setSelectYear(currentYear);
     const LoadTeamUsers = async () => {
-      const users = await GetUserInfo('All', authUserTeam);
+      const site = selectSite();
+      const users = await GetUserInfo('All', site);
       const initCheckboxes = users.map((val, index) => {
         return { id: index + 1, label: val.name, checked: false };
       });

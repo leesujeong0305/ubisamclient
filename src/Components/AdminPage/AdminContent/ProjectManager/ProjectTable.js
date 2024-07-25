@@ -23,6 +23,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
     const Continents = [
         { key: '자동화1팀', value: '파주' },
         { key: '시스템사업팀', value: '구미' },
+        { key: '장비사업팀', value: '서울' },
     ];
 
     const headers = [
@@ -193,13 +194,6 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             .map((checkbox) => checkbox.label)
             .join(', ');
         
-        const data = await GetProjectInfo("All", "All");
-        const projectExists = data.some(item => item.ProjectName === formValues.Project);
-        if (projectExists) {
-            alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요');
-            return;
-        }
-
         const row = {
             //id: rows.length ? rows[rows.length - 1].id + 1 : 1, // 새로운 행의 ID 설정
             Project: formValues.Project,
@@ -236,7 +230,8 @@ const ProjectTable = ({ projects, handleUpdate }) => {
 
     useEffect(() => {
         const LoadTeamUsers = async () => {
-            const users = await GetUserInfo('All', authUserTeam);
+            const site = selectSite()
+            const users = await GetUserInfo('All', site);
             const initCheckboxes = users.map((val, index) => {
                 return { id: index + 1, label: val.name, checked: false };
             });

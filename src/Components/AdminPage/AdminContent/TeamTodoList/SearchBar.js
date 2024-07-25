@@ -20,6 +20,7 @@ const SearchBar = ({ handleData }) => {
   const Continents = [ /* 상태 색상 표기 */
     { key: '자동화1팀', value: '파주' },
     { key: '시스템사업팀', value: '구미' },
+    { key: '장비사업팀', value: '서울' },
   ];
 
   const selectSite = () => {

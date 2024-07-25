@@ -19,22 +19,24 @@ const UserInfo = ({ rows, onRowClick }) => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Email</th>
+            <th>ID</th>
+            <th>부서</th>
             <th>직급</th>
             <th>입사일</th>
-            <th className="edit-header">Edit</th>
+            <th>그룹(역할)</th>
+            {/* <th>상태</th> */}
           </tr>
         </thead>
         <tbody>
           {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
             <tr key={index} onClick={() => onRowClick(row)}>
               <td>{row.name}</td>
-              <td>{row.email}</td>
+              <td>{row.user_mail}</td>
+              <td>{row.team}</td>
               <td>{row.rank}</td>
-              <td>{row.password}</td>
-              <td>
-                <i className="fas fa-edit edit-icon"></i>
-              </td>
+              <td>{row.year_join}</td>
+              <td>{row.Manager ? '관리자' : '유저'}</td>
+              {/* <td>{row.Use ? '재직중' : '퇴사'}</td> */}
             </tr>
           ))}
         </tbody>

@@ -30,10 +30,12 @@ const UserProfile = () => {
   const Continents = [
     { key: '자동화1팀', value: '파주' },
     { key: '시스템사업팀', value: '구미' },
+    { key: '장비사업팀', value: '서울' },
   ];
   const { authUserId, authUserName, authUserRank, authUserTeam, authManager } = useSelector((state) => state.userInfo);
   const [getUsers, setGetUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState([]);
+  const [show, setshow] = useState(false);
 
   const selectSite = () => {
     if (authUserTeam === undefined) return;
@@ -44,12 +46,13 @@ const UserProfile = () => {
 
   const handleRowClick = (user) => {
     setSelectedUser(user);
+    setshow(true);
   };
 
   useEffect(() => {
     const LoadUsersInfo = async () => {
-      const users = await GetUserInfo('All', authUserTeam);
-      console.log('users', users);
+      const site = selectSite();
+      const users = await GetUserInfo('All', site);
       setGetUsers(users);
     }
 
@@ -60,9 +63,12 @@ const UserProfile = () => {
     <div className="user-profile-container">
       <div className="user-info-section">
         <UserInfo rows={getUsers} onRowClick={handleRowClick} />
-        <div className="user-unit-info-section">
-          <UserUnitInfo user={selectedUser || {}} />
-        </div>
+        {
+          show && (
+            <div className="user-unit-info-section">
+              <UserUnitInfo user={selectedUser || {}} />
+            </div>
+          )}
       </div>
       
     </div>
