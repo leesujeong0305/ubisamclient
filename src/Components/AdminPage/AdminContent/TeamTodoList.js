@@ -9,18 +9,17 @@ import { GetProjectInfo } from '../../../API/GetProjectInfo';
 
 const TeamTodoList = () => {
     const isLogged = useSelector(state => state.auth.isLoggedIn);
-    const { authUserId, authUserName, authUserRank, authUserTeam } = useSelector(state => state.userInfo);
+    const { authUserId, authUserName, authUserRank, authUserTeam, authManager } = useSelector(state => state.userInfo);
 
     const [allBoard, setAllBoard] = useState([])
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
     const [project, setProject] = useState(null);
     const [useSerch, setUseSerch] = useState(false);
+    
 
     const [site, setSite] = useState(null);
     const [retryCount, setRetryCount] = useState(0);
-    const [loading, setLoading] = useState(false);
-    //const [tabs, setTabs] = useState([]);
 
     const Continents = [ /* 상태 색상 표기 */
         { key: '자동화1팀', value: '파주' },
@@ -50,27 +49,29 @@ const TeamTodoList = () => {
         return found ? found.value : undefined;
     }
 
-    const getSiteWithRetry = async () => {
-        setLoading(true);
-        let site;
-        while (retryCount < 3) {
-            site = selectSite();
-            if (site !== undefined) {
-                setSite(site);
-                setLoading(false);
-                return;
-            }
-            setRetryCount(prevCount => prevCount + 1);
-            await new Promise(resolve => setTimeout(resolve, 1000)); // 1초 대기 후 재시도
-        }
-        setLoading(false);
-        alert(`"${authUserTeam}" 이름이 서버에 등록된 팀 이름과 매칭되지 않아 데이터를 가져올 수 없습니다.`);
-    };
+    // const getSiteWithRetry = async () => {
+    //     setLoading(true);
+    //     let site;
+    //     while (retryCount < 3) {
+    //         site = selectSite();
+    //         if (site !== undefined) {
+    //             setSite(site);
+    //             setLoading(false);
+    //             return;
+    //         }
+    //         setRetryCount(prevCount => prevCount + 1);
+    //         await new Promise(resolve => setTimeout(resolve, 1000)); // 1초 대기 후 재시도
+    //     }
+    //     setLoading(false);
+    //     alert(`"${authUserTeam}" 이름이 서버에 등록된 팀 이름과 매칭되지 않아 데이터를 가져올 수 없습니다.`);
+    // };
 
     const LoadAllBoard = async () => {
         const site = selectSite();
         if (site === undefined) {
+            //console.log('authUserTeam1',authUserTeam);
             alert(`"${authUserTeam}"이름이 서버에 등록된 팀이름과 매칭되지 않아 데이터를 가져올 수 없습니다`, authUserTeam);
+            //console.log('authUserTeam2 [',authUserTeam,']');
             return;
         }
 
@@ -218,9 +219,12 @@ const TeamTodoList = () => {
             }
             setAllBoard(updata);
         }
-
-        LoadAdminBoard();
-    }, [isLogged])
+        
+        if (authUserTeam !== "") {
+            LoadAdminBoard();
+        }
+    }, [isLogged, authUserTeam]);
+    
 
 
     return (

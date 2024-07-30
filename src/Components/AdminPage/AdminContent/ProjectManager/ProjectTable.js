@@ -6,6 +6,7 @@ import GetUserInfo from '../../../../API/GetUserInfo';
 import { useSelector } from 'react-redux';
 import { UpdateProjectInfo } from '../../../../API/UpdateProjectInfo';
 import { GetProjectInfo } from '../../../../API/GetProjectInfo';
+import { UpdateUserInfo } from '../../../../API/UpdateUserInfo';
 
 const ProjectTable = ({ projects, handleUpdate }) => {
     const initialData = [
@@ -55,11 +56,10 @@ const ProjectTable = ({ projects, handleUpdate }) => {
     const handleCheckboxChange = (id) => {
         setCheckboxes(
             checkboxes.map((checkbox) =>
-                checkbox.id === id
-                    ? { ...checkbox, checked: !checkbox.checked }
-                    : checkbox
+                checkbox.id === id ? { ...checkbox, checked: !checkbox.checked } : checkbox
             )
         );
+
     };
 
     const handleSelectAll = () => {
@@ -75,6 +75,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
 
     const [projectAdd, setProjectAdd] = useState(false);
     const [projectEdit, setProjectEdit] = useState(false);
+    const [update, setUpdate] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
     const [postsPerPage] = useState(15); // 페이지 당 포스트 수
@@ -86,9 +87,6 @@ const ProjectTable = ({ projects, handleUpdate }) => {
     const [showCheckboxes, setShowCheckboxes] = useState(false);
     const [initCheckbox, setInitCheckboxes] = useState([]);
     const [checkboxes, setCheckboxes] = useState([]);
-
-
-
     const [formValues, setFormValues] = useState([]); //initialData
 
     const handleInputChange = (e) => {
@@ -109,12 +107,18 @@ const ProjectTable = ({ projects, handleUpdate }) => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber); // 페이지 번호를 받아 현재 페이지 상태를 업데이트
 
     const handleToggle = async (row) => {
+        //console.log('row id', row.id);
+        
         setViewStates((prevStates) =>
-            prevStates.map((state, i) => (i === (row.id - 1) ? !state : state))
+            prevStates.map((state, i) =>
+                state.id === (row.id - 1) ? { ...state, checked: state.checked === 1 ? 0 : 1 } : state
+            
+            )
         );
-
-        const site = selectSite();
-        const result = await UpdateProjectInfo(row, site, true);
+        setUpdate(true);
+        //const site = selectSite();
+        //const result = await UpdateProjectInfo(row, site, true);
+        //const result = await UpdateUserInfo(row, site, true);
     };
 
     const handleEdit = (row) => {
@@ -135,6 +139,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         if (projectAdd === true) {
             setProjectAdd(false);
             setSelectedRow(null);
+            setShowCheckboxes(false);
         }
         else
         {
@@ -238,14 +243,54 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             const initUsers = [...initCheckboxes, { id: initCheckboxes.length + 1, label: '미정', checked: false }]
             setCheckboxes(initUsers);
             setInitCheckboxes(initUsers);
+            const view = await GetUserInfo();
+            
+            let initView = [];
+            if (view.view === undefined || view.view === null) {
+                initView = projects.map((val, index) => {
+                    return { id: index, checked: 1};
+                })
+            } else {
+                const splitView = view.view.split(', ');
+
+                //프로젝트 추가된 후에 View는 무조건 1이므로 앞쪽에 차이나는만큼 1추가됨
+                //view 한번 클릭해야지만 업데이트가 되므로 그전까지는 project와 view 길이 차이만큼 1로 표시해줘야함
+                const difference = projects.length - splitView.length;
+                if (difference > 0) {
+                    // 차이만큼 '1'을 split의 앞에 추가
+                    for (let i = 0; i < difference; i++) {
+                        splitView.unshift('1');
+                    }
+                }
+
+                initView = splitView.map((val, index) => {
+                    return { id: index, checked: parseInt(val, 10)};
+                })
+            }
+            
+            setViewStates(initView);
         };
-        if (projects) {
+
+        if (projects !== undefined && projects.length > 0) {
+            console.log('projects', projects.length);
+            LoadTeamUsers();
             const total = projects.length / postsPerPage;
             setTotalPage(total);
-            setViewStates(projects.map(project => project.View));
         }
-        LoadTeamUsers();
+        
     }, [projects])
+
+    useEffect(() => {
+        const updateView = async () => {
+            const selectedUsers = viewStates.map((checkbox) => checkbox.checked)
+                                            .join(', ');
+            const result = await UpdateUserInfo(selectedUsers, "ProjectView");
+        }
+        if (update === true) {
+            updateView();
+            setUpdate(false);
+        }
+    }, [update])
 
     return (
         <div className="project-container">
@@ -487,7 +532,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {currentPosts?.map((row, index) => (
+                        {viewStates && currentPosts?.map((row, index) => (
                             <tr key={index} className="project-table-row" >
                                 <td className="project-table-cell" style={{ textAlign: 'center', width: '50px' }}>{row.id}</td>
                                 <td className="project-table-cell" style={{ textAlign: 'center', width: '500px' }}>{row.ProjectName}</td>
@@ -497,19 +542,11 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 <td className="project-table-cell" style={{ textAlign: 'center', width: '200px' }}>{row.Period}</td>
                                 {/* <td className="project-table-cell">{fields[row.Field - 1] || 'Unknown Status'}</td> */}
                                 <td className="project-table-cell" style={{ textAlign: 'center', width: '70px' }}>
-                                    {/* <label className="switch" >
-                                        <input
-                                            style={{ width: '20px', height: '20px', }}
-                                            type="checkbox"
-                                            checked={row.View}
-                                            onClick={() => {handleToggle(row.View)}}
-                                        />
-                                    </label> */}
                                     <label className="switch">
                                         <input
                                             style={{ width: '20px', height: '20px', }}
                                             type="checkbox"
-                                            checked={viewStates[row.id - 1]}
+                                            checked={viewStates.some(state => state.id === (row.id - 1) && state.checked === 1)}
                                             onChange={() => handleToggle(row)}
                                         />
                                         <span className="slider round"></span>

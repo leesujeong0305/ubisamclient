@@ -7,6 +7,11 @@ import { UpdateTeamProject } from '../../../../API/UpdateTeamProject';
 import { DeleteTeamProject } from '../../../../API/DeleteTeamProject';
 import GetTeamProject from '../../../../API/GetTeamProject';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { FaTrash } from 'react-icons/fa'
+import { BiSolidHide } from "react-icons/bi";
+
 const TeamProjectBoard = ({ posts, handleUpdate }) => {
   const initialData = [
     {
@@ -75,7 +80,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     '12월',
   ];
   const headers = [
-    '순번',
+    // '순번',
     '프로젝트명',
     '상태',
     '인 원',
@@ -199,6 +204,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     setProjectEdit(false);
     setFormValues(initialData);
     setSelectedRow(null);
+    setShowCheckboxes(false);
   } else {
     setProjectAdd(true);
     setFormValues(initialData);
@@ -791,7 +797,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       <table className="Teamproject-table pre-line-project">
       <thead className="Teamproject-head">
         <tr className="Teamproject-table-header">
-          <th className="Teamproject-table-header-cell col-id" rowSpan="2">#</th>
+          {/* <th className="Teamproject-table-header-cell col-id" rowSpan="2">#</th> */}
           <th className="Teamproject-table-header-cell col-project" rowSpan="2">프로젝트명</th>
           <th className="Teamproject-table-header-cell col-status" rowSpan="2">상태</th>
           <th className="Teamproject-table-header-cell col-users" rowSpan="2">인 원</th>
@@ -802,7 +808,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               </th>
           ))}
           <th className="Teamproject-table-header-cell col-company-mm" rowSpan="2">업체<br/>담당자</th>
-          <th className="Teamproject-table-header-cell col-edit-delete" rowSpan="2">수정 / 삭제</th>
+          <th className="Teamproject-table-header-cell col-edit-delete" rowSpan="2">수정/삭제</th>
         </tr>
         <tr className="Teamproject-table-subheader">
             {Array.from({ length: 12 }, (_, monthIdx) => (
@@ -818,7 +824,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
           {(selectedYear && selectYear) && selectedYear[selectYear] &&
             selectedYear[selectYear]?.map((row, index) => (
               <tr key={index} className="Teamproject-table-row">
-                <td className="Teamproject-table-cell">{row.id}</td>
+                {/* <td className="Teamproject-table-cell">{row.id}</td> */}
                 <td className="Teamproject-table-cell project-cell-overflow" title={row.Project}>{row.Project}</td>
                 <td className="Teamproject-table-cell" style={{backgroundColor: row.Status - 1 === 7 ? '#3FA2F6' : (calculatePercentage( row ) === '100' && row.Status - 1 === 6) ? '#009570'
                     : (calculatePercentage( row ) === '100' && row.Status - 1 !== 6) ? '#EB5B00' : row.Status - 1 === 3 ? '#e9d819' :'' }}>
@@ -879,13 +885,13 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                       setOldProject(row.Project);
                     }}
                   >
-                    {selectedRow === row.id ? '접기' : '수정'}
+                    {selectedRow === row.id ? <BiSolidHide /> : <FontAwesomeIcon icon={faPenToSquare} />}
                   </button>
                   <button
                     className="delete-button ms-2"
                     onClick={() => handleDelete(row)}
                   >
-                    삭제
+                    <FaTrash />
                   </button>
                 </td>
               </tr>

@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { Dropdown } from 'react-bootstrap';
 import { useFooterVisibilityUpdate } from '../Layouts/FooterVisibilityContext';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../Redux/Store';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -20,9 +20,11 @@ import Scrolling from '../Components/ScrollingSignboard/Scrolling';
 import ViewGitHistory from '../Components/GitHistory/ViewGitHistory';
 import GetUserInfo from '../API/GetUserInfo';
 import GetSubLoadBoard from '../API/GetSubLoadBoard';
+import { GetProject } from '../API/GetProject';
 
 function Board() {
-    //const { authUserId, authUserName, authUserRank } = useSelector(state => state.info);
+    const isLogged = useSelector(state => state.auth.isLoggedIn);
+    const { authUserId, authUserName, authUserRank, authUserTeam, authManager } = useSelector((state) => state.userInfo);
     const toggleFooterVisibility = useFooterVisibilityUpdate();
 
     const [selectedActionText, setSelectedActionText] = useState([]);
@@ -44,6 +46,19 @@ function Board() {
     let month = ('0' + (today.getMonth() + 1)).slice(-2);
     let day = ('0' + today.getDate()).slice(-2);
     let dateString = year + '-' + month + '-' + day;
+
+
+    const Continents = [
+        { key: '자동화1팀', value: '파주' },
+        { key: '시스템사업팀', value: '구미' },
+        { key: '장비사업팀', value: '서울' },
+    ];
+
+    const selectSite = () => {
+        if (authUserTeam === undefined) return;
+        const found = Continents.find((item) => item.key === authUserTeam);
+        return found ? found.value : undefined;
+    };
 
     // const setSubEdit = async (name, sub, subNum) => {
     //     let project = ''
@@ -126,6 +141,7 @@ function Board() {
     const updatePrjStatus = async (prjName) => {
         const token = localStorage.getItem('userToken');
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        //const ip = `http://localhost:8877`;
         await Axios.post(`${ip}/UpdateUserImpPrj`, {
             projectName: prjName, // 나중에 변경
             userName: token,
@@ -147,44 +163,51 @@ function Board() {
     }
 
     //pm 별표표시는 내 PC에 있어서 확인 위해 여기만 localhost로 변경하면됨
-    const getProject = async (data) => {
-        const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-        //const ip = `http://localhost:8877`;
-        return await Axios.get(`${ip}/BoardProject?Name=${encodeURIComponent(data)}`, { //get은 body없음
-            headers: {
-                "Content-Type": "application/json",
-                withCredentials: true,
-            }
-        }).then((res) => {
-            //console.log('getProject', { res });
-            if (res.data) {
-                //console.log('잘 옴 ? ', res.data);
-                const dataRow = res.data.map((item, index) => ({
-                    id: index + 1,
-                    text: item.ProjectName,
-                    period: item.Period,
-                    status: item.Status,
-                    pm: item.PM
-                }));
-                setSelectedActionText(dataRow);
-                return dataRow;
-            } else if (res.data.code === 403) { //에러메세지 로그 없이 처리하려할때
-                console.log("403");
-            }
-        }).catch(error => {
-            console.log({ error });
-            if (error.response.status === 403) {
-                alert(`${error.response.data.message}`);
-            }
-        });
-    }
+    // const getProject = async (data) => {
+    //     //const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    //     const ip = `http://localhost:8877`;
+    //     return await Axios.get(`${ip}/BoardProject?Name=${encodeURIComponent(data)}&ID=${encodeURIComponent(authUserId)}&Manager=${encodeURIComponent(authManager)}`, { //get은 body없음
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             withCredentials: true,
+    //         }
+    //     }).then((res) => {
+    //         //console.log('getProject', { res });
+    //         if (res.data) {
+    //             //console.log('잘 옴 ? ', res.data);
+    //             const dataRow = res.data.map((item, index) => ({
+    //                 id: index + 1,
+    //                 text: item.ProjectName,
+    //                 period: item.Period,
+    //                 status: item.Status,
+    //                 pm: item.PM
+    //             }));
+    //             setSelectedActionText(dataRow);
+    //             return dataRow;
+    //         } else if (res.data.code === 403) { //에러메세지 로그 없이 처리하려할때
+    //             console.log("403");
+    //         }
+    //     }).catch(error => {
+    //         console.log({ error });
+    //         if (error.response.status === 403) {
+    //             alert(`${error.response.data.message}`);
+    //         }
+    //     });
+    // }
 
     const updatePeriod = async (data) => {
-        try {
-            return await getProject(data.name);
-        } catch (error) {
-
-        }
+        //try {
+            //return await getProject(data.name);
+            if (authUserId !== '' && authManager !== '' ) {
+                const site = selectSite();
+                console.log('데이터 정상?', data.name, authUserId, authManager);
+                const project = await GetProject(data.name, authUserId, authManager, site);
+                console.log('project', project);
+                setSelectedActionText(project);
+                return project;
+            }
+        // } catch (error) {
+        // }
     }
 
     const fetchData = async () => {
@@ -214,6 +237,7 @@ function Board() {
         try {
             const results = await fetchData();
             if (results === undefined) return "No Data";
+            if (results.periodData === undefined) return "No Data";
 
             // 여기에 추가
             const today = new Date(); // 기준 날짜는 오늘로 설정
@@ -321,7 +345,18 @@ function Board() {
         // 부모 컴포넌트에서 필요한 추가 동작 수행
     };
 
-    useLayoutEffect(() => {
+    // useLayoutEffect(() => {
+    //     allData();
+    //     setLoading(false);
+    //     // 페이지가 마운트될 때 Footer를 숨김
+    //     toggleFooterVisibility(false);
+    //     return () => {
+    //         // 페이지가 언마운트될 때 Footer를 다시 표시
+    //         toggleFooterVisibility(true);
+    //     };
+    // }, []);
+
+    useEffect(() => {
         allData();
         setLoading(false);
         // 페이지가 마운트될 때 Footer를 숨김
@@ -330,7 +365,7 @@ function Board() {
             // 페이지가 언마운트될 때 Footer를 다시 표시
             toggleFooterVisibility(true);
         };
-    }, []);
+    }, [isLogged, authUserId, authManager])
 
     if (loading) return <div>로딩중</div>;
     return (
