@@ -200,9 +200,9 @@ function Board() {
             //return await getProject(data.name);
             if (authUserId !== '' && authManager !== '' ) {
                 const site = selectSite();
-                console.log('데이터 정상?', data.name, authUserId, authManager);
+                //console.log('데이터 정상?', data.name, authUserId, authManager);
                 const project = await GetProject(data.name, authUserId, authManager, site);
-                console.log('project', project);
+                //console.log('project', project);
                 setSelectedActionText(project);
                 return project;
             }
