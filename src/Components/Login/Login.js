@@ -6,6 +6,8 @@ import Cookies from 'js-cookie';
 // login -> Login으로 변경(컴포넌트는 대문자로 시작해야 react-router-dom 사용가능)
 const Login = async (email, password) => {
     const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    //const ip = `http://localhost:8877`;
+    //console.log('로그인 진행', email, password, ip);
     return await Axios.post(`${ip}/login`, {
         email: email,
         password: password,

@@ -13,7 +13,15 @@ const TeamProjectTable = () => {
     { key: '자동화1팀', value: '파주' },
     { key: '시스템사업팀', value: '구미' },
     { key: '장비사업팀', value: '서울' },
+    { key: 'ReadOnly', value: '파주' },
   ];
+
+  let today = new Date();
+  let year = today.getFullYear();
+  let month = ('0' + (today.getMonth() + 1)).slice(-2);
+  let day = ('0' + today.getDate()).slice(-2);
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
 
   const selectSite = () => {
     if (authUserTeam === undefined) return;
@@ -189,6 +197,7 @@ const TeamProjectTable = () => {
     const dataWithIds = data.map((item, index) => ({
       id: index + 1,
       Project: item.ProjectName,
+      Percent: calculatePercentage(item),
       ...item
 
     }));
@@ -205,6 +214,37 @@ const TeamProjectTable = () => {
       LoadTeameProject();
     }
   }
+
+  const calculatePercentage = (row) => {
+    const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
+    const hundred = 100;
+    let percentage = 0;
+
+    if (currentMonth > row.EndMonth || ((currentMonth === row.EndMonth) && day >= row.EndWeek))
+      return hundred.toFixed(0);
+    if (row.StartMonth > row.EndMonth)
+      return hundred.toFixed(0);
+    if (row.StartMonth > currentMonth || ((currentMonth === row.StartMonth) && day < row.StartWeek))
+      return 0;
+
+    if (row.StartMonth === 1) {
+      if (row.StartWeek === 1) {
+        const ratio = (row.EndMonth * 4) - (4 - row.EndWeek);
+        const period = (currentMonth * 4) - (4 - day);
+        percentage = period / ratio * 100;
+      } else {
+        const ratio = (row.EndMonth * 4) - (row.StartWeek - 1) - (4 - row.EndWeek);
+        const period = (currentMonth * 4) - (row.StartWeek - 1) - (4 - day);
+        percentage = period / ratio * 100;
+      }
+    } else {
+      const ratio = ((row.EndMonth - row.StartMonth - 1) * 4) + (4 - (row.StartWeek - 1)) + row.EndWeek;
+      const period = ((currentMonth - row.StartMonth - 1) * 4) + (4 - (row.StartWeek - 1)) + day;
+      percentage = (period / ratio) * 100;
+    }
+    //console.log('날짜 계산', percentage);
+    return percentage.toFixed(0);
+  };
 
   useEffect(() => {
     

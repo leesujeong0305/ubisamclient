@@ -13,8 +13,7 @@ function Today({ onClose, post, selectedProjectName }) {
     const [requester, setrequester] = useState('');
     const [reqManager, setReqManager] = useState('');
 
-    const Continents = [
-        /* 상태 색상 표기 */ 
+    const Continents = [ /* 상태 색상 표기 */ 
         { key: 1, value: "대기", color: "#CCCCFF" },
         { key: 2, value: "진행중", color: "#ADD8E6" },
         { key: 3, value: "완료", color: "#FFD700" },

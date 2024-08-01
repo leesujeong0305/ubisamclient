@@ -21,10 +21,11 @@ const TeamTodoList = () => {
     const [site, setSite] = useState(null);
     const [retryCount, setRetryCount] = useState(0);
 
-    const Continents = [ /* 상태 색상 표기 */
+    const Continents = [
         { key: '자동화1팀', value: '파주' },
         { key: '시스템사업팀', value: '구미' },
         { key: '장비사업팀', value: '서울' },
+        { key: 'ReadOnly', value: '파주' },
     ];
 
     // 날짜를 "yyyy-MM-dd" 형식으로 변환하는 함수
@@ -48,23 +49,6 @@ const TeamTodoList = () => {
         const found = Continents.find((item) => item.key === authUserTeam);
         return found ? found.value : undefined;
     }
-
-    // const getSiteWithRetry = async () => {
-    //     setLoading(true);
-    //     let site;
-    //     while (retryCount < 3) {
-    //         site = selectSite();
-    //         if (site !== undefined) {
-    //             setSite(site);
-    //             setLoading(false);
-    //             return;
-    //         }
-    //         setRetryCount(prevCount => prevCount + 1);
-    //         await new Promise(resolve => setTimeout(resolve, 1000)); // 1초 대기 후 재시도
-    //     }
-    //     setLoading(false);
-    //     alert(`"${authUserTeam}" 이름이 서버에 등록된 팀 이름과 매칭되지 않아 데이터를 가져올 수 없습니다.`);
-    // };
 
     const LoadAllBoard = async () => {
         const site = selectSite();
@@ -146,7 +130,7 @@ const TeamTodoList = () => {
                 }
                 else {
                     if (difference > 0) {
-                        item.Period = `D-${Math.abs(difference)}`;
+                        item.Period = `D+${Math.abs(difference)}`;
                     } else if (difference < 0) {
                         item.Period = `${Math.abs(difference)}일`;
                     } else {
@@ -160,7 +144,7 @@ const TeamTodoList = () => {
                     item.Period = '🚨';
                 } else {
                     if (difference > 0) {
-                        item.Period = `D-${Math.abs(difference)}`;
+                        item.Period = `D+${Math.abs(difference)}`;
                     } else if (difference < 0) {
                         item.Period = `${Math.abs(difference)}일`;
                     } else {

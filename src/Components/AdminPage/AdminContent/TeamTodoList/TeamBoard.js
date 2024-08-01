@@ -36,7 +36,7 @@ const TeamBoard = ({ posts }) => {
 
     //목표일에 따른 색상 변경
     const findDayById = (id) => {
-        if (id.includes('D-')) {
+        if (id.includes('D+')) {
             return 'red';
         } else {
             return id.color;

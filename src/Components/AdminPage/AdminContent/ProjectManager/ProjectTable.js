@@ -25,6 +25,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         { key: '자동화1팀', value: '파주' },
         { key: '시스템사업팀', value: '구미' },
         { key: '장비사업팀', value: '서울' },
+        { key: 'ReadOnly', value: '파주' },
     ];
 
     const headers = [
@@ -297,7 +298,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
             <div className="table-counter">
                 <span>총 프로젝트: {projects.length}</span>
                 {
-                    !projectEdit && (
+                    !projectEdit && authUserTeam !== 'ReadOnly' && (
                         <button className="create-button" onClick={handleCreate}>
                             프로젝트 생성&nbsp;&nbsp;
                             <i>{projectAdd ? ' ㆒' : ' ✚'}</i>
@@ -467,7 +468,9 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                             </select>
                         </div> */}
 
-                        <div className="input-container">
+                        {
+                            authUserTeam !== 'ReadOnly' && (
+                                <div className="input-container">
                             <button
                                 className="project-button"
                                 style={{ backgroundColor: '#005FCC' }}
@@ -476,6 +479,9 @@ const ProjectTable = ({ projects, handleUpdate }) => {
                                 EDIT
                             </button>
                         </div>
+                            )
+                        }
+                        
                     </div>
                 )
             }

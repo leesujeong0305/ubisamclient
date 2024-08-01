@@ -52,10 +52,17 @@ const Header = () => {
               <Nav.Item>
                 {isLogged ? <Nav.Item><Nav.Link className='ms-5' href="/">대시보드</Nav.Link></Nav.Item> : <div className='disabled me-5'></div>}
               </Nav.Item>
-              <div className="divider"></div>
-              <Nav.Item>
-                {isLogged ? <Nav.Link className='' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
-              </Nav.Item>
+              {
+                authUserTeam !== 'ReadOnly' && (
+                  <>
+                  <div className="divider"></div>
+                  <Nav.Item>
+                    {isLogged ? <Nav.Link className='' eventKey="link-1" href="/FullCalendar">유저보드</Nav.Link> : <div className='disabled me-5'></div>}
+                  </Nav.Item>
+                  </>
+                )
+              }
+              
 
               {isLogged && authManager ? (
                 <>

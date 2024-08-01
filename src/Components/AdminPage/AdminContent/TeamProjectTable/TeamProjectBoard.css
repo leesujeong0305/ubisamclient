@@ -145,24 +145,22 @@
   background-color: #0056b3;
 }
 
-.team-add-button {
+.team-add-btn {
   padding: 8px 10px;
   border: none;
   border-radius: 5px;
   color: #fff;
   background-color: #009570;
   cursor: pointer;
-  margin-left: 50px;
 }
 
-.team-project-button {
+.team-edit-btn {
   padding: 8px 10px;
   border: none;
   border-radius: 5px;
   color: #fff;
   background-color: #009570;
   cursor: pointer;
-  margin-left: 50px;
 }
 
 /* 수정 버튼 CSS */
@@ -209,9 +207,12 @@
   margin-bottom: 5px;
 }
 
+.parrent-row {
+  display: flex;
+}
+
 .team-input-container {
   position: relative;
-  width: 90px;
   margin-top: 10px;
   margin-left: 5px;
   margin-right: 5px;
@@ -361,4 +362,37 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
+}
+
+
+
+.table-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px; /* 원하는 최대 길이 설정 */
+  position: relative;
+}
+
+.tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute; /* absolute로 변경하여 tr 또는 td의 상대적인 위치를 기준으로 툴팁 배치 */
+  background-color: #f6f7e1;
+  border: 1px solid #222;
+  color: #222;
+  text-align: left;
+  border-radius: 5px;
+  padding: 5px;
+  z-index: 1;
+  transition: opacity 0.3s;
+  white-space: normal;
+  max-width: 700px;
+  font-size: 16px;
+  transform: translate(-50%, -120%);
+}
+
+.table-cell:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
 }

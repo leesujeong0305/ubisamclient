@@ -5,6 +5,7 @@ import ExcelExport from '../db/Excel/ExcelExport';
 import './ListBoard.css';
 import { Form } from 'react-bootstrap';
 import CustomWaterMark from '../Components/Settings/CustomWaterMark';
+import { useSelector } from 'react-redux';
 
 function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, handleData, selectedProjectName }) {
 
@@ -25,6 +26,9 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
         { name: "To Do List", width: "" },
         { name: "목표일", width: "5%" },
         { name: "상태", width: "5%" },];
+
+    const isLogged = useSelector(state => state.auth.isLoggedIn);
+    const { authUserId, authUserName, authUserRank, authUserTeam, authManager } = useSelector((state) => state.userInfo);
 
     const [selectvalue, setSelectvalue] = useState(null);
     const [show, setShow] = useState(false);
@@ -48,7 +52,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
 
     //목표일에 따른 색상 변경
     const findDayById = (id) => {
-        if (id.includes('D-')) {
+        if (id.includes('D+')) {
             return 'red';
         } else {
             return id.color;
@@ -100,29 +104,47 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
             <div className="nav-context">
                 <div></div>
                 <div className="d-flex gap-2 mb-2">
-                    <CustomWaterMark show={show} onHide={() => setShow(false)} />
-                    <ExcelExport
-                        data={allposts}
-                        name={tab}
-                        selectedProjectName={selectedProjectName}
-                    />
-                    <EditToday
-                        show={show}
-                        onHide={() => setShow(false)}
-                        onClose={handleDialogClose}
-                        post={selectvalue}
-                        selectedProjectName={selectedProjectName}
-                        dialogClassName="custom-modal-size"
-                    />
-                    <Today
-                        show={show}
-                        onHide={() => setShow(false)}
-                        onClick={handleClick}
-                        onClose={handleDialogClose}
-                        post={null}
-                        selectedProjectName={selectedProjectName}
-                        dialogClassName="custom-modal-size"
-                    />
+                    {
+                        authUserTeam === 'ReadOnly' && 
+                            <div style={{padding: '19px'}}></div>
+                    }
+                        
+                    
+                    {
+                        authUserTeam !== 'ReadOnly' && 
+                            <CustomWaterMark show={show} onHide={() => setShow(false)} />
+                    }
+                    {
+                        authUserTeam !== 'ReadOnly' && 
+                        <ExcelExport
+                            data={allposts}
+                            name={tab}
+                            selectedProjectName={selectedProjectName}
+                        />
+                    }
+                    {
+                        authUserTeam !== 'ReadOnly' && 
+                        <EditToday
+                            show={show}
+                            onHide={() => setShow(false)}
+                            onClose={handleDialogClose}
+                            post={selectvalue}
+                            selectedProjectName={selectedProjectName}
+                            dialogClassName="custom-modal-size"
+                        />
+                    }
+                    {
+                        authUserTeam !== 'ReadOnly' && 
+                        <Today
+                            show={show}
+                            onHide={() => setShow(false)}
+                            onClick={handleClick}
+                            onClose={handleDialogClose}
+                            post={null}
+                            selectedProjectName={selectedProjectName}
+                            dialogClassName="custom-modal-size"
+                        />
+                    }
                 </div>
             </div>
             <table className="table table-striped table-hover border-primary table-fixed">

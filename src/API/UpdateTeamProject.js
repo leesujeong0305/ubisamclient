@@ -17,6 +17,7 @@ export const UpdateTeamProject = async (row, site) => {
     Users: row.Users,
     ProopsMM: row.ProopsMM,
     Manager: row.Manager,
+    Comment: row.Comment,
     Site: site,
   }, {
     headers: {

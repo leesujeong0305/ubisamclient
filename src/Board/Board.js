@@ -52,6 +52,7 @@ function Board() {
         { key: '자동화1팀', value: '파주' },
         { key: '시스템사업팀', value: '구미' },
         { key: '장비사업팀', value: '서울' },
+        { key: 'ReadOnly', value: '파주' },
     ];
 
     const selectSite = () => {
@@ -100,6 +101,10 @@ function Board() {
 
     const getProjectData = async (name) => {
         //return await LoadBoard(name);
+        if (name === null || name === undefined) {
+            return undefined;
+        }
+            
         const loadBoards = await LoadBoard(name);
         //const loadSubBoards = await subLoadBoard(name);
         const loadSubBoards = await GetSubLoadBoard(name);
@@ -162,39 +167,6 @@ function Board() {
         });
     }
 
-    //pm 별표표시는 내 PC에 있어서 확인 위해 여기만 localhost로 변경하면됨
-    // const getProject = async (data) => {
-    //     //const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-    //     const ip = `http://localhost:8877`;
-    //     return await Axios.get(`${ip}/BoardProject?Name=${encodeURIComponent(data)}&ID=${encodeURIComponent(authUserId)}&Manager=${encodeURIComponent(authManager)}`, { //get은 body없음
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             withCredentials: true,
-    //         }
-    //     }).then((res) => {
-    //         //console.log('getProject', { res });
-    //         if (res.data) {
-    //             //console.log('잘 옴 ? ', res.data);
-    //             const dataRow = res.data.map((item, index) => ({
-    //                 id: index + 1,
-    //                 text: item.ProjectName,
-    //                 period: item.Period,
-    //                 status: item.Status,
-    //                 pm: item.PM
-    //             }));
-    //             setSelectedActionText(dataRow);
-    //             return dataRow;
-    //         } else if (res.data.code === 403) { //에러메세지 로그 없이 처리하려할때
-    //             console.log("403");
-    //         }
-    //     }).catch(error => {
-    //         console.log({ error });
-    //         if (error.response.status === 403) {
-    //             alert(`${error.response.data.message}`);
-    //         }
-    //     });
-    // }
-
     const updatePeriod = async (data) => {
         //try {
             //return await getProject(data.name);
@@ -238,6 +210,7 @@ function Board() {
             const results = await fetchData();
             if (results === undefined) return "No Data";
             if (results.periodData === undefined) return "No Data";
+            if (results.projectData === undefined) return undefined;
 
             // 여기에 추가
             const today = new Date(); // 기준 날짜는 오늘로 설정
@@ -264,7 +237,7 @@ function Board() {
                     }
                     else {
                         if (difference > 0) {
-                            item.Period = `D-${Math.abs(difference)}`;
+                            item.Period = `D+${Math.abs(difference)}`;
                         } else if (difference < 0) {
                             item.Period = `${Math.abs(difference)}일`;
                         } else {
@@ -278,7 +251,7 @@ function Board() {
                         item.Period = '🚨';
                     } else {
                         if (difference > 0) {
-                            item.Period = `D-${Math.abs(difference)}`;
+                            item.Period = `D+${Math.abs(difference)}`;
                         } else if (difference < 0) {
                             item.Period = `${Math.abs(difference)}일`;
                         } else {
@@ -357,6 +330,7 @@ function Board() {
     // }, []);
 
     useEffect(() => {
+        if (authUserId !== undefined && authManager !== undefined && authUserId !== null && authManager !== null)
         allData();
         setLoading(false);
         // 페이지가 마운트될 때 Footer를 숨김

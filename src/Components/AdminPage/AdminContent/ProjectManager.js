@@ -11,10 +11,11 @@ const ProjectManager = () => {
   const [site, setSite] = useState("");
   const [update, setUpdate] = useState("");
 
-  const Continents = [ /* 상태 색상 표기 */
+  const Continents = [
     { key: '자동화1팀', value: '파주' },
     { key: '시스템사업팀', value: '구미' },
     { key: '장비사업팀', value: '서울' },
+    { key: 'ReadOnly', value: '파주' },
   ];
 
   const selectSite = () => {
