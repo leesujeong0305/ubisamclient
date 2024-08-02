@@ -5,7 +5,7 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 import './Scrolling.css';
 import Axios from '../../API/AxiosApi';
 
-const Scrolling = ({ selectedProjectName }) => {
+const Scrolling = ({ selectedProjectName, warningboard }) => {
   const bellRef = useRef(null);
   const [tasks, setTasks] = useState([]);
   const [projectName, setProjectName] = useState('');
@@ -59,12 +59,13 @@ const Scrolling = ({ selectedProjectName }) => {
   }
 
   const loadKanBanList = async () => {
-    const list = await loadKanBanList_DB(selectedProjectName);
+    const items = await loadKanBanList_DB(selectedProjectName);
+    const list = [...items, ...warningboard];
     if (list.length > 0) {
       list.reverse().forEach((item, index) => {
         const newTask = {
           id: index + 1, //`task-${Date.now()}`
-          text: item.Content,
+          text: item.Title,
           status: item.Status,
         }
         setTasks(prevTasks => [...prevTasks, newTask]);

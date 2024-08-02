@@ -40,6 +40,7 @@ function Board() {
     const [loading, setLoading] = useState(true);
     const [pm, setPM] = useState('');
     const [selectedTitle, setSelectedTitle] = useState(null);
+    const [warningBoard, setWarningBoard] = useState([]);
 
     let today = new Date();
     let year = today.getFullYear();
@@ -292,6 +293,7 @@ function Board() {
                 await setLoadBoard(results.projectData);
                 setSelectedProjectName(selectedProject.text);
                 setStatus(selectedProject.status);
+                setWarningBoard(results.projectData.filter((item) => (item.details && item.details.Status === "알림") || item.Status === "알림"));
                 return selectedProject;
             }
         } catch (error) {
@@ -395,7 +397,7 @@ function Board() {
                     </div>
                 </div>
                 <div className='mt-4'>
-                    <Scrolling selectedProjectName={selectedProjectName} />
+                    <Scrolling selectedProjectName={selectedProjectName} warningboard={warningBoard} />
                 </div>
 
                 <div className='mt-4'>

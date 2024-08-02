@@ -20,7 +20,7 @@ const ScrollText = ({ text }) => {
       <div className="text-wrapper" ref={textWrapperRef}>
         {repeatedText.map((task, index) => (
           <div key={index} className="text">
-            {task.text}
+            {task.status } - { task.text}
           </div>
         ))}
       </div>
