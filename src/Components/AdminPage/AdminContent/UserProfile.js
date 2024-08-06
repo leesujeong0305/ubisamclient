@@ -50,24 +50,29 @@ const UserProfile = () => {
     setshow(true);
   };
 
-  useEffect(() => {
-    const LoadUsersInfo = async () => {
-      const site = selectSite();
-      const users = await GetUserInfo('All', site);
-      setGetUsers(users);
-    }
+  const LoadUsersInfo = async () => {
+    const site = selectSite();
+    const users = await GetUserInfo('All', site);
+    const filterUsers = users.filter(item => item.id !== "ubisam");
+    setGetUsers(filterUsers);
+  }
 
+  const handleUpdate = () => {
+    LoadUsersInfo();
+  }
+
+  useEffect(() => {
     LoadUsersInfo();
   }, [])
 
   return (
     <div className="user-profile-container">
       <div className="user-info-section">
-        <UserInfo rows={getUsers} onRowClick={handleRowClick} />
+        <UserInfo rows={getUsers} onRowClick={handleRowClick} handleUpdate={handleUpdate} />
         {
           show && (
             <div className="user-unit-info-section">
-              <UserUnitInfo user={selectedUser || {}} />
+              <UserUnitInfo user={selectedUser || {}} handleUpdate={handleUpdate} />
             </div>
           )}
       </div>

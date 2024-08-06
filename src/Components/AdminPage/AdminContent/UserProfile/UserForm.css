@@ -1,0 +1,63 @@
+.user-form {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    background: #fff;
+  }
+  
+  .user-info {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  
+  h2 {
+    margin: 5px 0;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+    text-align: left; /* 추가: form-group 내 텍스트를 왼쪽 정렬 */
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: left; /* 추가: label 텍스트를 왼쪽 정렬 */
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: left; /* 추가: input과 select 텍스트를 왼쪽 정렬 */
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 3px;
+    text-align: center; /* 버튼 텍스트는 가운데 정렬 */
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }

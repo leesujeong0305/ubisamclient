@@ -58,10 +58,10 @@ const userInfoSlice = createSlice({
     },
     updateUser(state, action) {
       if (action !== undefined) {
-        state.authUserId = action.payload.email;
+        state.authUserId = action.payload.id;
         state.authUserName = action.payload.name;
         state.authUserRank = action.payload.rank;
-        state.authUserTeam = action.payload.team;
+        state.authUserTeam = action.payload.department;
         state.authManager = action.payload.manager;
       } else {
         state.authUserId = "";

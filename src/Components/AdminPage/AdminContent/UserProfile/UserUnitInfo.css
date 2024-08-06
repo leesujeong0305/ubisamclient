@@ -49,6 +49,10 @@
     padding: 10px 0;
     border-bottom: 1px solid #e0e0e0; /* 테이블 행 경계선 */
   }
+
+  .details-item {
+    width: 100px;
+  }
   
   .user-details tr:not(:last-child) td {
     border-bottom: 1px solid #e0e0e0; /* 마지막 행을 제외한 테이블 행 경계선 */
@@ -122,3 +126,6 @@
     background-color: #fff;
   }
   
+  .user-input-field-width {
+    width: 250px;
+  }

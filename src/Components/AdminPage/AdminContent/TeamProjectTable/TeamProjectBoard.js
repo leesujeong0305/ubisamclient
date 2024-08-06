@@ -105,8 +105,6 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     });
   };
 
-
-
   const months = [
     '1월',
     '2월',
@@ -182,37 +180,6 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     );
   };
 
-  // const calculatePercentage = (row) => {
-  //   const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
-  //   const hundred = 100;
-  //   let percentage = 0;
-
-  //   if (currentMonth > row.EndMonth || ((currentMonth === row.EndMonth) && day >= row.EndWeek))
-  //     return hundred.toFixed(0);
-  //   if (row.StartMonth > row.EndMonth)
-  //     return hundred.toFixed(0);
-  //   if (row.StartMonth > currentMonth || ((currentMonth === row.StartMonth) && day < row.StartWeek))
-  //     return 0;
-
-  //   if (row.StartMonth === 1) {
-  //     if (row.StartWeek === 1) {
-  //       const ratio = (row.EndMonth * 4) - (4 - row.EndWeek);
-  //       const period = (currentMonth * 4) - (4 - day);
-  //       percentage = period / ratio * 100;
-  //     } else {
-  //       const ratio = (row.EndMonth * 4) - (row.StartWeek - 1) - (4 - row.EndWeek);
-  //       const period = (currentMonth * 4) - (row.StartWeek - 1) - (4 - day);
-  //       percentage = period / ratio * 100;
-  //     }
-  //   } else {
-  //     const ratio = ((row.EndMonth - row.StartMonth - 1) * 4) + (4 - (row.StartWeek - 1)) + row.EndWeek;
-  //     const period = ((currentMonth - row.StartMonth - 1) * 4) + (4 - (row.StartWeek - 1)) + day;
-  //     percentage = (period / ratio) * 100;
-  //   }
-  //   //console.log('날짜 계산', percentage);
-  //   return percentage.toFixed(0);
-  // };
-
   const delayWeek = (row) => {
     const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
     const per = ((currentMonth - row.EndMonth) * 4) - (row.EndWeek - day);
@@ -247,6 +214,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       setFormValues(initialData);
       setSelectedRow(null);
       setShowCheckboxes(false);
+      setShowComment(false);
     } else {
       setProjectAdd(true);
       setFormValues(initialData);
@@ -355,7 +323,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     setShowCheckboxes(false);
     setCheckboxes(initCheckbox);
     setSelectedRow(null);
-
+    setShowComment(false);
     handleUpdate(true);
   };
 
@@ -524,7 +492,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                 type="text"
                 name="Project"
                 className="team-input-field"
-                value={formValues.Project}
+                value={formValues.Project || ""}
                 onChange={handleInputChange}
                 style={{ width: '300px' }}
               />
@@ -534,12 +502,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <select
                 name="Status"
                 className="team-input-field"
-                value={formValues.Status}
+                value={formValues.Status || ""}
                 onChange={handleInputChange}
               >
-                <option value={0}>Select</option>
+                <option key={0} value={0}>Select</option>
                 {states.map((status, index) => (
-                  <option value={index + 1}>{status}</option>
+                  <option key={index + 1} value={index + 1}>{status}</option>
                 ))}
               </select>
             </div>
@@ -556,7 +524,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                 type="text"
                 name="ProopsMM"
                 className="team-input-field"
-                value={formValues.ProopsMM}
+                value={formValues.ProopsMM || ""}
                 onChange={handleInputChange}
               />
             </div>
@@ -566,12 +534,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <select
                 name="StartMonth"
                 className="team-input-field"
-                value={formValues.StartMonth}
+                value={formValues.StartMonth || ""}
                 onChange={handleInputChange}
               >
-                <option value={0}>Select</option>
+                <option key={0} value={0}>Select</option>
                 {months.map((month, index) => (
-                  <option key={index} value={index + 1}>
+                  <option key={index + 1} value={index + 1}>
                     {month}
                   </option>
                 ))}
@@ -583,12 +551,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <select
                 name="StartWeek"
                 className="team-input-field"
-                value={formValues.StartWeek}
+                value={formValues.StartWeek || ""}
                 onChange={handleInputChange}
               >
-                <option value={0}>Select</option>
+                <option key={0} value={0}>Select</option>
                 {weeks.map((week, index) => (
-                  <option key={index} value={index + 1}>
+                  <option key={index + 1} value={index + 1}>
                     {week}
                   </option>
                 ))}
@@ -600,12 +568,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <select
                 name="EndMonth"
                 className="team-input-field"
-                value={formValues.EndMonth}
+                value={formValues.EndMonth || ""}
                 onChange={handleInputChange}
               >
-                <option value={0}>Select</option>
+                <option key={0} value={0}>Select</option>
                 {months.map((month, index) => (
-                  <option key={index} value={index + 1}>
+                  <option key={index + 1} value={index + 1}>
                     {month}
                   </option>
                 ))}
@@ -617,12 +585,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <select
                 name="EndWeek"
                 className="team-input-field"
-                value={formValues.EndWeek}
+                value={formValues.EndWeek || ""}
                 onChange={handleInputChange}
               >
-                <option value={0}>Select</option>
+                <option key={0} value={0}>Select</option>
                 {weeks.map((week, index) => (
-                  <option key={index} value={index + 1}>
+                  <option key={index + 1} value={index + 1}>
                     {week}
                   </option>
                 ))}
@@ -635,7 +603,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                 type="text"
                 name="Manager"
                 className="team-input-field"
-                value={formValues.Manager}
+                value={formValues.Manager || ""}
                 onChange={handleInputChange}
                 style={{ width: '200px' }}
               />
@@ -675,7 +643,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                 type="text"
                 name="Project"
                 className="team-input-field"
-                value={formValues.Project}
+                value={formValues.Project || ""}
                 onChange={handleInputChange}
                 style={{ width: '300px' }}
               />
@@ -685,12 +653,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <select
                 name="Status"
                 className="team-input-field"
-                value={formValues.Status}
+                value={formValues.Status || ""}
                 onChange={handleInputChange}
               >
-                <option value={0}>Select</option>
+                <option key={0} value={0}>Select</option>
                 {states.map((status, index) => (
-                  <option value={index + 1}>{status}</option>
+                  <option key={index + 1} value={index + 1}>{status}</option>
                 ))}
               </select>
             </div>
@@ -707,7 +675,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                 type="text"
                 name="ProopsMM"
                 className="team-input-field"
-                value={formValues.ProopsMM}
+                value={formValues.ProopsMM || ""}
                 onChange={handleInputChange}
               />
             </div>
@@ -717,12 +685,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <select
                 name="StartMonth"
                 className="team-input-field"
-                value={formValues.StartMonth}
+                value={formValues.StartMonth || ""}
                 onChange={handleInputChange}
               >
-                <option value={0}>Select</option>
+                <option key={0} value={0}>Select</option>
                 {months.map((month, index) => (
-                  <option key={index} value={index + 1}>
+                  <option key={index + 1} value={index + 1}>
                     {month}
                   </option>
                 ))}
@@ -734,12 +702,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <select
                 name="StartWeek"
                 className="team-input-field"
-                value={formValues.StartWeek}
+                value={formValues.StartWeek || ""}
                 onChange={handleInputChange}
               >
-                <option value={0}>Select</option>
+                <option key={0} value={0}>Select</option>
                 {weeks.map((week, index) => (
-                  <option key={index} value={index + 1}>
+                  <option key={index + 1} value={index + 1}>
                     {week}
                   </option>
                 ))}
@@ -751,12 +719,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <select
                 name="EndMonth"
                 className="team-input-field"
-                value={formValues.EndMonth}
+                value={formValues.EndMonth || ""}
                 onChange={handleInputChange}
               >
-                <option value={0}>Select</option>
+                <option key={0} value={0}>Select</option>
                 {months.map((month, index) => (
-                  <option key={index} value={index + 1}>
+                  <option key={index + 1} value={index + 1}>
                     {month}
                   </option>
                 ))}
@@ -768,12 +736,12 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
               <select
                 name="EndWeek"
                 className="team-input-field"
-                value={formValues.EndWeek}
+                value={formValues.EndWeek || ""}
                 onChange={handleInputChange}
               >
-                <option value={0}>Select</option>
+                <option key={0} value={0}>Select</option>
                 {weeks.map((week, index) => (
-                  <option key={index} value={index + 1}>
+                  <option key={index + 1} value={index + 1}>
                     {week}
                   </option>
                 ))}
@@ -786,7 +754,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                 type="text"
                 name="Manager"
                 className="team-input-field"
-                value={formValues.Manager}
+                value={formValues.Manager || ""}
                 onChange={handleInputChange}
                 style={{ width: '200px' }}
               />
@@ -869,7 +837,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                 name="Comment"
                 placeholder='지연 사항 작성 필요'
                 className="team-input-field"
-                value={formValues.Comment}
+                value={formValues.Comment || ""}
                 onChange={handleInputChange}
                 style={{ width: '1180px' }}
               />
@@ -984,7 +952,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                 <td className="Teamproject-table-cell manager-cell-overflow" title={row.Manager}>{row.Manager}</td>
                 <td className="Teamproject-table-cell">
                   <button
-                    className={selectedRow === row.id ? `edit-button-click` : `edit-button`}
+                    className={selectedRow === row.id ? `team-edit-button-click` : `team-edit-button`}
                     onClick={() => {
                       handleEdit(row);
                       handleRowClick(row.Users);

@@ -62,7 +62,7 @@ export default function MainUI() {
     try {
       const data = await GetUserInfo();
       if (data) {
-        localStorage.setItem('userTeamToken', data.team);
+        localStorage.setItem('userTeamToken', data.department);
         localStorage.setItem('userRankToken', data.rank);
         localStorage.setItem('userImpProjectToken', data.impProject);
       }
@@ -118,7 +118,7 @@ export default function MainUI() {
                       </div>
                       <div className="mb-4">
                         <div className='mb-2' style={{ color: 'black' }}>비밀번호</div>
-                        <input type="password" className="form-control pass" placeholder='폰마지막4자리'
+                        <input type="password" className="form-control pass" placeholder='비밀번호 4자리 입력해 주세요'
                           value={password} pattern='[0-9]+' autoComplete="off"
                           onChange={(e) => setPassword(e.target.value)}></input>
                       </div>

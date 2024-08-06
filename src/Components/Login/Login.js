@@ -9,8 +9,8 @@ const Login = async (email, password) => {
     //const ip = `http://localhost:8877`;
     //console.log('로그인 진행', email, password, ip);
     return await Axios.post(`${ip}/login`, {
-        email: email,
-        password: password,
+        Id: email,
+        Password: password,
     }, {
         withCredentials: true,
         headers: {
@@ -23,7 +23,7 @@ const Login = async (email, password) => {
             //console.log(response);
             //sessionStorage.setItem('accessToken', response.data.accessToken);
             //sessionStorage.setItem('refreshToken', response.data.refreshToken);
-            //localStorage.setItem('userInfo', JSON.stringify({ mail:response.user.user_mail })); //한개 정도는 가지고 있어야 새로고침시에 사용가능
+            //localStorage.setItem('userInfo', JSON.stringify({ mail:response.user.id })); //한개 정도는 가지고 있어야 새로고침시에 사용가능
             return {
                 status: "success",
                 data: response.data

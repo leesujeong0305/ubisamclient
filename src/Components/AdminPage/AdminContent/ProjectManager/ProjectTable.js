@@ -158,7 +158,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         const data = await GetProjectInfo("All", "All");
         const projectExists = data.some(item => item.ProjectName === formValues.Project);
         if (projectExists) {
-            alert(`같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주십시오.\n(타 사이트에서 이미 사용 중인 이름은 사용 불가)`);
+            alert(`같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주십시오.\n(타 사이트에서 이미 사용 중인 이름도 사용 불가)`);
             return;
         }
 
@@ -217,7 +217,7 @@ const ProjectTable = ({ projects, handleUpdate }) => {
         setProjectEdit(false);
         setShowCheckboxes(false);
         setCheckboxes(initCheckbox);
-        setFormValues([]); //initialData
+        setFormValues([]);
         setSelectedRow(null);
 
         handleUpdate(true);

@@ -199,7 +199,6 @@ const TeamProjectTable = () => {
       Project: item.ProjectName,
       Percent: calculatePercentage(item),
       ...item
-
     }));
     setLoadData(dataWithIds);
     //console.log('dataWithIds', dataWithIds);
@@ -213,6 +212,7 @@ const TeamProjectTable = () => {
     if (data === true) {
       LoadTeameProject();
     }
+    setUpdate(false);
   }
 
   const calculatePercentage = (row) => {
@@ -247,9 +247,9 @@ const TeamProjectTable = () => {
   };
 
   useEffect(() => {
-    
     LoadTeameProject();
   }, []);
+  
   return (
     <div>
       <TeamProjectBoard posts={loadData} handleUpdate={handleUpdate} />

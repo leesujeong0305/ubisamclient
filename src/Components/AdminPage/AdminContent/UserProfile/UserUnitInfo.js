@@ -3,7 +3,7 @@ import './UserUnitInfo.css';
 import { useSelector } from 'react-redux';
 import { UpdateUserInfo } from '../../../../API/UpdateUserInfo';
 
-const UserUnitInfo = ({ user }) => {
+const UserUnitInfo = ({ user, handleUpdate }) => {
   const Rank = ["상무", "팀장", "부장", "차장", "과장", "대리", "사원"];
   const Continents = [
     { key: '자동화1팀', value: '파주' },
@@ -36,22 +36,15 @@ const UserUnitInfo = ({ user }) => {
       return;
     }
 
-      const site = selectSite();
-      //const data = await GetTeamProject(site);
-      // const projectExists = data.some(item => (item.ProjectName === formValues.Project) && (oldProject !== item.ProjectName));
-      // if (projectExists) {
-      //   alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요');
-      //   return;
-      // }
-
+    const site = selectSite();
     const result = await UpdateUserInfo(formValues, site);
 
-    setFormValues([]);
+    handleUpdate();
   };
 
   useEffect(() => {
     setFormValues(user);
-  }, []);
+  }, [user]);
 
   return (
     <div className="user-profile-info">
@@ -60,19 +53,19 @@ const UserUnitInfo = ({ user }) => {
           <div className="user-avatar">
             <i className="fas fa-user"></i>
           </div>
-          <div className="user-name">{user.name || '-'}</div>
+          <div className="user-name">{user.name || ''}</div>
         </div>
         <table className="user-details">
           <tbody>
             <tr>
-              <td>아이디</td>
-              <td>
+              <td className='details-item'>아이디</td>
+              <td className='d-flex'>
                 <input
                   disabled
                   type="text"
-                  name="user_mail"
+                  name="id"
                   className="user-input-field-disable"
-                  value={user.user_mail || '-'}
+                  value={user.id || ''}
                 />
               </td>
             </tr>
@@ -86,8 +79,8 @@ const UserUnitInfo = ({ user }) => {
                 <input
                   type="text"
                   name="email"
-                  className="user-input-field"
-                  value={formValues.email ? formValues.email : ''}
+                  className="user-input-field user-input-field-width"
+                  value={formValues.email || ''}
                   onChange={handleInputChange}
                 />
               </td>
@@ -97,9 +90,9 @@ const UserUnitInfo = ({ user }) => {
               <td>
                 <input
                   type="text"
-                  name="email"
-                  className="user-input-field"
-                  value={formValues.team ? formValues.team : ''}
+                  name="department"
+                  className="user-input-field user-input-field-width"
+                  value={formValues.department || ''}
                   onChange={handleInputChange}
                 />
               </td>
@@ -111,12 +104,12 @@ const UserUnitInfo = ({ user }) => {
                   <select
                     name="rank"
                     className="user-input-field"
-                    value={formValues.rank} //Rank.map((rank, index) => (formValues.rank === rank))
+                    value={formValues.rank}
                     onChange={handleInputChange}
                   >
-                    <option value={0}>Select</option>
+                    <option key={0} value={0}>Select</option>
                     {Rank.map((rank, index) => (
-                      <option key={index} value={rank}>
+                      <option key={index + 1} value={rank}>
                         {rank}
                       </option>
                     ))}
@@ -129,9 +122,9 @@ const UserUnitInfo = ({ user }) => {
               <td>
                 <input
                   type="text"
-                  name="year_join"
-                  className="user-input-field"
-                  value={formValues.year_join ? formValues.year_join : ''}
+                  name="join_date"
+                  className="user-input-field user-input-field-width"
+                  value={formValues.join_date || ''}
                   onChange={handleInputChange}
                 />
               </td>
@@ -142,8 +135,8 @@ const UserUnitInfo = ({ user }) => {
               <input
                   type="text"
                   name="birthday"
-                  className="user-input-field"
-                  value={formValues.birthday ? formValues.birthday : ''}
+                  className="user-input-field user-input-field-width"
+                  value={formValues.birthday ||''}
                   onChange={handleInputChange}
                 />
               </td>
@@ -152,7 +145,7 @@ const UserUnitInfo = ({ user }) => {
         </table>
       </div>
       <div className='button-container'>
-        {/* <button className="user-edit-button" onClick={handleEditUser}>수정</button> */}
+        <button className="user-edit-button" onClick={handleEditUser}>수정</button>
       </div>
     </div>
   );

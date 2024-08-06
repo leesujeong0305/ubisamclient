@@ -1,7 +1,7 @@
 import React from 'react';
 import './AdminSider.css';
 
-const AdminSider = ({ isCollapsed, onToggle, onItemClick }) => {
+const AdminSider = ({ isCollapsed, onToggle, onItemClick, authUserTeam }) => {
   return (
     <div className={`sider ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="sider-item" onClick={() => onItemClick('TeamTodoList')}>
@@ -15,10 +15,14 @@ const AdminSider = ({ isCollapsed, onToggle, onItemClick }) => {
       </div>
       {/* <div className="sider-item" onClick={() => onItemClick('ProjectDay')}>
         <i className="fas fa-file"></i> {!isCollapsed && 'Project Day'}
-      </div>
-      <div className="sider-item" onClick={() => onItemClick('UserProfile')}>
-        <i className="fas fa-user"></i> {!isCollapsed && 'User'}
       </div> */}
+      {
+        authUserTeam !== 'ReadOnly' && (
+          <div className="sider-item" onClick={() => onItemClick('UserProfile')}>
+            <i className="fas fa-user"></i> {!isCollapsed && 'User'}
+          </div>
+        )
+      }
       <div className="sider-item" onClick={onToggle}>
         <i className={`fas fa-arrow-${isCollapsed ? 'right' : 'left'}`}></i> {!isCollapsed && '최소화'}
       </div>

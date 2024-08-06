@@ -4,8 +4,10 @@ import Header from './AdminHeader';
 import Sider from './AdminSider';
 import Content from './AdminContent';
 import './AdminLayout.css';
+import { useSelector } from 'react-redux';
 
 const AdminLayout = () => {
+  const { authUserId, authUserName, authUserRank, authUserTeam, authManager } = useSelector(state => state.userInfo);
   const [isCollapsed, setCollapsed] = useState(false);
   const [activeComponent, setActiveComponent] = useState(null);
   const [headerTitle, setHeaderTitle] = useState(''); // 새로운 상태 추가
@@ -60,7 +62,7 @@ const AdminLayout = () => {
   return (
     <div className={`layout ${isCollapsed ? 'collapsed' : ''}`}>
       <Header title={headerTitle} /> {/* 헤더 제목 전달 */}
-      <Sider isCollapsed={isCollapsed} onToggle={toggleSidebar} onItemClick={handleItemClick} />
+      <Sider isCollapsed={isCollapsed} onToggle={toggleSidebar} onItemClick={handleItemClick} authUserTeam={authUserTeam} />
       <Content>
         <Suspense fallback={<div>로딩 중...</div>}>
           {ActiveComponent && <ActiveComponent />}

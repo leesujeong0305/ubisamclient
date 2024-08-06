@@ -99,6 +99,12 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
         // });
     };
 
+    useEffect(() => {
+        setSelectvalue(null);
+        setSelectRowIndex(false);
+        setShow(false);
+    }, [selectedProjectName])
+
     return (
         <div>
             <div className="nav-context">

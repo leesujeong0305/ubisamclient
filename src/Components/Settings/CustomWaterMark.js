@@ -36,7 +36,7 @@ const CustomWaterMark = ({isOpen}) => {
                 setCustomText('');
             }
             
-            console.log('loadCustom', loadCustom);
+            //console.log('loadCustom', loadCustom);
         }
         
         //setShow(show);
