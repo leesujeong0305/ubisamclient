@@ -61,6 +61,7 @@ const Scrolling = ({ selectedProjectName, warningboard }) => {
   const loadKanBanList = async () => {
     const items = await loadKanBanList_DB(selectedProjectName);
     const list = [...items, ...warningboard];
+    
     if (list.length > 0) {
       list.reverse().forEach((item, index) => {
         const newTask = {

@@ -90,7 +90,6 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName, selectedTitl
           selectedProjectName={selectedProjectName}
         />
       </div>
-      <br></br>
       <div>
         <Pagination
           postsPerPage={postsPerPage} // 페이지 당 포스트 수

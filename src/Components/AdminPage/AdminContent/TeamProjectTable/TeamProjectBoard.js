@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { AddTeamProject } from '../../../../API/AddTeamProject';
 import { UpdateTeamProject } from '../../../../API/UpdateTeamProject';
 import { DeleteTeamProject } from '../../../../API/DeleteTeamProject';
-import GetTeamProject from '../../../../API/GetTeamProject';
+import { GetTeamProject } from '../../../../API/GetTeamProject';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
@@ -79,7 +79,6 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       } else {
         setTooltipContent(content);
       }
-        
       
       const td = event.currentTarget;
       const rect = td.getBoundingClientRect();
@@ -95,7 +94,6 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
         opacity: 1
       });
     }
-      
   };
 
   const handleMouseOut = () => {
@@ -180,27 +178,21 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     );
   };
 
-  const delayWeek = (row) => {
-    const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
-    const per = ((currentMonth - row.EndMonth) * 4) - (row.EndWeek - day);
-    return per;
-  }
-
   const delayWork = (row) => {
     let percentage = 0;
 
     if (row.StartMonth === 1) {
       if (row.StartWeek === 1) {
-        const ratio = (row.EndMonth * 4) - (4 - row.EndWeek) + delayWeek(row);
+        const ratio = (row.EndMonth * 4) - (4 - row.EndWeek) + row.AfterWeek;
         const period = (row.EndMonth * 4) - (4 - row.EndWeek);
         percentage = period / ratio * 100;
       } else {
-        const ratio = (row.EndMonth * 4) - (row.StartWeek - 1) - (4 - row.EndWeek) + delayWeek(row);
+        const ratio = (row.EndMonth * 4) - (row.StartWeek - 1) - (4 - row.EndWeek) + row.AfterWeek;
         const period = (row.EndMonth * 4) - (row.StartWeek - 1) - (4 - row.EndWeek);
         percentage = period / ratio * 100;
       }
     } else {
-      const ratio = ((row.EndMonth - row.StartMonth - 1) * 4) + (4 - (row.StartWeek - 1)) + row.EndWeek + delayWeek(row);
+      const ratio = ((row.EndMonth - row.StartMonth - 1) * 4) + (4 - (row.StartWeek - 1)) + row.EndWeek + row.AfterWeek;
       const period = ((row.EndMonth - row.StartMonth - 1) * 4) + (4 - (row.StartWeek - 1)) + row.EndWeek;
       percentage = (period / ratio) * 100;
     }
@@ -419,15 +411,6 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       return ((endMonth - startMonth) * 4) + (endWeek);
     } else if (startWeek !== 1) {
       return ((endMonth - startMonth) * 4) + endWeek - (startWeek - 1);
-    }
-  }
-
-  const blankWeekAfter = (month, week) => {
-    if (month === 12) {
-      if (week === 4)
-        return 0;
-    } else {
-      return 48 - ((month) * 4) + (4 - week);
     }
   }
 
@@ -912,7 +895,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                   onMouseOut={handleMouseOut}
                   className="Teamproject-table-cell table-cell"
                   colSpan={
-                    sumWeek(row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek) + ((row.Percent === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) ? delayWeek(row) : 0)
+                    sumWeek(row.StartMonth, row.EndMonth, row.StartWeek, row.EndWeek) + ((row.Percent === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) ? row.AfterWeek : 0)
                   }
                 >
                   <div className="Teamprogress-bar-container"
@@ -943,9 +926,10 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                   </div>
                   
                 </td>
-                {row.EndMonth && blankWeekAfter(row.EndMonth, row.EndWeek) !== 0 &&
+
+                {row.EndMonth && row.BlankAfter !== 0 &&
                   [
-                    ...Array(blankWeekAfter(row.EndMonth, row.EndWeek) - ((row.Percent === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) ? delayWeek(row) : 0)),
+                    ...Array(row.BlankAfter - ((row.Percent === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) ? row.AfterWeek : 0)),
                   ].map((_, idx) => (
                     <td key={idx} className="Teamproject-table-cell"></td>
                   ))}

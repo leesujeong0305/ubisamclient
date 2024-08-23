@@ -1,9 +1,9 @@
 .layout {
   display: grid;
   grid-template-rows: 1fr 15fr 1fr; /* Equal heights */
-  grid-template-columns: 12% 1fr; /* Sider and content columns */
-  height: 100vh;
+  grid-template-columns: 10% 1fr; /* Sider and content columns */
   width: 100%;
+  min-height: calc(100vh - 60px);
   background-color: #7C9DBC;
 }
 
@@ -28,8 +28,10 @@ align-items: center;
 }
 
 .content {
+  flex: 1;
 grid-row: 2 / 4;
 grid-column: 2 / 3;
 background-color: #eeeeee;
+box-sizing: border-box;
 }
 

@@ -7,12 +7,8 @@ body {
   margin-bottom: 20px;
 }
 .custom-modal-size {
-    width: 100vw; /* Full viewport width */
     max-width: none; /* Override Bootstrap's max-width */
   }
-  
-
-
 
   .stats-card {
     background-color: #FFBB64;

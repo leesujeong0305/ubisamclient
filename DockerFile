@@ -1,0 +1,20 @@
+FROM node:20.10.0-alpine
+# Node.js 버전 20이 설치된 alpine Linux를 기반 이미지로 사용
+
+WORKDIR /src
+# Docker 컨테이너 내에서 작업할 디렉토리를 src/로 설정
+
+COPY pakage.json pakage-lock.json ./
+# 호스트 컴퓨터의 package.json 파일을 작업 디렉토리에 복사
+
+RUN npm install
+# yarn 명령을 실행하여 필요한 패키지들을 설치 (npm을 사용할 경우 RUN npm install)
+
+COPY . ./
+# 호스트 컴퓨터의 모든 파일을 작업 디렉토리에 복사
+
+EXPOSE 3000
+# 컨테이너의 3000번 포트를 외부에 노출. 애플리케이션이 해당 포트에서 실행될 것임을 나타냄
+
+CMD [ "npm", "start" ]
+# 컨테이너가 실행되면 yarn start 명령을 실행 (npm을 사용할 경우 CMD [ "npm", "start" ])

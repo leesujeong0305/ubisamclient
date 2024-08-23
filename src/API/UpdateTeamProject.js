@@ -3,7 +3,7 @@ import Axios from './AxiosApi';
 
 export const UpdateTeamProject = async (row, site) => {
   const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-  console.log('row : ', row);
+  //console.log('row : ', row);
   //const ip = `http://localhost:8877`;
   return await Axios.post(`${ip}/updateTeamProject`, {
     ProjectName: row.Project,

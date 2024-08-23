@@ -293,7 +293,7 @@ function Board() {
                 await setLoadBoard(results.projectData);
                 setSelectedProjectName(selectedProject.text);
                 setStatus(selectedProject.status);
-                setWarningBoard(results.projectData.filter((item) => (item.details && item.details.Status === "알림") || item.Status === "알림"));
+                setWarningBoard(results.projectData.filter((item) =>  ((item.details && item.details[item.details.length - 1].Status === "알림") || item.Status === "알림")));
                 return selectedProject;
             }
         } catch (error) {

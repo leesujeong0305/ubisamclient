@@ -37,7 +37,7 @@ const UserInfo = ({ rows, onRowClick, handleUpdate }) => {
     const data = await GetUserInfo("All", "All");
         const projectExists = data.some(item => item.id === user.id);
         if (projectExists) {
-            alert(`같은 이름을 가진 직원이 있습니다. 다른 이름으로 변경해 주십시오.\n(타 사이트에서 이미 사용 중인 이름도 사용 불가)`);
+            alert(`같은 아이디를 가진 직원이 있습니다. 다른 이름으로 변경해 주십시오.\n(타 사이트에서 이미 사용 중인 아이디도 사용 불가)`);
             return;
         }
       
