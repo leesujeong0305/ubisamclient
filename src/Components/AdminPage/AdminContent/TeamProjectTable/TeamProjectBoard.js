@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { AddTeamProject } from '../../../../API/AddTeamProject';
 import { UpdateTeamProject } from '../../../../API/UpdateTeamProject';
 import { DeleteTeamProject } from '../../../../API/DeleteTeamProject';
-import { GetTeamProject } from '../../../../API/GetTeamProject';
+import { ExistTeamProject, GetTeamProject } from '../../../../API/GetTeamProject';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
@@ -221,7 +221,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       .join(', ');
 
     const site = selectSite();
-    const data = await GetTeamProject(site);
+    const data = await ExistTeamProject(site, currentYear);
     const projectExists = data.some(item => item.ProjectName === formValues.Project);
     if (projectExists) {
       alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요');
@@ -274,22 +274,22 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       return;
     }
 
-    if (!window.confirm('수정시겠습니까?')) {
-      // 사용자가 Cancel을 클릭한 경우
-      //console.log('프로젝트 수정이 취소되었습니다.');
-      return;
-    }
-
     const selectedUsers = checkboxes
       .filter((checkbox) => checkbox.checked)
       .map((checkbox) => checkbox.label)
       .join(', ');
 
     const site = selectSite();
-    const data = await GetTeamProject(site);
+    const data = await ExistTeamProject(site, currentYear);
     const projectExists = data.some(item => (item.ProjectName === formValues.Project) && (oldProject !== item.ProjectName));
-    if (projectExists) {
-      alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요');
+    if (projectExists) { 
+      alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요 ', oldProject);
+      return;
+    }
+
+    if (!window.confirm('수정시겠습니까?')) {
+      // 사용자가 Cancel을 클릭한 경우
+      //console.log('프로젝트 수정이 취소되었습니다.');
       return;
     }
 
@@ -349,7 +349,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
 
     const site = selectSite();
     const rowData = row.Project;
-    const result = await DeleteTeamProject(rowData, site);
+    const result = await DeleteTeamProject(rowData, site, row.Date);
 
     setProjectAdd(false);
     setProjectEdit(false);
@@ -381,7 +381,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
   };
 
   const handleAfterYear = () => {
-    if (groupData[selectYear + 1] === undefined) {
+    if (groupData[selectYear + 1] === undefined && currentYear !== (selectYear + 1)) {
       alert('데이터가 없습니다');
       return;
     }
@@ -442,7 +442,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
     <div className="team-table-container">
       <div className="Team-table-counter">
         <div className="year">
-          { selectedYear[selectYear - 1] && (
+          { groupData[selectYear - 1] && (
             <button className="before-btn" onClick={handleBeforeYear}>
               ◀️
             </button>
@@ -874,8 +874,8 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
           </tr>
         </thead>
         <tbody>
-          {(selectedYear && selectYear) && selectedYear[selectYear] &&
-            selectedYear[selectYear]?.map((row, index) => (
+          {
+            groupData[selectYear]?.map((row, index) => (
               <tr key={index} className="Teamproject-table-row">
                 {/* <td className="Teamproject-table-cell">{row.id}</td> */}
                 <td className="Teamproject-table-cell project-cell-overflow" title={row.Project}>{row.Project}</td>

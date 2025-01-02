@@ -1,7 +1,7 @@
 import Axios from './AxiosApi';
 
 
-export const DeleteTeamProject = async (row, site) => {
+export const DeleteTeamProject = async (row, site, date) => {
   const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
   //console.log('row : ', row);
   //const ip = `http://localhost:8877`;
@@ -15,6 +15,7 @@ export const DeleteTeamProject = async (row, site) => {
     //ProopsMM: row.ProopsMM,
     //Manager: row.Manager,
     Site: site,
+    ProjectDate: date,
   }, {
     headers: {
       "Content-Type": "application/json",
