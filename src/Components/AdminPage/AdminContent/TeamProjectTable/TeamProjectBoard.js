@@ -918,7 +918,8 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                       }}
                     >
                       {
-                        ((currentMonth < row.StartMonth) || (row.StartMonth === row.EndMonth && row.StartWeek === row.EndWeek)) ? <div></div> :
+                        (selectYear < currentYear) ? (row.Status - 1 === 7) ? '지원' : (row.Status - 1 === 6) ? '완료' : (row.Status - 1 !== 6) ? '지연  ' : `${row.Percent}%` //지난 년도 표시
+                        : ((currentMonth < row.StartMonth) || (row.StartMonth === row.EndMonth && row.StartWeek === row.EndWeek)) ? <div></div> :
                           ((row.Percent === '100' && row.Status - 1 === 6) || (row.Percent === '100' && row.Status - 1 === 7)) ? '완료'
                             : ((row.Percent === '100' && row.Status - 1 !== 6)) ? '지연  ' : <div>{row.Percent === 0 ? '' : `${row.Percent}%`}</div>
                       }

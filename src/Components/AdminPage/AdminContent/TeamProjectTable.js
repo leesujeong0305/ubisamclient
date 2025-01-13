@@ -221,9 +221,15 @@ const TeamProjectTable = () => {
   }
 
   const calculatePercentage = (row) => {
-    const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
     const hundred = 100;
     let percentage = 0;
+    const year = row.Date.split("-")[0];
+    const isPastYear = year < currentYear;
+    if (isPastYear)
+      return '100';
+    
+    const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
+    
 
     if (currentMonth > row.EndMonth || ((currentMonth === row.EndMonth) && day >= row.EndWeek))
       return hundred.toFixed(0);
@@ -256,6 +262,15 @@ const TeamProjectTable = () => {
   };
 
   const delayWeek = (row) => {
+    const year = row.Date.split("-")[0];
+    const isPastYear = year < currentYear;
+    if (isPastYear) {
+      const day = 3; // 12월 4째주를 나타내는 고정 값
+    const per = ((12 - row.EndMonth) * 4) - (row.EndWeek - 4); // 12월로 고정
+    return per;
+    }
+      
+
     const day = today.getDate() > 23 ? 3 : today.getDate() > 16 ? 2 : today.getDate() > 9 ? 1 : 0;
     const per = ((currentMonth - row.EndMonth) * 4) - (row.EndWeek - day);
     
