@@ -11,13 +11,13 @@ return await Axios.get(`${ip}/BoardProject?Name=${encodeURIComponent(name)}&ID=$
 }).then((res) => {
     //console.log('getProject', { res });
     if (res.data) {
-        //console.log('잘 옴 ? ', res.data);
         const dataRow = res.data.map((item, index) => ({
             id: index + 1,
             text: item.ProjectName,
             period: item.Period,
             status: item.Status,
-            pm: item.PM
+            pm: item.PM,
+            category: item.Category,
         }));
         return dataRow;
     } else if (res.data.code === 403) { //에러메세지 로그 없이 처리하려할때

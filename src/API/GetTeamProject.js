@@ -13,7 +13,12 @@ export const  GetTeamProject = async (authUserTeam) => {
             if (res.data) {
                 const data = res.data;
                 //const reversedData = data.reverse();
-                return data;
+                
+                const mainData = data.filter(item => item.Status !== 5 && item.Status !== 6);
+                const tailData = data.filter(item => item.Status === 5 || item.Status === 6);
+
+                const sortedData = [...mainData, ...tailData];
+                return sortedData;
             } else if (res.data.code === 403) { //에러메세지 로그 없이 처리하려할때
                 console.log("403");
             }

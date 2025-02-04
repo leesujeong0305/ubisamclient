@@ -38,6 +38,7 @@ const Scrolling = ({ selectedProjectName, warningboard }) => {
 
   const loadKanBanList_DB = async () => {
     const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    //const ip = `http://localhost:8877`;
     return await Axios.get(`${ip}/loadKanBanList?Project=${encodeURIComponent(selectedProjectName)}`, { //get은 body없음
       headers: {
         "Content-Type": "application/json",

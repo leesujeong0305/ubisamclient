@@ -9,6 +9,7 @@ function FileItem({ name, created, size, selectedProjectName, succ, setSucc }) {
 
     const handleDownloadFile = (filename) => {
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        //const ip = `http://localhost:8877`;
         const url = `${ip}/download/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`;
     
         // Axios를 사용하여 파일을 다운로드하는 GET 요청을 보냅니다.
@@ -39,6 +40,7 @@ function FileItem({ name, created, size, selectedProjectName, succ, setSucc }) {
         }
 
         const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+        //const ip = `http://localhost:8877`;
         Axios.delete(`${ip}/deleteFile/${encodeURIComponent(filename)}?Project=${encodeURIComponent(selectedProjectName)}`)
         .then((response) => {
             console.log('handleDeleteFile',response.data.message);
@@ -123,6 +125,7 @@ function FileExplorer({ selectedProjectName }) {
     const LoadFiles = async () => {
         try {
             const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+            //const ip = `http://localhost:8877`;
             const response = await Axios.get(`${ip}/getFile?Project=${encodeURIComponent(selectedProjectName)}`);
             return response.data;
             setItems(response.data); // 가져온 데이터로 상태 업데이트
@@ -157,6 +160,7 @@ function FileExplorer({ selectedProjectName }) {
         try {
             // fetch API를 사용하여 서버로 파일을 보냅니다.
             const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+            //const ip = `http://localhost:8877`;
             const response = await Axios.post(`${ip}/uploadFile?Project=${encodeURIComponent(projectName)}&dateTime=${encodeURIComponent(dateTime)}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data', // 이 행을 제거하거나 자동으로 설정되게 둡니다.

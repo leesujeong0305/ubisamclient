@@ -7,7 +7,8 @@ import { Form } from 'react-bootstrap';
 import CustomWaterMark from '../Components/Settings/CustomWaterMark';
 import { useSelector } from 'react-redux';
 
-function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, handleData, selectedProjectName }) {
+function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, handleData, selectedProjectName, category }) {
+
 
     const items = [ /* 상태 색상 표기 */
         { id: '대기', color: '#CCCCFF' },
@@ -103,6 +104,7 @@ function ListBoard({ posts, allposts, pageNumber, postsPerPage, totalPage, tab, 
         setSelectvalue(null);
         setSelectRowIndex(false);
         setShow(false);
+        //console.log('category', category);
     }, [selectedProjectName])
 
     return (

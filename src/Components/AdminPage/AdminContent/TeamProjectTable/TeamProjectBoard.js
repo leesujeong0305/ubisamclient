@@ -880,7 +880,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                 {/* <td className="Teamproject-table-cell">{row.id}</td> */}
                 <td className="Teamproject-table-cell project-cell-overflow" title={row.Project}>{row.Project}</td>
                 <td className="Teamproject-table-cell" style={{
-                  backgroundColor: row.Status - 1 === 7 ? '#3FA2F6' : (row.Percent === '100' && row.Status - 1 === 6) ? '#009570'
+                  backgroundColor: row.Status - 1 === 7 ? '#3FA2F6' : ((row.Percent === '100' && row.Status - 1 === 4) || (row.Percent === '100' && row.Status - 1 === 5) || (row.Percent === '100' && row.Status - 1 === 6)) ? '#009570'
                     : (row.Percent === '100' && row.Status - 1 !== 6) ? '#EB5B00' : row.Status - 1 === 3 ? '#e9d819' : ''
                 }}>
                   {states[row.Status - 1]}</td>
@@ -910,15 +910,15 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
                       className="Teamprogress-bar"
                       style={{
                         width: `${(row.Percent === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) ? delayWork(row) : row.Percent}%`,
-                        backgroundColor: row.Status - 1 === 7 ? '#3FA2F6' : (row.Percent === '100' && row.Status - 1 === 6) ? '#009570' :
+                        backgroundColor: row.Status - 1 === 7 ? '#3FA2F6' : ((row.Percent === '100' && row.Status - 1 === 4) || (row.Percent === '100' && row.Status - 1 === 5) || (row.Percent === '100' && row.Status - 1 === 6)) ? '#009570' :
                           (row.Percent === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) ? '#FA3F19' : "", //(calculatePercentage( row ) === '100' && row.Status - 1 !== 6) ? '#EB5B00' :
                         //color: row.Status - 1 === 3 && '#222', //FDFDC4
-                        justifyContent: (row.Percent === '100' && row.Status - 1 !== 6 && row.Status - 1 !== 7) && 'right',
+                        justifyContent: (row.Percent === '100' && row.Status - 1 !== 4 && row.Status - 1 !== 5 && row.Status - 1 !== 6 && row.Status - 1 !== 7) && 'right',
                         whiteSpace: 'pre-wrap',
                       }}
                     >
                       {
-                        (selectYear < currentYear) ? (row.Status - 1 === 7) ? '지원' : (row.Status - 1 === 6) ? '완료' : (row.Status - 1 !== 6) ? '지연  ' : `${row.Percent}%` //지난 년도 표시
+                        (selectYear < currentYear) ? (row.Status - 1 === 7) ? '지원' : (row.Status - 1 === 4 || row.Status - 1 === 5 || row.Status - 1 === 6) ? '완료' : (row.Status - 1 !== 6) ? '지연  ' : `${row.Percent}%` //지난 년도 표시
                         : ((currentMonth < row.StartMonth) || (row.StartMonth === row.EndMonth && row.StartWeek === row.EndWeek)) ? <div></div> :
                           ((row.Percent === '100' && row.Status - 1 === 6) || (row.Percent === '100' && row.Status - 1 === 7)) ? '완료'
                             : ((row.Percent === '100' && row.Status - 1 !== 6)) ? '지연  ' : <div>{row.Percent === 0 ? '' : `${row.Percent}%`}</div>

@@ -5,7 +5,7 @@ import './BulletinBoard.css'
 
 // 가정: postData는 제공된 포스트 객체 배열입니다.
 
-const BulletinBoard = ({boardData, handleData, selectedProjectName, selectedTitle}) => {
+const BulletinBoard = ({boardData, handleData, selectedProjectName, selectedTitle, category}) => {
   const [posts, setPosts] = useState([]) // 포스트 데이터 상태 관리
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 관리
   const [postsPerPage] = useState(10); // 페이지 당 포스트 수
@@ -61,6 +61,7 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName, selectedTitl
         setPosts(filteredItems);
       }
     }
+    //console.log('category11', category);
   }, [selectedTitle])
 
   return (
@@ -88,6 +89,7 @@ const BulletinBoard = ({boardData, handleData, selectedProjectName, selectedTitl
           tab={selectedTab}
           handleData={handleData}
           selectedProjectName={selectedProjectName}
+          category={category}
         />
       </div>
       <div>

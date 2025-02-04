@@ -41,6 +41,7 @@ function Board() {
     const [pm, setPM] = useState('');
     const [selectedTitle, setSelectedTitle] = useState(null);
     const [warningBoard, setWarningBoard] = useState([]);
+    const [category, SetCategory] = useState('');
 
     let today = new Date();
     let year = today.getFullYear();
@@ -177,6 +178,7 @@ function Board() {
                 const project = await GetProject(data.name, authUserId, authManager, site);
                 //console.log('project', project);
                 setSelectedActionText(project);
+                SetCategory(project.category);
                 return project;
             }
         // } catch (error) {
@@ -401,7 +403,7 @@ function Board() {
                 </div>
 
                 <div className='mt-4'>
-                    <BulletinBoard boardData={loadBoard} handleData={handleData} selectedProjectName={selectedProjectName} selectedTitle={selectedTitle} />
+                    <BulletinBoard boardData={loadBoard} handleData={handleData} selectedProjectName={selectedProjectName} selectedTitle={selectedTitle} category={category} />
                 </div>
             </div>
         </>

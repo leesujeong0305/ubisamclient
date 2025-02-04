@@ -26,6 +26,7 @@ const MyCalenderApp = () => {
   const getPersnalBoard_DB = async () => {
     const name = localStorage.getItem('userToken');
     const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
+    //const ip = `http://localhost:8877`;
     return await Axios.get(`${ip}/boardPersnal?Name=${name}`, { //get은 body없음
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +99,7 @@ const MyCalenderApp = () => {
 
     // Determine the API endpoint
     const ip = process.env.REACT_APP_API_DEV === "true" ? `http://localhost:8877` : `http://14.58.108.70:8877`;
-
+    //const ip = `http://localhost:8877`;
     // The results array will collect the responses
     const results = [];
     let project = '';
