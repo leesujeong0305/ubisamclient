@@ -155,6 +155,7 @@ const AdminBulletin = ({ allBoard, startDate, endDate, project, useSerch }) => {
           postsPerPage={postsPerPage}
           totalPage={totalPage} // 페이지 당 포스트 수
           tab={selectedTab}
+          boardLength={allBoard.length}
         />
       </div>
       <div>

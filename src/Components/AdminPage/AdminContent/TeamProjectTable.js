@@ -10,10 +10,11 @@ const TeamProjectTable = () => {
   const [update, setUpdate] = useState("");
 
   const Continents = [
-    { key: '자동화1팀', value: '파주' },
-    { key: '시스템사업팀', value: '구미' },
-    { key: '장비사업팀', value: '서울' },
-    { key: 'ReadOnly', value: '파주' },
+    { key: '자동화1팀', value: ['파주'] },
+    { key: '시스템사업팀', value: ['구미'] },
+    // { key: '장비사업팀', value: '서울' },
+    { key: '장비사업팀', value: ['서울', '파주'] },
+    { key: 'ReadOnly', value: ['파주'] },
   ];
 
   let today = new Date();
@@ -192,11 +193,17 @@ const TeamProjectTable = () => {
   // ];
 
   const LoadTeameProject = async () => {
-    const site = selectSite();
-    const data = await GetTeamProject(site);
-    if (data === undefined)
+    const siteList = selectSite();
+    //const data = await GetTeamProject(site);
+    let mainData = [];
+    for (const site of siteList) {
+      const data = await GetTeamProject(site);
+      mainData = [...mainData, ...data];
+    }
+    
+    if (mainData === undefined)
       return;
-    const dataWithIds = data.map((item, index) => ({
+    const dataWithIds = mainData.map((item, index) => ({
       id: index + 1,
       Project: item.ProjectName,
       EndWeek:item.EndWeek - 3,

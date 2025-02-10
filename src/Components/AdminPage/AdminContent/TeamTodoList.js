@@ -22,10 +22,11 @@ const TeamTodoList = () => {
     const [retryCount, setRetryCount] = useState(0);
 
     const Continents = [
-        { key: '자동화1팀', value: '파주' },
-        { key: '시스템사업팀', value: '구미' },
-        { key: '장비사업팀', value: '서울' },
-        { key: 'ReadOnly', value: '파주' },
+        { key: '자동화1팀', value: ['파주'] },
+        { key: '시스템사업팀', value: ['구미'] },
+        //{ key: '장비사업팀', value: ['서울'] },
+        { key: '장비사업팀', value: ['서울', '파주'] },
+        { key: 'ReadOnly', value: ['파주'] },
     ];
 
     // 날짜를 "yyyy-MM-dd" 형식으로 변환하는 함수
@@ -51,8 +52,9 @@ const TeamTodoList = () => {
     }
 
     const LoadAllBoard = async () => {
-        const site = selectSite();
-        if (site === undefined) {
+        const siteList = selectSite();
+        //if (site === undefined) {
+        if (!siteList || siteList.length === 0) {
             //console.log('authUserTeam1',authUserTeam);
             alert(`"${authUserTeam}"이름이 서버에 등록된 팀이름과 매칭되지 않아 데이터를 가져올 수 없습니다`, authUserTeam);
             //console.log('authUserTeam2 [',authUserTeam,']');
@@ -60,17 +62,33 @@ const TeamTodoList = () => {
         }
 
 
-        const mainBoard = await LoadBoard("All", site);
-        if (mainBoard === undefined || mainBoard === '403') {
-            return [];
-        }
-        //console.log('main', mainBoard);
-        const subBoard = await GetSubLoadBoard("All", site);
-        //console.log('sub', subBoard);
-        const subData = subBoard.data;
-        //console.log('sub', subData);
-        if (subData === undefined) {
-            return mainBoard;
+        // const mainBoard = await LoadBoard("All", site);
+        // if (mainBoard === undefined || mainBoard === '403') {
+        //     return [];
+        // }
+        // //console.log('main', mainBoard);
+        // const subBoard = await GetSubLoadBoard("All", site);
+        // //console.log('sub', subBoard);
+        // const subData = subBoard.data;
+        // //console.log('sub', subData);
+        // if (subData === undefined) {
+        //     return mainBoard;
+        // }
+
+        let mainBoard = [];
+        let subData = [];
+
+        // 여러 지역 데이터를 순차적으로 가져오기
+        for (const site of siteList) {
+            const mainBoardData = await LoadBoard("All", site);
+            if (mainBoardData && mainBoardData !== '403') {
+                mainBoard = [...mainBoard, ...mainBoardData];
+            }
+
+            const subBoardData = await GetSubLoadBoard("All", site);
+            if (subBoardData && subBoardData.data) {
+                subData = [...subData, ...subBoardData.data];
+            }
         }
 
         // 각 targetIndex에 맞는 데이터 항목에 상세 정보를 추가하는 함수
@@ -99,7 +117,10 @@ const TeamTodoList = () => {
                 //item.details[0].Status = item.details[item.details.length - 1].Status;
             }
         });
-        return mainBoard;
+
+        const sortBoard = mainBoard.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+
+        return sortBoard;
     }
 
     const UpdateStatus = async (data) => {

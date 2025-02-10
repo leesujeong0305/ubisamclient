@@ -4,7 +4,7 @@ import { Form, Modal, Button } from 'react-bootstrap';
 import './TeamBoard.css'
 
 
-const TeamBoard = ({ posts }) => {
+const TeamBoard = ({ posts, pageNumber, postsPerPage, boardLength }) => {
 
     const Continents = [ /* 상태 색상 표기 */
         { key: 1, value: '대기', color: '#CCCCFF', letter: '대' },
@@ -79,7 +79,8 @@ const TeamBoard = ({ posts }) => {
                                 handleShow(row);
                             }}
                         >
-                            <td>{row.Index}</td>
+                            {/* <td>{index + 1}</td> */}
+                            <td>{ boardLength - (pageNumber - 1) * postsPerPage - index}</td>
                             <td className="truncate">{row.ProjectName}</td>
                             <td>{row.ChangeDate ? row.ChangeDate === row.Date ? row.Date : `${row.ChangeDate} / ${row.Date}` : row.Date }</td>
                             <td>{row.Name}</td>

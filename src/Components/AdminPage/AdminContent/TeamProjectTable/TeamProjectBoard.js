@@ -30,10 +30,11 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
   ];
   
   const Continents = [
-    { key: '자동화1팀', value: '파주' },
-    { key: '시스템사업팀', value: '구미' },
-    { key: '장비사업팀', value: '서울' },
-    { key: 'ReadOnly', value: '파주' },
+    { key: '자동화1팀', value: ['파주'] },
+    { key: '시스템사업팀', value: ['구미'] },
+    //{ key: '장비사업팀', value: '서울' },
+    { key: '장비사업팀', value: ['서울', '파주'] },
+    { key: 'ReadOnly', value: ['파주'] },
   ];
 
   const { authUserId, authUserName, authUserRank, authUserTeam, authManager } = useSelector((state) => state.userInfo);
@@ -220,9 +221,16 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       .map((checkbox) => checkbox.label)
       .join(', ');
 
-    const site = selectSite();
-    const data = await ExistTeamProject(site, currentYear);
-    const projectExists = data.some(item => item.ProjectName === formValues.Project);
+    const siteList = selectSite();
+
+    let allData = [];
+    //const data = await ExistTeamProject(site, currentYear);
+    for (const site of siteList) {
+      const data = await ExistTeamProject("All", site);
+      allData = [...allData, ...data];
+    }
+    
+    const projectExists = allData.some(item => item.ProjectName === formValues.Project);
     if (projectExists) {
       alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요');
       return;
@@ -256,7 +264,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
         Manager: formValues.Manager,
       };
 
-      const result = await AddTeamProject(row, site);
+      const result = await AddTeamProject(row, siteList[0]);
 
       setFormValues(initialData);
       setProjectAdd(false);
@@ -279,9 +287,15 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       .map((checkbox) => checkbox.label)
       .join(', ');
 
-    const site = selectSite();
-    const data = await ExistTeamProject(site, currentYear);
-    const projectExists = data.some(item => (item.ProjectName === formValues.Project) && (oldProject !== item.ProjectName));
+      const siteList = selectSite();
+
+      let allData = [];
+      //const data = await ExistTeamProject(site, currentYear);
+      for (const site of siteList) {
+        const data = await ExistTeamProject("All", site);
+        allData = [...allData, ...data];
+      }
+    const projectExists = allData.some(item => (item.ProjectName === formValues.Project) && (oldProject !== item.ProjectName));
     if (projectExists) { 
       alert('같은 이름을 가진 Project가 있습니다. 다른 이름으로 변경해 주세요 ', oldProject);
       return;
@@ -308,7 +322,7 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       Comment: formValues.Comment,
     };
 
-    const result = await UpdateTeamProject(row, site);
+    const result = await UpdateTeamProject(row, siteList[0]);
 
     setProjectAdd(false);
     setProjectEdit(false);
@@ -347,9 +361,9 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
       return;
     }
 
-    const site = selectSite();
+    const siteList = selectSite();
     const rowData = row.Project;
-    const result = await DeleteTeamProject(rowData, site, row.Date);
+    const result = await DeleteTeamProject(rowData, siteList[0], row.Date);
 
     setProjectAdd(false);
     setProjectEdit(false);
@@ -417,8 +431,8 @@ const TeamProjectBoard = ({ posts, handleUpdate }) => {
   useEffect(() => {
     setSelectYear(currentYear);
     const LoadTeamUsers = async () => {
-      const site = selectSite();
-      const users = await GetUserInfo('All', site);
+      const siteList = selectSite();
+      const users = await GetUserInfo('All', siteList[0]);
       const initCheckboxes = users.map((val, index) => {
         return { id: index + 1, label: val.name, checked: false };
       });
